@@ -93,6 +93,18 @@ function expandItems(items) {
     return [nodes, elements];
 }
 
+// TODO
+function _options_object(options) {
+    if (Array.isArray(options)) {
+        let opts = {};
+        for (let option of options) {
+            opts[option.toString()] = option;
+        }
+        options = opts;
+    }
+    return options;
+}
+
 
 
 /* Main element: FlottPlot */
@@ -262,27 +274,13 @@ let collapsable = (title, ...items) => expandableCollapsable(title, "",     item
 /* Dropdown menus */
 
 function Selector(name, options) {
-    // ...
-    if (Array.isArray(options)) {
-        let opts = {};
-        for (let option of options) {
-            opts[option.toString()] = option;
-        }
-        options = opts;
-    }
+    options = _options_object(options);
     // ...
     this.name = name;
     // ...
     let optnodes = [];
-    if (Array.isArray(options)) {
-        for (let val of options) {
-            let key = val.toString();
-            optnodes.push(create("option", { key: val }, [key]));
-        }
-    } else {
-        for (let key in options) {
-            optnodes.push(create("option", { value: options[key] }, [key]));
-        }
+    for (let key in options) {
+        optnodes.push(create("option", { value: options[key] }, [key]));
     }
     this.select = create("select", {}, optnodes);
     this.select.addEventListener("change", () => this.notify());
@@ -397,14 +395,15 @@ function checkboxes(name, options) {
 }
 
 function Checkboxes(name, options) {
+    options = _options_object(options);
     this.boxes = new Map();
     let nodes = [];
-    for (let option of options) {
+    for (let key in options) {
         let box = create("input", { "type": "checkbox" });
         box.checked = true;
         box.addEventListener("change", () => this.notify());
-        nodes.push(create("label", {}, [ box, option ]));
-        this.boxes.set(option, box);
+        nodes.push(create("label", {}, [ box, key ]));
+        this.boxes.set(options[key], box);
     }
     this.name = name;
     this.node = create("div", { "class": "checkboxes" }, nodes);
@@ -412,7 +411,7 @@ function Checkboxes(name, options) {
 
 Checkboxes.prototype.getValue = function (which) {
     if (which == null) {
-        // TODO
+        throw new Error("Not implemented") // TODO
     } else {
         let box = this.boxes.get(which);
         return box.checked ? which : null;
