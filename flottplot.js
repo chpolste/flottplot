@@ -172,6 +172,11 @@ function plot(pattern) {
     for (let match of matches) {
         deps.push(match[0].slice(1, -1));
     }
+    // Static images must be initialized here
+    if (deps.length === 0) {
+        node.setAttribute("src", pattern);
+        node.setAttribute("alt", pattern);
+    }
     return {
         node: node,
         deps: deps,
