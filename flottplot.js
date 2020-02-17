@@ -176,7 +176,15 @@ FlottPlot.prototype.makeNotifier = function (element) {
 /* A plot */
 
 function plot(pattern) {
-    let node = create("img");
+    let node = create("img", { "class": "plot" });
+    // Show overlay with full image on click
+    node.addEventListener("click", () => {
+        let fullView = create("div", { "class": "plot-fullview" }, [
+            create("img", { "src": node.src, "alt": node.alt })
+        ]);
+        fullView.addEventListener("click", () => document.body.removeChild(fullView));
+        document.body.appendChild(fullView);
+    });
     // Determine dependencies by scanning for the "{...}" substitution patterns
     // in the given filenames
     let deps = [];

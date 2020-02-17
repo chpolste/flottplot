@@ -130,6 +130,8 @@ Which arguments are valid depends on the specific UI element referenced (see the
 
 E.g.: Consider a path specified as `../foo/{Date:yyyy-mm}/{Date:yyyy-mm-dd}-{Var}.png`. If `Date` refers to a calendar element set to `01-01-2020 06Z` and `Var` is a Dropdown with current value `temperature`, the path resolves to `../foo/2020-01/2020-01-01-temperature.png` after substitution.
 
+Clicking on a plot reveals an overlay that shows the plot at its native resolution or scaled to the maximum possible size that fits on the screen if the native size is larger than the available screen space.
+
 
 ## rangeCounter
 
