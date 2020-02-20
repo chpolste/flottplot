@@ -242,14 +242,21 @@ class Plot {
 
 /* Styling and organization of elements */
 
-// A horizontal line (<hr>)
 function separator() {
     return { elements: [], node: $.create("hr") };
 }
 
-// A top-level heading (<h1>)
 function heading(text) {
-    return { elements: [], node: $.create("h1", {}, [text]) }
+    return { elements: [], node: $.create("h1", {}, [text]) };
+}
+
+function paragraph(text) {
+    return { elements: [], node: $.create("p", {}, [text]) };
+}
+
+function text(text, cls) {
+    let attrs = (cls == null) ? {} : { "class": cls };
+    return { elements: [], node: $.create("span", attrs, [text]) };
 }
 
 // A generic element container that can be styled as a CSS class (<div>)
@@ -317,28 +324,27 @@ class Selector {
             optnode.selected = (key === init);
             optnodes.push(optnode);
         }
-        this.select = $.create("select", {}, optnodes);
-        this.select.addEventListener("change", () => this.notify());
-        this.node = $.create("label", {}, [name, this.select]);
+        this.node = $.create("select", {}, optnodes);
+        this.node.addEventListener("change", () => this.notify());
     }
 
     getValue() {
-        return this.select.value;
+        return this.node.value;
     }
 
     setValue(value) {
         if (this.values.indexOf(value) < 0) throw new Error(); // TODO
-        this.select.value = value;
+        this.node.value = value;
         this.notify();
     }
 
     next() {
-        let idx = this.values.indexOf(this.select.value);
+        let idx = this.values.indexOf(this.node.value);
         this.setValue(this.values[(idx + 1) % this.values.length]);
     }
 
     prev() {
-        let idx = this.values.indexOf(this.select.value);
+        let idx = this.values.indexOf(this.node.value);
         this.setValue(this.values[(idx - 1) % this.values.length]);
     }
 

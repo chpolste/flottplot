@@ -81,7 +81,7 @@ It may be necessary to fix the width of columns in the CSS style to avoid resizi
     container(classname, ...elements)
 
 A generic container with the given class name for styling with CSS.
-Corresponds to a html `<div>`.
+Corresponds to an HTML `<div>`.
 
 
 ## expandable
@@ -107,7 +107,7 @@ This call is responsible for loading, initializing and connecting the contained 
     heading(text)
 
 Insert a heading with the given text.
-Corresponds to a html `<h1>`.
+Corresponds to an HTML `<h1>`.
 
 
 ## hspace
@@ -116,6 +116,14 @@ Corresponds to a html `<h1>`.
 
 A horizontal (blank) space.
 If `width` is given, it must be specified as a string with an appropriate unit (px, em, pt, ...).
+
+
+## paragraph
+
+    paragraph(text)
+
+A paragraph of text.
+Corresponds to an HTML `<p>`.
 
 
 ## plot
@@ -159,7 +167,16 @@ The option selected initially can be specified with `init` (the substitution val
     separator()
 
 A horizontal line.
-Corresponds to a html `<hr>`.
+Corresponds to an HTML `<hr>`.
+
+
+## text
+
+    text(text, [cls])
+
+Inline text.
+Corresponds to an HTML `<span>`.
+Can be given a class name for styling with CSS with the optional `cls` argument.
 
 
 ## vspace

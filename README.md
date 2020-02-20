@@ -36,10 +36,12 @@ Set up the interface and filename patterns in `index.html` and optionally style 
 [`flottplot`](README.UI.md#flottplot),
 [`heading`](README.UI.md#heading),
 [`hspace`](README.UI.md#hspace),
+[`paragraph`](README.UI.md#paragraph),
 [`plot`](README.UI.md#plot),
 [`rangeCounter`](README.UI.md#rangecounter),
 [`selector`](README.UI.md#selector),
 [`separator`](README.UI.md#separator),
+[`text`](README.UI.md#text),
 [`vspace`](README.UI.md#vspace).
 
 More information is available in the [README.UI](README.UI.md) file.
