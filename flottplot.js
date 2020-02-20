@@ -300,30 +300,46 @@ let collapsable = (title, ...items) => expandableCollapsable(title, "",     item
 
 /* Dropdown menus */
 
-function selector(name, options) {
-    return new Selector(name, options);
+function selector(name, options, init) {
+    return new Selector(name, options, init);
 }
 
 
 class Selector {
 
-    constructor(name, options) {
+    constructor(name, options, init) {
         this.name = name;
+        this.values = [];
         let optnodes = [];
         for (let [key, value] of _optionsMap(options)) {
-            optnodes.push($.create("option", { "value": value }, [key]));
+            this.values.push(value);
+            let optnode = $.create("option", { "value": value }, [key]);
+            optnode.selected = (key === init);
+            optnodes.push(optnode);
         }
         this.select = $.create("select", {}, optnodes);
         this.select.addEventListener("change", () => this.notify());
         this.node = $.create("label", {}, [name, this.select]);
     }
 
-    update(update) {
+    getValue() {
+        return this.select.value;
+    }
+
+    setValue(value) {
+        if (this.values.indexOf(value) < 0) throw new Error(); // TODO
+        this.select.value = value;
         this.notify();
     }
 
-    getValue() {
-        return this.select.value;
+    next() {
+        let idx = this.values.indexOf(this.select.value);
+        this.setValue(this.values[(idx + 1) % this.values.length]);
+    }
+
+    prev() {
+        let idx = this.values.indexOf(this.select.value);
+        this.setValue(this.values[(idx - 1) % this.values.length]);
     }
 
 }

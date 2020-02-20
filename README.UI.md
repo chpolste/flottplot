@@ -147,10 +147,11 @@ If `init` is not given, the counter starts with `start` or `0` if `start` is `nu
 
 ## selector
 
-    selector(name, options)
+    selector(name, options, [init])
 
 A dropdown menu with a fixed selection of options.
 Options can be given as a list or dictionary.
+The option selected initially can be specified with `init` (the substitution value must be given, not the display value).
 
 
 ## separator
