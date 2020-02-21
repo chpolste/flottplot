@@ -104,7 +104,15 @@ The date and variable selection updates both plots synchronously.
 
 ## Updating
 
-To integrate upstream changes into an existing flottplot setup, commit all local changes to the `index.html` and `index.css` files and merge the upstream changes into the local version.
+If you have previously cloned this repository, use these commands to update:
+
+    $ git add -u
+    $ git stash
+    $ git pull
+    $ git stash pop
+
+Alternatively commit all local changes to the `index.html` and `index.css` files and merge any changes into the local version by pulling.
+If you have modified the `index.css`, it is possible for [merge conflicts](https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts) to occur which have to be resolved.
 
 
 ## License
