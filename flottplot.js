@@ -44,12 +44,12 @@ let $ = {
 
 
 function _isValidName(name) {
-    return /^[A-z][A-z\-_]*$/.test(name);
+    return /^[A-z][A-z\-_0-9]*$/.test(name);
 }
 
 function _setName(obj, name) {
     if (!_isValidName(name)) throw new Error(
-        "Invalid name '" + name + "' for " + obj.constructor.name + ". Names must begin with A-z and only contain A-z, - and _."
+        "Invalid name '" + name + "' for " + obj.constructor.name + ". Names must begin with A-z and only contain A-z, 0-9, - and _."
     );
     obj.name = name;
 }
