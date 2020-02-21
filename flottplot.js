@@ -1,6 +1,15 @@
 "use strict";
 
 
+// Global error handler
+window.onerror = function (msg) {
+    document.body.innerHTML = msg;
+    document.body.style.border = "5px solid red";
+    document.body.style.padding = "10px";
+    document.body.style.margin = "10px";
+}
+
+
 let $ = {
 
     nodeify: function (item) {
@@ -34,6 +43,17 @@ let $ = {
 
 
 /* General helper functions */
+
+function _isValidName(name) {
+    return /^[A-z][A-z\-_]*$/.test(name);
+}
+
+function _setName(obj, name) {
+    if (!_isValidName(name)) throw new Error(
+        "Invalid name '" + name + "' for " + obj.constructor.name + ". Names must begin with A-z and only contain A-z, - and _."
+    );
+    obj.name = name;
+}
 
 const _CHARS = "qwertzuiopasdfghjklyxcvbnmQWERTZUIOPASDFGHJKLYXCVBNM";
 // Generate a sequence of randomly chosen characters of specified length
@@ -315,7 +335,7 @@ function selector(name, options, init) {
 class Selector {
 
     constructor(name, options, init) {
-        this.name = name;
+        _setName(this, name);
         this.values = [];
         let optnodes = [];
         for (let [key, value] of _optionsMap(options)) {
@@ -361,36 +381,54 @@ function rangeCounter(name, start, end, step, init) {
 class Range {
 
     constructor(name, start, end, step, init) {
-        this.name = name;
-        // TODO default values
+        _setName(this, name);
+        // Assert that given values are numeric
+        if (start != null && !Number.isInteger(start)) this._throw("invalid value for start: " + start);
+        if (end   != null && !Number.isInteger(end  )) this._throw("invalid value for end: " + end);
+        if (step  != null && !Number.isInteger(step )) this._throw("invalid value for step: " + step);
+        if (init  != null && !Number.isInteger(init )) this._throw("invalid value for init: " + init);
+        // Use + to enforce number type
         this.start = start;
-        this.end = end;
-        this.step = (step == null) ? 1 : step;
-        this.init = (init == null) ? start : init;
+        this.end   = end;
+        this.step  = (step == null) ? 1 : step;
+        this.init  = init;
+        // If init is not given, use start or end.
+        if (init == null && end   != null) this.init = end;
+        if (init == null && start != null) this.init = start;
+        if (!this._isValid(this.init)) this._throw(
+            "unable to initialize range. Make sure at least one of start, end, init is given, "
+            + "start <= init <= end valid and init is a reachable value in the range."
+        );
+        // Internal value (required to keep state even if user enters invalid
+        // value in to text field)
         this.value = this.init;
         this.node = $.create("div", { "class": "range" });
     }
 
+    _throw(txt) {
+        throw new Error("In range '" + this.name + "': " + txt);
+    }
+
+    _isValid(n) {
+        return Number.isInteger(n)
+            && (this.start == null || n >= this.start)
+            && (this.end   == null || n <= this.end)
+            && ((n - this.init) % this.step === 0);
+    }
+
     getValue(format) {
+        // Default formatting is just the JavaScript formatting
         if (format == null) return this.value.toString();
-        let match;
-        // Pad 0s at the start
-        match = format.match(/^0>([0-9]+)$/);
+        // Zero-padded (left) format
+        let match = format.match(/^0>([0-9]+)$/);
         if (match != null) {
-            // TODO this does not work for negative numbers
-            return this.value.toString().padStart(parseInt(match[1]), "0");
+            return (this.value < 0 ? "-" : "") + Math.abs(this.value).toString().padStart(+match[1], "0");
         }
-        throw new Error(); // TODO
+        this._throw("requested number format '" + format + "' not possible");
     }
 
     setValue(value) {
-        if (typeof value === "string") {
-            // TODO verify
-            value = parseInt(value);
-        }
-        if (this.start != null && value < this.start) throw new Error(); // TODO
-        if (this.end != null && this.end < value) throw new Error(); // TODO
-        if ((value - this.init) % this.step !== 0) throw new Error(); // TODO
+        if (!this._isValid(value)) this._throw();
         this.value = value;
         this.notify();
     }
@@ -422,7 +460,7 @@ class RangeCounter extends Range {
     }
 
     setValue(value) {
-        super.setValue(value);
+        super.setValue(+value); // force conversion to number with unary +
         this.text.value = this.getValue();
         this.text.style.color = "";
     }
@@ -448,6 +486,7 @@ function checkboxes(name, options) {
 class Checkboxes {
 
     constructor(name, options) {
+        _setName(this, name);
         this.boxes = new Map();
         let nodes = [];
         for (let [key, value] of _optionsMap(options)) {
@@ -457,17 +496,15 @@ class Checkboxes {
             nodes.push($.create("label", {}, [ box, key ]));
             this.boxes.set(value, box);
         }
-        this.name = name;
         this.node = $.create("div", { "class": "checkboxes" }, nodes);
     }
 
     getValue(which) {
-        if (which == null) {
-            throw new Error("Not implemented") // TODO
-        } else {
-            let box = this.boxes.get(which);
-            return box.checked ? which : null;
-        }
+        if (which == null) throw new Error(
+            "In checkboxes '" + this.name + "': retrieval of value without arg filter not implemented"
+        );
+        let box = this.boxes.get(which);
+        return box.checked ? which : null;
     }
 
 }
@@ -482,7 +519,7 @@ function calendar(name, init, hourstep) {
 class Calendar {
 
     constructor(name, init, hourstep) {
-        this.name = name
+        _setName(this, name);
         // By default step through all hours
         this.hourstep = (hourstep == null) ? 1 : hourstep;
         // If no initial date is given, use most recent start of day
