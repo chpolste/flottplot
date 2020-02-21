@@ -42,7 +42,6 @@ let $ = {
 };
 
 
-/* General helper functions */
 
 function _isValidName(name) {
     return /^[A-z][A-z\-_]*$/.test(name);
@@ -105,8 +104,6 @@ function _optionsMap(options) {
 }
 
 
-
-/* Main element: FlottPlot */
 
 function flottplot(...elements) {
     return new FlottPlot(...elements);
@@ -206,7 +203,6 @@ class FlottPlot {
 }
 
 
-/* A plot */
 
 function plot(pattern) {
     return new Plot(pattern);
@@ -260,23 +256,22 @@ class Plot {
 }
 
 
-/* Styling and organization of elements */
 
 function separator() {
-    return { elements: [], node: $.create("hr") };
+    return { node: $.create("hr") };
 }
 
 function heading(text) {
-    return { elements: [], node: $.create("h1", {}, [text]) };
+    return { node: $.create("h1", {}, [text]) };
 }
 
 function paragraph(text) {
-    return { elements: [], node: $.create("p", {}, [text]) };
+    return { node: $.create("p", {}, [text]) };
 }
 
 function text(text, cls) {
     let attrs = (cls == null) ? {} : { "class": cls };
-    return { elements: [], node: $.create("span", attrs, [text]) };
+    return { node: $.create("span", attrs, [text]) };
 }
 
 // A generic element container that can be styled as a CSS class (<div>)
@@ -287,25 +282,21 @@ function container(cls, ...items) {
         node: $.create("div", { "class": cls }, nodes)
     };
 }
-// Predefined containers
 let columns = (...cols) => container("columns", ...cols);
 let column  = (...cols) => container("column",  ...cols);
 
-// Vertical spacing
 function vspace(height) {
     let node = $.create("div", { "class": "vspace" });
     if (height != null) node.style.height = height;
-    return { elements: [], node: node };
+    return { node: node };
 }
 
-// Horizontal spacing
 function hspace(width) {
     let node = $.create("div", { "class": "hspace" });
     if (width != null) node.style.width = width;
-    return { elements: [], node: node };
+    return { node: node };
 }
 
-// An expandable container with a caption
 function expandableCollapsable(title, display, items) {
     let bar = $.create("div", { "class": "title" }, ["⇅ ", title]);
     let [nodes, elements] = _expandItems(items);
@@ -324,8 +315,6 @@ let expandable  = (title, ...items) => expandableCollapsable(title, "none", item
 let collapsable = (title, ...items) => expandableCollapsable(title, "",     items);
 
 
-
-/* Dropdown menus */
 
 function selector(name, options, init) {
     return new Selector(name, options, init);
@@ -371,12 +360,10 @@ class Selector {
 }
 
 
-/* Number Ranges */
 
 function rangeCounter(name, start, end, step, init) {
     return new RangeCounter(name, start, end, step, init);
 }
-
 
 class Range {
 
@@ -446,7 +433,6 @@ class Range {
 
 }
 
-
 class RangeCounter extends Range {
 
     constructor(name, start, end, step, init) {
@@ -476,12 +462,9 @@ class RangeCounter extends Range {
 }
 
 
-/* Checkboxes: conditional displaying of plots */
-
 function checkboxes(name, options) {
     return new Checkboxes(name, options);
 }
-
 
 class Checkboxes {
 
@@ -510,7 +493,6 @@ class Checkboxes {
 }
 
 
-/* Calendar with hourly resolution */
 
 function calendar(name, init, hourstep) {
     return new Calendar(name, init, hourstep);
