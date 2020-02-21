@@ -114,10 +114,24 @@ class FlottPlot {
     constructor(...elements) {
         // Add elements to the DOM
         $.appendChildren(document.body, elements.map(_ => _.node));
+        // Global keybindings
+        this.bindings = new Map();
+        document.addEventListener("keydown", (e) => {
+            let callback = this.bindings.get(e.key);
+            if (callback != null && e.target === document.body && !e.ctrlKey && !e.altKey) {
+                callback();
+            }
+        });
         // Mapping of element names to elements
         this.elements = new Map();
         // Only consider leaf elements, others are for styling/organization
         for (let element of FlottPlot._collectElements(elements)) {
+            if (element instanceof Keybinding) {
+                this.bindings.set(element.key, () => {
+                    this.elements.get(element.element)[element.action]()
+                });
+                continue;
+            }
             // Every element has to have a name for later reference. If none was
             // given to the element assign one.
             if (element.name == null) element.name = _generateName(30);
@@ -198,6 +212,22 @@ class FlottPlot {
         return (i > 0)
              ? [name.slice(0, i), name.slice(i + 1)]
              : [name, null];
+    }
+
+}
+
+
+
+function bind(key, element, action) {
+    return new Keybinding(key, element, action);
+}
+
+class Keybinding {
+
+    constructor(key, element, action) {
+        this.key = key;
+        this.element = element;
+        this.action = action;
     }
 
 }
@@ -354,7 +384,7 @@ class Selector {
 
     prev() {
         let idx = this.values.indexOf(this.node.value);
-        this.setValue(this.values[(idx - 1) % this.values.length]);
+        this.setValue(this.values[(idx - 1 + this.values.length) % this.values.length]);
     }
 
 }

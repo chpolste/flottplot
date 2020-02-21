@@ -12,7 +12,8 @@ What does flottplot __not__ do?
 - Create new plots
 - Auto-detect files or filenames
 
-:warning: flottplot is under active development. It is in a usable state but not very polished yet.
+Be aware that flottplot is under active development.
+It is in a usable state but not very polished or feature-rich yet.
 
 
 ## Quickstart
@@ -22,10 +23,12 @@ Clone the repository:
     $ git clone https://github.com/chpolste/flottplot.git
 
 Set up the interface and filename patterns in `index.html` and optionally style the interface with `index.css`.
+The UI can be accessed by opening `index.html` with a web browser.
 
 
 ## Available UI Elements
 
+[`bind`](README.UI.md#bind),
 [`calendar`](README.UI.md#calendar),
 [`checkboxes`](README.UI.md#checkboxes),
 [`container`](README.UI.md#container),

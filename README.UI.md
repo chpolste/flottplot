@@ -5,7 +5,7 @@ Only very little knowledge of JavaScript is necessary to set up a UI.
 
 If you are familiar with Python, just write Python with these additional rules:
 
-- Use `null` instead of None.
+- Use `null` instead of `None`.
 - Do not use named arguments.
 - Indentation has no meaning.
 
@@ -17,11 +17,24 @@ More comprehensively:
 - Dictionaries (=objects) are enclosed in curly braces, the associations are separated by commas, the association operator is a colon.
   E.g. `{ "foo": "bar", "bar": "baz" }`.
 - Named arguments in calls are not allowed and the order of arguments must be followed exactly.
+  Use a `null` value to skip an argument if you want to set a subsequent one.
 - If an argument is set to `null` or not specified, a default value is used.
 - All whitespace (including linebreaks) is contracted.
   I.e., a single space is treated exactly the same as e.g. 2 linebrakes, 5 spaces and a tab are.
   Indentation has no attached semantics.
 - Trailing commas in lists, etc. are ignored.
+
+Optional arguments in functions calles are denoted in this reference by enclosing them with angular brackets.
+
+
+## bind
+
+    bind(key, element, action)
+
+Bind key to trigger the action on an element.
+A list of available key names is available [here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values).
+
+Known issue: actions will not trigger if the focus is on an element of the UI (e.g. if a dropdown menu is selected).
 
 
 ## calendar
@@ -42,6 +55,8 @@ The following substitutions are available:
 - `mm`: 2-digit month (01-12)
 - `dd`: 2-digit day (01-31)
 - `hh`: 2-digit hour (00-23)
+
+The following keybinding actions are available: `prevYear`, `nextYear`, `prevMonth`, `nextMonth`, `prevDay`, `nextDay`, `prevHour`, `nextHour`.
 
 
 ## checkboxes
@@ -152,6 +167,8 @@ If `end` is not given or `null`, there is no upper bound.
 If `step` is not given, it is `1`.
 If `init` is not given, the counter starts with `start` or `0` if `start` is `null`.
 
+The following keybinding actions are available: `prev`, `next`.
+
 
 ## selector
 
@@ -160,6 +177,8 @@ If `init` is not given, the counter starts with `start` or `0` if `start` is `nu
 A dropdown menu with a fixed selection of options.
 Options can be given as a list or dictionary.
 The option selected initially can be specified with `init` (the substitution value must be given, not the display value).
+
+The following keybinding actions are available: `prev`, `next`.
 
 
 ## separator
