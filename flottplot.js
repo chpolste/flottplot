@@ -120,6 +120,7 @@ class FlottPlot {
             let callback = this.bindings.get(e.key);
             if (callback != null && e.target === document.body && !e.ctrlKey && !e.altKey) {
                 callback();
+                e.preventDefault();
             }
         });
         // Mapping of element names to elements
