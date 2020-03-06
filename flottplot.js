@@ -245,6 +245,7 @@ class Plot {
         this.pattern = pattern;
         this.node = $.create("img", { "class": "plot" });
         // Show overlay with full image on click
+        this._fullViewNode = null;
         this.node.addEventListener("click", () => this.fullView());
         // Determine dependencies by scanning for the "{...}" substitution patterns
         // in the given filenames
@@ -272,15 +273,29 @@ class Plot {
             src = _replaceAll(src, "{" + dep + "}", subst);
         }
         this.node.style.display = "";
-        this.node.setAttribute("src", src);
-        this.node.setAttribute("alt", src);
+        this.node.src = src;
+        this.node.alt = src;
+        // Also update the associated full view plot if it exists
+        if (this._fullViewNode != null) {
+            this._fullViewNode.src = src;
+            this._fullViewNode.alt = src;
+        }
     }
 
     fullView() {
-        let fullView = $.create("div", { "class": "plot-fullview" }, [
-            $.create("img", { "src": this.node.src, "alt": this.node.alt })
-        ]);
-        fullView.addEventListener("click", () => document.body.removeChild(fullView));
+        this._fullViewNode = $.create("img", { "src": this.node.src, "alt": this.node.alt });
+        let fullView = $.create("div", { "class": "plot-fullview" }, [ this._fullViewNode ]);
+        // Close the full view by pressing the Esc-key or clicking anywhere
+        let closeEsc = (e) => {
+            if (e.key == "Escape") close();
+        };
+        let close = () => {
+            document.removeEventListener("keydown", closeEsc);
+            document.body.removeChild(fullView)
+            this._fullViewNode = null;
+        };
+        fullView.addEventListener("click", close);
+        document.addEventListener("keydown", closeEsc);
         document.body.appendChild(fullView);
     }
 
