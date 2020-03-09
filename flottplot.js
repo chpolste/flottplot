@@ -103,6 +103,23 @@ function _optionsMap(options) {
     return opts;
 }
 
+function _fullViewOverlay(content) {
+    let fullView = $.create("div", { "class": "fullview" }, [
+        $.create("div", {}, [ content ])
+    ]);
+    // Close the full view by pressing the Esc-key or clicking anywhere
+    let closeEsc = (e) => {
+        if (e.key == "Escape") close();
+    };
+    let close = () => {
+        document.removeEventListener("keydown", closeEsc);
+        document.body.removeChild(fullView)
+    };
+    fullView.addEventListener("click", close);
+    document.addEventListener("keydown", closeEsc);
+    document.body.appendChild(fullView);
+}
+
 
 
 function flottplot(...elements) {
@@ -119,18 +136,24 @@ class FlottPlot {
         document.addEventListener("keydown", (e) => {
             let callback = this.bindings.get(e.key);
             if (callback != null && e.target === document.body && !e.ctrlKey && !e.altKey) {
-                callback();
+                // Fetch element from table for user-defined keybindings,
+                // global keybindings may provide elements directly
+                let element = (typeof callback.element === "string")
+                            ? this.elements.get(callback.element)
+                            : callback.element;
+                element[callback.action]();
                 e.preventDefault();
             }
         });
+        // Show Keybindings when ? is pressed
+        this.bindings.set("?", new Keybinding("?", this, "showKeybindings"));
         // Mapping of element names to elements
         this.elements = new Map();
         // Only consider leaf elements, others are for styling/organization
         for (let element of FlottPlot._collectElements(elements)) {
+            // Attach callbacks for keybindings
             if (element instanceof Keybinding) {
-                this.bindings.set(element.key, () => {
-                    this.elements.get(element.element)[element.action]()
-                });
+                this.bindings.set(element.key, element);
                 continue;
             }
             // Every element has to have a name for later reference. If none was
@@ -182,6 +205,20 @@ class FlottPlot {
                 subscriber.update(update);
             }
         };
+    }
+
+    showKeybindings() {
+        let trs = [];
+        for (let [key, binding] of this.bindings) {
+            trs.push($.create("tr", {}, [
+                $.create("th", {}, [ key ]),
+                $.create("td", {}, [
+                    (typeof binding.element === "string" ? binding.element + " → " : ""),
+                    binding.action
+                ])
+            ]));
+        }
+        _fullViewOverlay($.create("table", { "class": "keys" }, trs));
     }
 
     // Walk the subscriber tree and call func on every node
@@ -245,8 +282,8 @@ class Plot {
         this.pattern = pattern;
         this.node = $.create("img", { "class": "plot" });
         // Show overlay with full image on click
-        this._fullViewNode = null;
-        this.node.addEventListener("click", () => this.fullView());
+        this._fullViewNode = $.create("img");
+        this.node.addEventListener("click", () => _fullViewOverlay(this._fullViewNode));
         // Determine dependencies by scanning for the "{...}" substitution patterns
         // in the given filenames
         this.deps = [];
@@ -254,11 +291,9 @@ class Plot {
             this.deps.push(match[0].slice(1, -1));
         }
         // Static images must be initialized here
-        if (this.deps.length === 0) {
-            this.node.setAttribute("src", pattern);
-            this.node.setAttribute("alt", pattern);
-        }
+        if (this.deps.length === 0) this.setSource(pattern);
     }
+
 
     update(update) {
         let src = this.pattern;
@@ -273,30 +308,14 @@ class Plot {
             src = _replaceAll(src, "{" + dep + "}", subst);
         }
         this.node.style.display = "";
-        this.node.src = src;
-        this.node.alt = src;
-        // Also update the associated full view plot if it exists
-        if (this._fullViewNode != null) {
-            this._fullViewNode.src = src;
-            this._fullViewNode.alt = src;
-        }
+        this.setSource(src);
     }
 
-    fullView() {
-        this._fullViewNode = $.create("img", { "src": this.node.src, "alt": this.node.alt });
-        let fullView = $.create("div", { "class": "plot-fullview" }, [ this._fullViewNode ]);
-        // Close the full view by pressing the Esc-key or clicking anywhere
-        let closeEsc = (e) => {
-            if (e.key == "Escape") close();
-        };
-        let close = () => {
-            document.removeEventListener("keydown", closeEsc);
-            document.body.removeChild(fullView)
-            this._fullViewNode = null;
-        };
-        fullView.addEventListener("click", close);
-        document.addEventListener("keydown", closeEsc);
-        document.body.appendChild(fullView);
+    setSource(src) {
+        this.node.src = src;
+        this.node.alt = src;
+        this._fullViewNode.src = src;
+        this._fullViewNode.alt = src;
     }
 
 }
