@@ -64,9 +64,26 @@ function _generateName(nChars) {
     return chars.join("");
 }
 
-// Replace all occurences of needle in haystack with target
-function _replaceAll(haystack, needle, target) {
-    return haystack.split(needle).join(target);
+// Apply the substitutions in the table to the source string
+function _replaceAll(source, substitutions) {
+    let out = [];
+    let i = 0;
+    while (i < source.length) {
+        let match = false;
+        for (let pattern in substitutions) {
+            if (source.slice(i, i + pattern.length) === pattern) {
+                out.push(substitutions[pattern]);
+                i += pattern.length;
+                match = true;
+                break;
+            }
+        }
+        if (!match) {
+            out.push(source.charAt(i));
+            i += 1;
+        }
+    }
+    return out.join("");
 }
 
 // Flatten the nested item collections ( one level deep is sufficient as
@@ -296,7 +313,7 @@ class Plot {
 
 
     update(update) {
-        let src = this.pattern;
+        let substitutions = {};
         for (let [dep, subst] of update) {
             // Hide the plot if any substitution value was null (this
             // allows checkboxes to toggle the visibility of plots)
@@ -304,11 +321,10 @@ class Plot {
                 this.node.style.display = "none";
                 return;
             }
-            // Replace the substitution pattern with the proper value
-            src = _replaceAll(src, "{" + dep + "}", subst);
+            substitutions["{" + dep + "}"] = subst;
         }
         this.node.style.display = "";
-        this.setSource(src);
+        this.setSource(_replaceAll(this.pattern, substitutions));
     }
 
     setSource(src) {
@@ -611,15 +627,24 @@ class Calendar {
         return new Date(Date.UTC(y, m, d, h))
     }
 
-    getValue(fmt) {
-        if (fmt == null) {
-            fmt = "yyyy-mm-dd hhZ";
+    getValue(fmt, offset) {
+        if (fmt == null) fmt = "yyyy-mm-dd hhZ";
+        // ...
+        let year  = this.date.getUTCFullYear();
+        let month = this.date.getUTCMonth() + 1;
+        let day   = this.date.getUTCDate();
+        let hour  = this.date.getUTCHours();
+        // ...
+        if (offset != null) {
+            // TODO
         }
-        fmt = _replaceAll(fmt, "yyyy", this.date.getUTCFullYear().toString());
-        fmt = _replaceAll(fmt, "mm", (this.date.getUTCMonth() + 1).toString().padStart(2, "0"));
-        fmt = _replaceAll(fmt, "dd", this.date.getUTCDate().toString().padStart(2, "0"));
-        fmt = _replaceAll(fmt, "hh", this.date.getUTCHours().toString().padStart(2, "0"));
-        return fmt;
+        // ...
+        return _replaceAll(fmt, {
+            "yyyy": year.toString(),
+            "mm": month.toString().padStart(2, "0"),
+            "dd": day.toString().padStart(2, "0"),
+            "hh": hour.toString().padStart(2, "0")
+        });
     }
 
     setValue(value) {
