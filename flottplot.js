@@ -48,8 +48,12 @@ function _isValidName(name) {
 }
 
 function _setName(obj, name) {
+    if (name == null) throw new Error(
+        "Undefined name for " + obj.constructor.name + "."
+    );
     if (!_isValidName(name)) throw new Error(
-        "Invalid name '" + name + "' for " + obj.constructor.name + ". Names must begin with A-z and only contain A-z, 0-9, - and _."
+        "Invalid name '" + name + "' for " + obj.constructor.name
+        + ". Names must begin with A-z and only contain A-z, 0-9, - and _."
     );
     obj.name = name;
 }
