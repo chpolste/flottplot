@@ -538,19 +538,20 @@ class RangeCounter extends Range {
 }
 
 
-function checkboxes(name, options) {
-    return new Checkboxes(name, options);
+function checkboxes(name, options, notChecked) {
+    return new Checkboxes(name, options, notChecked);
 }
 
 class Checkboxes {
 
-    constructor(name, options) {
+    constructor(name, options, notChecked) {
         _setName(this, name);
+        notChecked = new Set(notChecked);
         this.boxes = new Map();
         let nodes = [];
         for (let [key, value] of _optionsMap(options)) {
             let box = $.create("input", { "type": "checkbox" });
-            box.checked = true;
+            box.checked = !notChecked.has(value);
             box.addEventListener("change", () => this.notify());
             nodes.push($.create("label", {}, [ box, key ]));
             this.boxes.set(value, box);

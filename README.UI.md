@@ -68,10 +68,12 @@ The following keybinding actions are available: `prevYear`, `nextYear`, `prevMon
 
 ## checkboxes
 
-    checkboxes(name, options)
+    checkboxes(name, options, [notChecked])
 
-Display a checkbox for each option in options (given by a dictionary `{ "display name": "substitution-name", ... }`).
-A plot with a substitution pattern containing `{name:arg}` will only be shown if the checkbox corresponding to `arg` is checked (`arg` must refer to the substitution name).
+Display a checkbox for each option in options (given as a dictionary `{ "display name": "substitution value", ... }` or a list `["box1", "box2", ...]`).
+A list of substitution values can be given as the `notChecked` argument, these checkboxes will not be activated when the flottplot instance is started.
+
+A plot with the substitution pattern containing `{name:arg}` will only be shown if the checkbox corresponding to `arg` is checked (`arg` must refer to the substitution value).
 
 
 ## collapsable
@@ -181,7 +183,7 @@ The following keybinding actions are available: `prev`, `next`.
     selector(name, options, [init])
 
 A dropdown menu with a fixed selection of options.
-Options can be given as a list or dictionary.
+Options can be given as a dictionary `{ "display name": "substitution value", ... }` or a list `["option1", "option2", ...]`.
 The option selected initially can be specified with `init` (the substitution value must be given, not the display value).
 
 The following keybinding actions are available: `prev`, `next`.
