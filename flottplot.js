@@ -188,7 +188,7 @@ class FlottPlot {
         // Build the subscriber tree based on the dependencies
         for (let [tgtName, tgtElement] of this.elements) {
             for (let srcName of tgtElement.deps) {
-                let srcElement = this.elements.get(FlottPlot._splitName(srcName)[0]);
+                let srcElement = this.elements.get(srcName.split(":")[0]);
                 srcElement.subscribers.add(tgtElement);
             }
         }
@@ -216,8 +216,8 @@ class FlottPlot {
                 // subscriber does not have to pull this information itself.
                 let update = new Map();
                 for (let dep of subscriber.deps) {
-                    let [name, arg] = FlottPlot._splitName(dep);
-                    update.set(dep, this.elements.get(name).getValue(arg));
+                    let [name, ...args] = dep.split(":");
+                    update.set(dep, this.elements.get(name).getValue(...args));
                 }
                 subscriber.update(update);
             }
@@ -258,15 +258,6 @@ class FlottPlot {
             }
         }
         return out;
-    }
-
-    // Split a dependency name into the element name and the (optional) arg given
-    // to getValue. The arg returned as null if not specified.
-    static _splitName(name) {
-        let i = name.indexOf(":");
-        return (i > 0)
-             ? [name.slice(0, i), name.slice(i + 1)]
-             : [name, null];
     }
 
 }
@@ -619,7 +610,9 @@ class Calendar {
 
     parse(ymd) {
         let match = ymd.match(/^([0-9][0-9][0-9][0-9])-([01]?[0-9])-([0-3]?[0-9]) ([012]?[0-9])Z$/);
-        if (match == null) throw new Error(match);
+        if (match == null) throw new Error(
+            "In calendar '" + this.name + "': unable to parse date value '" + ymd + "'"
+        );
         let y = parseInt(match[1].trimStart("0"));
         let m = parseInt(match[2].trimStart("0")) - 1; // Months range from 0 to 11
         let d = parseInt(match[3].trimStart("0"));
@@ -628,22 +621,33 @@ class Calendar {
     }
 
     getValue(fmt, offset) {
-        if (fmt == null) fmt = "yyyy-mm-dd hhZ";
-        // ...
-        let year  = this.date.getUTCFullYear();
-        let month = this.date.getUTCMonth() + 1;
-        let day   = this.date.getUTCDate();
-        let hour  = this.date.getUTCHours();
-        // ...
-        if (offset != null) {
-            // TODO
+        if (fmt == null || fmt === "") {
+            fmt = "yyyy-mm-dd hhZ";
         }
-        // ...
+        let date = new Date(this.date.getTime());
+        if (offset != null) {
+            let offsetMatch = offset.match(/^([+-])([0-9]+)([ymdh])$/);
+            if (offsetMatch == null) throw new Error(
+                "In calendar '" + this.name + "': invalid offset specification '" + offset + "'"
+            );
+            let by = parseInt(offsetMatch[2]);
+            let applyOffset = offsetMatch[1] === "+" ? (x => x + by) : (x => x - by);
+            let unit = offsetMatch[3];
+            if (unit === "y") {
+                date.setUTCFullYear(applyOffset(date.getUTCFullYear()));
+            } else if (unit === "m") {
+                date.setUTCMonth(applyOffset(date.getUTCMonth()));
+            } else if (unit === "d") {
+                date.setUTCDate(applyOffset(date.getUTCDate()));
+            } else if (unit === "h") {
+                date.setUTCHours(applyOffset(date.getUTCHours()));
+            }
+        }
         return _replaceAll(fmt, {
-            "yyyy": year.toString(),
-            "mm": month.toString().padStart(2, "0"),
-            "dd": day.toString().padStart(2, "0"),
-            "hh": hour.toString().padStart(2, "0")
+            "yyyy": date.getUTCFullYear().toString(),
+            "mm": (date.getUTCMonth() + 1).toString().padStart(2, "0"),
+            "dd": date.getUTCDate().toString().padStart(2, "0"),
+            "hh": date.getUTCHours().toString().padStart(2, "0")
         });
     }
 
@@ -651,7 +655,7 @@ class Calendar {
         // Update the internal value
         this.date = value;
         // Update the displayed value in the textbox
-        this.text.value = this.getValue();
+        this.text.value = this.getValue(null, null);
         this.text.style.color = "";
         // Update the subscribers
         this.notify();

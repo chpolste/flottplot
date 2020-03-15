@@ -33,6 +33,7 @@ Optional arguments in functions calles are denoted in this reference by enclosin
 
 Bind key to trigger the action on an element.
 A list of available key names is available [here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values).
+If not otherwise bound, pressing `?` brings up a summary of all registered keybindings in the flottplot instance.
 
 Known issue: actions will not trigger if the focus is on an element of the UI (e.g. if a dropdown menu is selected).
 
@@ -44,17 +45,23 @@ Known issue: actions will not trigger if the focus is on an element of the UI (e
 A UTC-based calendar with hourly resolution.
 Provides an input field that shows the currently selected date and a set of buttons to go a year/day/month/hour forward or backward in time.
 The user can enter a specific date into the input field in the format `yyyy-mm-dd hhZ`.
-If a date in this format is specified as the `init` argument, the calendar will start at this date, otherwise at midnight UTC of the current day.
+If a date in this format is specified as the `init` argument, the calendar starts at this date, otherwise at midnight (UTC) of the current day.
 With `hourstep`, the hourly resolution can be coarsened.
-E.g.: if data is only available at 0, 6, 12 and 18 UTC, set `hourstep=6`.
+E.g.: if data is only available at 0, 6, 12 and 18 UTC, set `hourstep` to `6`.
 
-The format of the date can be customized during substitution with the argument.
+Substitution references to a calendar element take up to two (optional) arguments.
+With the first argument, the formating of the value can be specified.
 The following substitutions are available:
 
 - `yyyy`: 4-digit year (e.g. 2020)
 - `mm`: 2-digit month (01-12)
 - `dd`: 2-digit day (01-31)
 - `hh`: 2-digit hour (00-23)
+
+The second argument can be used to apply an offset to the date of the calendar.
+This offset is specified in the form of a `+` or `-` sign which specifies the direction of the offset, a number that specifies the amount of offset and a unit which can be one of `y` (years), `m` (months), `d` (days) or `h` (hours).
+
+E.g., consider a calendar element named `name` whose current value is `2015-06-24 07Z`. A substitution pattern `{name:dd.mm.yyyy:+2d}` would result in the value `26.06.2015`.
 
 The following keybinding actions are available: `prevYear`, `nextYear`, `prevMonth`, `nextMonth`, `prevDay`, `nextDay`, `prevHour`, `nextHour`.
 
@@ -145,10 +152,9 @@ Corresponds to an HTML `<p>`.
 
     plot(pattern)
 
-Pattern: use `{name:argument}` to specify a substitution.
+Pattern: use `{name}` to specify a substitution.
 The name refers to the element whose value is substituted.
-An optional argument can be specified after the name separated by a colon.
-It is used to control the substitution.
+Optional arguments can be specified after the name separated by a colon, e.g. `{name:arg}` or `{name:arg1:arg2}` to customize the value used in the substitution.
 Which arguments are valid depends on the specific UI element referenced (see their documentation).
 
 E.g.: Consider a path specified as `../foo/{Date:yyyy-mm}/{Date:yyyy-mm-dd}-{Var}.png`. If `Date` refers to a calendar element set to `01-01-2020 06Z` and `Var` is a Dropdown with current value `temperature`, the path resolves to `../foo/2020-01/2020-01-01-temperature.png` after substitution.
