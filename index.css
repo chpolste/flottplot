@@ -88,9 +88,24 @@ hr {
 }
 
 /* Calendars */
-.calendar {
+.calendar, .forecast {
     display: inline-block;
     padding: 5px 0;
+}
+.forecast span {
+    display: inline-block;
+    text-align: center;
+    padding: 2px;
+    color: #666666;
+}
+.forecast span.mode {
+    color: #000000;
+}
+.forecast span.lead {
+    width: 5em;
+}
+.forecast span.valid {
+    width: 10em;
 }
 
 /* Form elements */

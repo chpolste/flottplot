@@ -13,7 +13,8 @@ What does flottplot __not__ do?
 - Auto-detect files or filenames
 
 Be aware that flottplot is under active development.
-It is in a usable state but not very polished or feature-rich yet.
+It is in a usable state but not particularly polished or feature-rich yet.
+The type of plots targeted in development are mainly ones of meteorological reanalysis and forecast data which is reflected in the selection of available UI elements.
 
 
 ## Quickstart
@@ -37,6 +38,7 @@ The UI can be accessed by opening `index.html` with a web browser.
 [`columns`](README.UI.md#columns),
 [`expandable`](README.UI.md#expandable),
 [`flottplot`](README.UI.md#flottplot),
+[`forecast`](README.UI.md#forecast),
 [`heading`](README.UI.md#heading),
 [`hspace`](README.UI.md#hspace),
 [`paragraph`](README.UI.md#paragraph),
@@ -57,7 +59,7 @@ flottplot(
     heading("An Example UI"),
     selector("Var", { "Temperature": "temp", "Pressure": "pres" }),
     hspace(),
-    calendar("Date", "2020-01-01 00Z", 6),
+    calendar("Date", "2020-01-01 00Z", 12),
     columns(
         column(
             plot("../experiment-A/{Date:yyyy}/{Var}/{Date:yyyy-mm-ddThh}-{Var}.png")
@@ -80,16 +82,14 @@ The above defines a dropdown menu and a calendar above two columns with a plot e
        +- 2019
           +- temp
              +- 2019-01-01T00-temp.png
-             +- 2019-01-01T06-temp.png
              +- 2019-01-01T12-temp.png
-             +- 2019-01-01T18-temp.png
              +- 2019-01-02T00-temp.png
+             +- ...
           +- pres
              +- 2019-01-01T00-pres.png
-             +- 2019-01-01T06-pres.png
              +- 2019-01-01T12-pres.png
-             +- 2019-01-01T18-pres.png
              +- 2019-01-02T00-pres.png
+             +- ...
        +- 2020
           +- ...
     +- experiment-B

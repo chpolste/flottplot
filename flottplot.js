@@ -68,6 +68,13 @@ function _generateName(nChars) {
     return chars.join("");
 }
 
+function _throwWithContext(context, errmsg) {
+    if (context != null) {
+        errmsg = "In " + context.constructor.name + " '" + context.name + "': " + errmsg;
+    }
+    throw new Error(errmsg);
+}
+
 // Apply the substitutions in the table to the source string
 function _replaceAll(source, substitutions) {
     let out = [];
@@ -446,6 +453,7 @@ class Range {
     constructor(name, start, end, step, init) {
         _setName(this, name);
         // Assert that given values are numeric
+        this._throw = errmsg => _throwWithContext(this, errmsg);
         if (start != null && !Number.isInteger(start)) this._throw("invalid value for start: " + start);
         if (end   != null && !Number.isInteger(end  )) this._throw("invalid value for end: " + end);
         if (step  != null && !Number.isInteger(step )) this._throw("invalid value for step: " + step);
@@ -468,10 +476,6 @@ class Range {
         this.node = $.create("div", { "class": "range" });
     }
 
-    _throw(txt) {
-        throw new Error("In range '" + this.name + "': " + txt);
-    }
-
     _isValid(n) {
         return Number.isInteger(n)
             && (this.start == null || n >= this.start)
@@ -480,14 +484,7 @@ class Range {
     }
 
     getValue(format) {
-        // Default formatting is just the JavaScript formatting
-        if (format == null) return this.value.toString();
-        // Zero-padded (left) format
-        let match = format.match(/^0>([0-9]+)$/);
-        if (match != null) {
-            return (this.value < 0 ? "-" : "") + Math.abs(this.value).toString().padStart(+match[1], "0");
-        }
-        this._throw("requested number format '" + format + "' not possible");
+        return Range.format(this.value, format, this);
     }
 
     setValue(value) {
@@ -505,6 +502,20 @@ class Range {
         try {
             this.setValue(this.value - this.step);
         } catch {}
+    }
+
+    static format(value, format, errobj) {
+        // Default formatting is just the JavaScript formatting
+        if (format == null) return value.toString();
+        // Zero-padded (left) format
+        let match = format.match(/^(\+)?(0>[0-9]+)?$/);
+        console.log(match);
+        if (match == null) _throwWithContext(
+            errobj, "requested number format '" + format + "' not possible"
+        );
+        let sign = (value < 0 || match[1] === "+") ? (value < 0 ? "-" : "+") : "";
+        let width = (match[2] != null) ? +match[2].slice(2) : 0;
+        return sign + Math.abs(value).toString().padStart(width, "0");
     }
 
 }
@@ -585,7 +596,7 @@ class Calendar {
         if (init == null) {
             init = (new Date()).toISOString().slice(0, 10) + " 00Z";
         }
-        this.date = this.parse(init); // TODO error handling
+        this.date = Calendar.parse(init, this);
         // Buttons for navigating year, month, day and hours
         let yyPrev = $.button("-Y", () => this.prevYear());
         let yyNext = $.button("+Y", () => this.nextYear());
@@ -599,7 +610,7 @@ class Calendar {
         this.text = $.create("input", { "type": "text", "value": init });
         this.text.addEventListener("change", () => {
             try {
-                this.setValue(this.parse(this.text.value));
+                this.setValue(Calendar.parse(this.text.value, this));
             } catch {
                 // If the value entered by the user does not match the required
                 // format, color the text red and don't update further
@@ -613,47 +624,9 @@ class Calendar {
         ]);
     }
 
-    parse(ymd) {
-        let match = ymd.match(/^([0-9][0-9][0-9][0-9])-([01]?[0-9])-([0-3]?[0-9]) ([012]?[0-9])Z$/);
-        if (match == null) throw new Error(
-            "In calendar '" + this.name + "': unable to parse date value '" + ymd + "'"
-        );
-        let y = parseInt(match[1].trimStart("0"));
-        let m = parseInt(match[2].trimStart("0")) - 1; // Months range from 0 to 11
-        let d = parseInt(match[3].trimStart("0"));
-        let h = parseInt(match[4].trimStart("0"));
-        return new Date(Date.UTC(y, m, d, h))
-    }
-
-    getValue(fmt, offset) {
-        if (fmt == null || fmt === "") {
-            fmt = "yyyy-mm-dd hhZ";
-        }
+    getValue(format, offset) {
         let date = new Date(this.date.getTime());
-        if (offset != null) {
-            let offsetMatch = offset.match(/^([+-])([0-9]+)([ymdh])$/);
-            if (offsetMatch == null) throw new Error(
-                "In calendar '" + this.name + "': invalid offset specification '" + offset + "'"
-            );
-            let by = parseInt(offsetMatch[2]);
-            let applyOffset = offsetMatch[1] === "+" ? (x => x + by) : (x => x - by);
-            let unit = offsetMatch[3];
-            if (unit === "y") {
-                date.setUTCFullYear(applyOffset(date.getUTCFullYear()));
-            } else if (unit === "m") {
-                date.setUTCMonth(applyOffset(date.getUTCMonth()));
-            } else if (unit === "d") {
-                date.setUTCDate(applyOffset(date.getUTCDate()));
-            } else if (unit === "h") {
-                date.setUTCHours(applyOffset(date.getUTCHours()));
-            }
-        }
-        return _replaceAll(fmt, {
-            "yyyy": date.getUTCFullYear().toString(),
-            "mm": (date.getUTCMonth() + 1).toString().padStart(2, "0"),
-            "dd": date.getUTCDate().toString().padStart(2, "0"),
-            "hh": date.getUTCHours().toString().padStart(2, "0")
-        });
+        return Calendar.format(date, format, offset, this);
     }
 
     setValue(value) {
@@ -704,6 +677,138 @@ class Calendar {
     nextHour() {
         this.date.setUTCHours(this.date.getUTCHours() + this.hourstep);
         this.setValue(this.date);
+    }
+
+    static parse(value, errobj) {
+        let match = value.match(/^([0-9][0-9][0-9][0-9])-([01]?[0-9])-([0-3]?[0-9]) ([012]?[0-9])Z$/);
+        if (match == null) _throwWithContext(
+            errobj, "Unable to parse date value '" + value + "'"
+        );
+        let y = parseInt(match[1]);
+        let m = parseInt(match[2]) - 1; // Months range from 0 to 11
+        let d = parseInt(match[3]);
+        let h = parseInt(match[4]);
+        return new Date(Date.UTC(y, m, d, h))
+    }
+
+    static format(date, format, offset, errobj) {
+        if (format == null || format === "") {
+            format = "yyyy-mm-dd hhZ";
+        }
+        if (offset != null) {
+            let offsetMatch = offset.match(/^([+-])([0-9]+)([ymdh])$/);
+            if (offsetMatch == null) _throwWithContext(
+                errobj, "Invalid offset specification '" + offset + "'"
+            );
+            let by = parseInt(offsetMatch[2]);
+            let applyOffset = offsetMatch[1] === "+" ? (x => x + by) : (x => x - by);
+            let unit = offsetMatch[3];
+            if (unit === "y") {
+                date.setUTCFullYear(applyOffset(date.getUTCFullYear()));
+            } else if (unit === "m") {
+                date.setUTCMonth(applyOffset(date.getUTCMonth()));
+            } else if (unit === "d") {
+                date.setUTCDate(applyOffset(date.getUTCDate()));
+            } else if (unit === "h") {
+                date.setUTCHours(applyOffset(date.getUTCHours()));
+            }
+        }
+        return _replaceAll(format, {
+            "yyyy": date.getUTCFullYear().toString(),
+            "mm": (date.getUTCMonth() + 1).toString().padStart(2, "0"),
+            "dd": date.getUTCDate().toString().padStart(2, "0"),
+            "hh": date.getUTCHours().toString().padStart(2, "0")
+        });
+    }
+
+}
+
+
+function forecast(name, init, step) {
+    return new Forecast(name, init, step);
+}
+
+class Forecast {
+
+    constructor(name, init, step) {
+        _setName(this, name);
+        // ...
+        if (init == null) throw new Error(
+            // TODO
+        );
+        this.init = init;
+        this.deps = [init];
+        // ...
+        this.step = (step == null) ? 1 : step;
+        // ...
+        this.leadMode = true; // Must start in lead mode for proper initialization
+        this.lead = 0;
+        this.valid = null;
+        // ...
+        this.leadNode = $.create("span", { "class": "lead mode" });
+        this.validNode = $.create("span", { "class": "valid" });
+        // ...
+        let prev = $.button("-", () => this.prev());
+        let zero = $.button("0", () => this.zero());
+        let next = $.button("+", () => this.next());
+        let toggle = $.button("toggle mode", () => this.toggle());
+        this.node = $.create("div", { "class": "forecast" }, [
+            prev, zero, next, this.leadNode, "|", this.validNode, toggle
+        ]);
+    }
+
+    getValue(which, format) {
+        console.log(which, format);
+        if (which === "lead") {
+            return Range.format(this.lead, format, this);
+        } else if (which === "valid") {
+            return Calendar.format(this.valid, format, null, this);
+        } else throw new Error(
+            "TODO"
+        );
+    }
+
+    update(update) {
+        let date = Calendar.parse(update.get(this.init), this);
+        if (this.leadMode) {
+            date.setUTCHours(date.getUTCHours() + this.lead);
+            this.valid = date;
+        } else {
+            this.lead = Math.round((this.valid - date) / (60 * 60 * 1000));
+        }
+        this.updateDisplay();
+    }
+
+    updateDisplay() {
+        this.leadNode.innerHTML = Range.format(this.lead, "+", this)
+        this.validNode.innerHTML = Calendar.format(this.valid, null, null, this);
+        this.notify();
+    }
+
+    zero() {
+        this.valid.setUTCHours(this.valid.getUTCHours() - this.lead);
+        this.lead = 0;
+        this.updateDisplay();
+    }
+
+    prev() {
+        this.lead -= this.step;
+        this.valid.setUTCHours(this.valid.getUTCHours() - this.step);
+        this.updateDisplay();
+    }
+
+    next() {
+        this.lead += this.step;
+        this.valid.setUTCHours(this.valid.getUTCHours() + this.step);
+        this.updateDisplay();
+    }
+
+    toggle() {
+        let hasMode = this.leadMode ? this.leadNode : this.validNode;
+        let newMode = this.leadMode ? this.validNode : this.leadNode;
+        hasMode.classList.remove("mode");
+        newMode.classList.add("mode");
+        this.leadMode = !this.leadMode;
     }
 
 }

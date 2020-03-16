@@ -126,6 +126,25 @@ Use `collapsable` to obtain the same element with initially expanded content.
 This call is responsible for loading, initializing and connecting the contained elements and must always be the outermost element of a flottplot UI.
 
 
+## forecast
+
+    forecast(name, initname, [step])
+
+Navigate forecast lead times (in hours).
+`initname` must refer to an element that yields a date (e.g. a [calendar](#calendar)).
+This date is used as the initial time of the forecast.
+It is then possible to navigate the forecast in steps of `step` hours with the provided buttons.
+By default a step of 1 is used.
+The element can be toggled between two modes:
+
+- Fixed lead mode (default): when the initial time changes, the valid time is adjusted so that the lead time is unchanged.
+- Fixed valid mode: when the initial time changes, the lead time is adjusted so that the valid time is unchanged.
+
+In substitutions, both lead time and valid time are accessible: `{name:lead:format}` yields the lead time with optional formatting specified as for [rangeCounter](#rangeCounter) values, `{name:valid:format}` yields the valid time with optional formatting specified as for [calendar](#calendar) values.
+
+The following keybinding actions are available: `prev`, `next`, `zero`, `toggle`.
+
+
 ## heading
 
     heading(text)
@@ -174,6 +193,9 @@ If `start` is not given or `null`, there is no lower bound.
 If `end` is not given or `null`, there is no upper bound.
 If `step` is not given, it is `1`.
 If `init` is not given, the counter starts with `start` or `0` if `start` is `null`.
+
+In substitutions, the value can be requested with a sign and/or zero-padding.
+E.g. `{name:+0>3}` yields a number that is prefixed by a plus or minus sign and is padded to a width of 3.
 
 The following keybinding actions are available: `prev`, `next`.
 
