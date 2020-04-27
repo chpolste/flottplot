@@ -175,6 +175,11 @@ class FlottPlot {
         });
         // Show Keybindings when ? is pressed
         this.bindings.set("?", new Keybinding("?", this, "showKeybindings"));
+        // Global cursor groups: if the user hovers over any element in the
+        // group, the cursor is mirrored in the other elements at the same
+        // relative position
+        this._cursorGroups = new Map();
+        this._cursors = [];
         // Mapping of element names to elements
         this.elements = new Map();
         // Only consider leaf elements, others are for styling/organization
@@ -183,6 +188,18 @@ class FlottPlot {
             if (element instanceof Keybinding) {
                 this.bindings.set(element.key, element);
                 continue;
+            }
+            // Assign element to cursor group
+            if (element.cursorGroup != null) {
+                let group = this._cursorGroups.get(element.cursorGroup);
+                if (group == null) {
+                    group = [];
+                    this._cursorGroups.set(element.cursorGroup, group);
+                }
+                group.push(element.node)
+                element.node.addEventListener("mouseover", (e) => this.onCursorMove(e, group))
+                element.node.addEventListener("mousemove", (e) => this.onCursorMove(e, group))
+                element.node.addEventListener("mouseout",  (e) => this.onCursorMove(e, group))
             }
             // Every element has to have a name for later reference. If none was
             // given to the element assign one.
@@ -249,6 +266,35 @@ class FlottPlot {
         _fullViewOverlay($.create("table", { "class": "keys" }, trs));
     }
 
+    onCursorMove(event, group) {
+        // When the mouse leaves an element, remove the additional cursors
+        if (event.type === "mouseout") {
+            while (this._cursors.length > 0) {
+                document.body.removeChild(this._cursors.pop());
+            }
+            return;
+        }
+        // When the mouse enters an element, add additional cursors
+        if (event.type === "mouseover") {
+            // Create one cursor less than elements in the group
+            for (let i = 0; i < group.length - 1; ++i) {
+                let cursor = $.create("div", { "class": "cursor" })
+                document.body.appendChild(cursor)
+                this._cursors.push(cursor);
+            }
+        }
+        // Update location of cursors
+        let xfrac = (event.pageX - event.target.x) / event.target.width;
+        let yfrac = (event.pageY - event.target.y) / event.target.height;
+        let i = 0;
+        for (let node of group) {
+            if (node === event.target) continue;
+            this._cursors[i].style.left = (node.x + xfrac * node.width) + "px";
+            this._cursors[i].style.top = (node.y + yfrac * node.height) + "px";
+            ++i;
+        }
+    }
+
     // Walk the subscriber tree and call func on every node
     static _walkSubscribers(element, func) {
         if (element.subscribers == null) return;
@@ -291,14 +337,15 @@ class Keybinding {
 
 
 
-function plot(pattern) {
-    return new Plot(pattern);
+function plot(pattern, cursorGroup) {
+    return new Plot(pattern, cursorGroup);
 }
 
 class Plot {
 
-    constructor(pattern) {
+    constructor(pattern, cursorGroup) {
         this.pattern = pattern;
+        this.cursorGroup = (cursorGroup != null) ? cursorGroup.toString() : null;
         this.node = $.create("img", { "class": "plot" });
         // Show overlay with full image on click
         this._fullViewNode = $.create("img");
@@ -509,7 +556,6 @@ class Range {
         if (format == null) return value.toString();
         // Zero-padded (left) format
         let match = format.match(/^(\+)?(0>[0-9]+)?$/);
-        console.log(match);
         if (match == null) _throwWithContext(
             errobj, "requested number format '" + format + "' not possible"
         );
@@ -758,7 +804,6 @@ class Forecast {
     }
 
     getValue(which, format) {
-        console.log(which, format);
         if (which === "lead") {
             return Range.format(this.lead, format, this);
         } else if (which === "valid") {

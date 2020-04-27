@@ -34,6 +34,13 @@ div.fullview img {
     height: auto;
     width: auto;
 }
+div.cursor {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-top: 2px solid #000000;
+    border-left: 2px solid #000000;
+}
 
 /* Keybindings table */
 div.fullview table.keys {

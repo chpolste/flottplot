@@ -171,14 +171,16 @@ Corresponds to an HTML `<p>`.
 
 ## plot
 
-    plot(pattern)
+    plot(pattern, [cursorGroup])
 
-Pattern: use `{name}` to specify a substitution.
+In the `pattern` string: use `{name}` to specify a substitution.
 The name refers to the element whose value is substituted.
 Optional arguments can be specified after the name separated by a colon, e.g. `{name:arg}` or `{name:arg1:arg2}` to customize the value used in the substitution.
 Which arguments are valid depends on the specific UI element referenced (see their documentation).
 
 E.g.: Consider a path specified as `../foo/{Date:yyyy-mm}/{Date:yyyy-mm-dd}-{Var}.png`. If `Date` refers to a calendar element set to `01-01-2020 06Z` and `Var` is a Dropdown with current value `temperature`, the path resolves to `../foo/2020-01/2020-01-01-temperature.png` after substitution.
+
+If the mouse moves over a plot with a `cursorGroup` specified, a cursor is displayed in all other plots that have the same `cursorGroup` at the same relative position.
 
 Clicking on a plot reveals an overlay that shows the plot at its native resolution or scaled to the maximum possible size that fits on the screen if the native size is larger than the available screen space.
 
