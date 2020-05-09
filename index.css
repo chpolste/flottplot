@@ -40,6 +40,13 @@ div.cursor {
     height: 5px;
     border-top: 2px solid #000000;
     border-left: 2px solid #000000;
+    pointer-events: none; /* otherwise cursor lines will intercept mouse movements */
+}
+div.cursor.hline {
+    height: 0px;
+}
+div.cursor.vline {
+    width: 0px;
 }
 
 /* Keybindings table */

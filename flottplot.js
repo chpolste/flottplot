@@ -190,16 +190,17 @@ class FlottPlot {
                 continue;
             }
             // Assign element to cursor group
-            if (element.cursorGroup != null) {
-                let group = this._cursorGroups.get(element.cursorGroup);
+            let cgName = element.cursorGroup;
+            if (cgName != null) {
+                let group = this._cursorGroups.get(cgName);
                 if (group == null) {
                     group = [];
-                    this._cursorGroups.set(element.cursorGroup, group);
+                    this._cursorGroups.set(cgName, group);
                 }
                 group.push(element.node)
-                element.node.addEventListener("mouseover", (e) => this.onCursorMove(e, group))
-                element.node.addEventListener("mousemove", (e) => this.onCursorMove(e, group))
-                element.node.addEventListener("mouseout",  (e) => this.onCursorMove(e, group))
+                element.node.addEventListener("mouseover", (e) => this.onCursorMove(e, cgName))
+                element.node.addEventListener("mousemove", (e) => this.onCursorMove(e, cgName))
+                element.node.addEventListener("mouseout",  (e) => this.onCursorMove(e, cgName))
             }
             // Every element has to have a name for later reference. If none was
             // given to the element assign one.
@@ -266,7 +267,7 @@ class FlottPlot {
         _fullViewOverlay($.create("table", { "class": "keys" }, trs));
     }
 
-    onCursorMove(event, group) {
+    onCursorMove(event, cgName) {
         // When the mouse leaves an element, remove the additional cursors
         if (event.type === "mouseout") {
             while (this._cursors.length > 0) {
@@ -274,12 +275,18 @@ class FlottPlot {
             }
             return;
         }
+        let group = this._cursorGroups.get(cgName);
+        let isHLine = cgName.endsWith(":hline");
+        let isVLine = cgName.endsWith(":vline");
         // When the mouse enters an element, add additional cursors
         if (event.type === "mouseover") {
-            // Create one cursor less than elements in the group
-            for (let i = 0; i < group.length - 1; ++i) {
-                let cursor = $.create("div", { "class": "cursor" })
-                document.body.appendChild(cursor)
+            // Create one cursor less than elements in the group (no need to
+            // put one where the mouse already is) unless the user wants
+            // a horizontal/vertical line
+            let cls = "cursor" + (isHLine ? " hline" : "") + (isVLine ? " vline" : "");
+            for (let i = 0; i < group.length - ((isHLine || isVLine) ? 0 : 1); ++i) {
+                let cursor = $.create("div", { "class": cls });
+                document.body.appendChild(cursor);
                 this._cursors.push(cursor);
             }
         }
@@ -288,9 +295,21 @@ class FlottPlot {
         let yfrac = (event.pageY - event.target.y) / event.target.height;
         let i = 0;
         for (let node of group) {
-            if (node === event.target) continue;
-            this._cursors[i].style.left = (node.x + xfrac * node.width) + "px";
-            this._cursors[i].style.top = (node.y + yfrac * node.height) + "px";
+            let style = this._cursors[i].style;
+            if (isHLine) {
+                style.left = node.x + "px";
+                style.width = node.width + "px";
+                style.top = (node.y + yfrac * node.height) + "px";
+            } else if (isVLine) {
+                style.left = (node.x + xfrac * node.width) + "px";
+                style.top = node.y + "px";
+                style.height = node.height + "px";
+            } else if (node === event.target) {
+                continue;
+            } else {
+                style.left = (node.x + xfrac * node.width) + "px";
+                style.top = (node.y + yfrac * node.height) + "px";
+            }
             ++i;
         }
     }
