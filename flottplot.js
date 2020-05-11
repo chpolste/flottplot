@@ -295,20 +295,19 @@ class FlottPlot {
         let yfrac = (event.pageY - event.target.y) / event.target.height;
         let i = 0;
         for (let node of group) {
-            let style = this._cursors[i].style;
             if (isHLine) {
-                style.left = node.x + "px";
-                style.width = node.width + "px";
-                style.top = (node.y + yfrac * node.height) + "px";
+                this._cursors[i].style.left = node.x + "px";
+                this._cursors[i].style.width = node.width + "px";
+                this._cursors[i].style.top = (node.y + yfrac * node.height) + "px";
             } else if (isVLine) {
-                style.left = (node.x + xfrac * node.width) + "px";
-                style.top = node.y + "px";
-                style.height = node.height + "px";
+                this._cursors[i].style.left = (node.x + xfrac * node.width) + "px";
+                this._cursors[i].style.top = node.y + "px";
+                this._cursors[i].style.height = node.height + "px";
             } else if (node === event.target) {
                 continue;
             } else {
-                style.left = (node.x + xfrac * node.width) + "px";
-                style.top = (node.y + yfrac * node.height) + "px";
+                this._cursors[i].style.left = (node.x + xfrac * node.width) + "px";
+                this._cursors[i].style.top = (node.y + yfrac * node.height) + "px";
             }
             ++i;
         }
