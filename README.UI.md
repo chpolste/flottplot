@@ -38,6 +38,16 @@ If not otherwise bound, pressing `?` brings up a summary of all registered keybi
 Known issue: actions will not trigger if the focus is on an element of the UI (e.g. if a dropdown menu is selected).
 
 
+## button
+
+    button(label, assignments)
+
+A button labeled `label`.
+The `assignments` must be a dictionary mapping element names to values.
+Clicking the button sets each element to the corresponding value.
+The values may be patterns that depend on other elements and are subject to substitutions like the `pattern` argument of [plot](#plot).
+
+
 ## calendar
 
     calendar(name, [init], [hourstep])

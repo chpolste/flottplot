@@ -30,6 +30,7 @@ The UI can be accessed by opening `index.html` with a web browser.
 ## Available UI Elements
 
 [`bind`](README.UI.md#bind),
+[`button`](README.UI.md#button),
 [`calendar`](README.UI.md#calendar),
 [`checkboxes`](README.UI.md#checkboxes),
 [`container`](README.UI.md#container),

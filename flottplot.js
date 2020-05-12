@@ -75,6 +75,10 @@ function _throwWithContext(context, errmsg) {
     throw new Error(errmsg);
 }
 
+function _extractDeps(pattern) {
+    return [...pattern.matchAll(/{.+?}/g)].map(match => match[0].slice(1, -1));
+}
+
 // Apply the substitutions in the table to the source string
 function _replaceAll(source, substitutions) {
     let out = [];
@@ -95,6 +99,18 @@ function _replaceAll(source, substitutions) {
         }
     }
     return out.join("");
+}
+
+function _substituteUpdate(pattern, update) {
+    if (update == null) return null;
+    let substitutions = {};
+    for (let [dep, subst] of update) {
+        // Hide the plot if any substitution value was null (this
+        // allows checkboxes to toggle the visibility of plots)
+        if (subst == null) return null;
+        substitutions["{" + dep + "}"] = subst;
+    }
+    return _replaceAll(pattern, substitutions);
 }
 
 // Flatten the nested item collections ( one level deep is sufficient as
@@ -213,6 +229,8 @@ class FlottPlot {
             // Attach a notification method to all objects that will call the
             // subscribers' update method when invoked
             element.notify = this.makeNotifier(element);
+            // Allow pushing values to specific elements
+            element.pushValue = (name, value) => this.elements.get(name).setValue(value);
         }
         // Build the subscriber tree based on the dependencies
         for (let [tgtName, tgtElement] of this.elements) {
@@ -370,28 +388,22 @@ class Plot {
         this.node.addEventListener("click", () => _fullViewOverlay(this._fullViewNode));
         // Determine dependencies by scanning for the "{...}" substitution patterns
         // in the given filenames
-        this.deps = [];
-        for (let match of pattern.matchAll(/{.+?}/g)) {
-            this.deps.push(match[0].slice(1, -1));
-        }
+        this.deps = _extractDeps(pattern);
         // Static images must be initialized here
         if (this.deps.length === 0) this.setSource(pattern);
     }
 
 
     update(update) {
-        let substitutions = {};
-        for (let [dep, subst] of update) {
-            // Hide the plot if any substitution value was null (this
-            // allows checkboxes to toggle the visibility of plots)
-            if (subst == null) {
-                this.node.style.display = "none";
-                return;
-            }
-            substitutions["{" + dep + "}"] = subst;
+        let value = _substituteUpdate(this.pattern, update)
+        // Hide the plot if any substitution value was null (this allows
+        // checkboxes to toggle the visibility of plots)
+        if (value == null) {
+            this.node.style.display = "none";
+        } else {
+            this.node.style.display = "";
+            this.setSource(value);
         }
-        this.node.style.display = "";
-        this.setSource(_replaceAll(this.pattern, substitutions));
     }
 
     setSource(src) {
@@ -461,6 +473,40 @@ function expandableCollapsable(title, display, items) {
 // Expanded and collapsed default state containers
 let expandable  = (title, ...items) => expandableCollapsable(title, "none", items);
 let collapsable = (title, ...items) => expandableCollapsable(title, "",     items);
+
+
+
+function button(label, assignments) {
+    return new Button(label, assignments);
+}
+
+class Button {
+
+    constructor(label, assignments) {
+        this.assignments = _optionsMap(assignments);
+        this.deps = [];
+        for (let [element, value] of this.assignments) {
+            this.deps.push(..._extractDeps(value));
+        }
+        this.substitutions = null;
+        this.node = $.create("button", {}, [label]);
+        this.node.addEventListener("click", () => this.click());
+    }
+
+    update(update) {
+        this._update = update;
+    }
+
+    click() {
+        for (let [element, pattern] of this.assignments) {
+            let value = _substituteUpdate(pattern, this._update);
+            if (value != null) this.pushValue(element, value);
+        }
+        // Take away focus so keybindings work after clicking
+        this.node.blur()
+    }
+
+}
 
 
 
@@ -674,7 +720,7 @@ class Calendar {
         this.text = $.create("input", { "type": "text", "value": init });
         this.text.addEventListener("change", () => {
             try {
-                this.setValue(Calendar.parse(this.text.value, this));
+                this.setValue(this.text.value, this);
             } catch {
                 // If the value entered by the user does not match the required
                 // format, color the text red and don't update further
@@ -695,7 +741,7 @@ class Calendar {
 
     setValue(value) {
         // Update the internal value
-        this.date = value;
+        this.date = (value instanceof Date) ? value : Calendar.parse(value, this);
         // Update the displayed value in the textbox
         this.text.value = this.getValue(null, null);
         this.text.style.color = "";
