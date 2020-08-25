@@ -29,7 +29,7 @@ img.plot {
     max-width: 100%;
 }
 div.fullview img {
-    max-width: 100vh;
+    max-width: 100vw;
     max-height: 100vh;
     height: auto;
     width: auto;
