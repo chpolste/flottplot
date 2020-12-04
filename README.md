@@ -116,6 +116,40 @@ Alternatively commit all local changes to the `index.html` and `index.css` files
 If you have modified the `index.css`, it is possible for [merge conflicts](https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts) to occur which have to be resolved.
 
 
+## Accessing flottplot via SSH
+
+If your plots are saved on a remote machine that you only have SSH access to, you can start a simple web server there and use port forwarding to view the images in your local browser.
+
+Most machines should have Python 3 installed, which brings with it the [`http.simple`](https://docs.python.org/3/library/http.server.html) server.
+By default `http.simple` serves content on port 8000.
+When connecting with SSH, specify that port 8000 on the local machine should be forwarded to port 8000 on the remote machine:
+
+    $ ssh -L localhost:8000:localhost:8000 user@remote
+
+If you are using a config file for your SSH connections, you can permanently specify the `-L` option with
+
+    LocalForward localhost:8000:localhost:8000
+
+there.
+When the connection is established, start the webserver with
+
+    $ python3 -m http.server
+
+It will tell you which port it is serving on.
+This port must match the one just specified in the SSH command.
+As long as the SSH connection is open, you can now type
+
+    http://localhost:8000
+
+into your (local) browser's address bar to access the webserver started on the remote machine.
+The server will show you the content of the directory that it was started in and if there is a file named `index.html` it will serve this file immediately (you can also access other files by navigating with the URL in the browser).
+The server only has access to files inside that directory and its subdirectories, so if you want to access something that is saved in directory `~/aaa`, you should start the server in either `~` or `~/aaa`, but not `~/bbb`.
+This not just applies to your flottplot page but also all the plots that you include in your flottplot.
+Make sure you are using relative paths to reference files and use softlinks to access remote locations you don't have a relative path to.
+
+The server can be stopped with `Ctrl-C` when you are done.
+
+
 ## License
 
 A license will be added once a first release is declared.
