@@ -1,0 +1,118 @@
+<p>
+  To use these elements, include <a href="dist/flottplot-extras-min.js" download>flottplot-extras-min.js</a> and <a href="dist/flottplot-extras.css" download>flottplot-extras.css</a> in addition to the Flottplot core:
+</p>
+<pre>
+&lt;link rel="stylesheet" type="text/css" href="path/to/flottplot-extras.css"&gt;
+&lt;script type="text/javascript" src="/path/to/flottplot-extras-min.js"&gt;&lt;/script&gt;
+</pre>
+
+<article>
+<h1 id="elements">Elements</h1>
+
+<h2 id="cursors">Cursors</h2>
+<p>
+  Mirror the cursor position in multiple elements.
+</p>
+
+<div class="def">
+<h3>Definition</h3>
+<pre>
+&lt;fp-cursors id="ID"&gt;
+  &lt;fp-cursor target="TARGET" cursor="CURSOR" class="CLASS" style="STYLE"&gt;&lt;/fp-cursor&gt;
+  [...]
+&lt;/fp-cursors&gt;
+</pre>
+<table>
+  <tr>
+    <td><code>ID</code></td>
+    <td>(optional) own ID.</td>
+  </tr>
+  <tr>
+    <td><code>TARGET</code></td>
+    <td>ID of the element included in the cursor group.</td>
+  </tr>
+  <tr>
+    <td>
+      <code>CURSOR</code></td>
+      <td>(optional) cursor type.
+      <ul>
+        <li><code>pointer</code> (default): arrow-like pointer.</li>
+        <li><code>hline</code>: horizontal line with width of target element.</li>
+        <li><code>vline</code>: vertical line with height of target element.</li>
+        <li><code>hidden</code>: no mirrored cursor is shown for the target, but the mouse position is still broadcast to the other elements in the cursor group.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td><code>CLASS</code></td>
+    <td>(optional) override for the default class name of the mirrored cursor.</td>
+  </tr>
+  <tr>
+    <td><code>STYLE</code></td>
+    <td>(optional) override for the default style of the mirrored cursor. If a custom class is specified to style the cursor, set to empty to remove the default styling which might otherwise override the style specified in the class.</td>
+  </tr>
+</table>
+</div>
+
+<p>
+  <code>&lt;fp-cursor&gt;</code> elements should be placed directly into the body of the document as they use absolute positioning to place the additional cursors.
+</p>
+
+
+<h2 id="overlay">Fullscreen Overlay</h2>
+<p>
+  Fullscreen overlay when clicking on an image (e.g. <code>&lt;fp-plot&gt;</code> or <code>&lt;fp-stack&gt;</code>).
+  In the overlay, the plot will have its native resolution or is scaled to the maximum possible size that fits the browser's viewport if the native size is larger than the viewport.
+  Click anywhere to close the overlay again.
+</p>
+
+<div class="def">
+<h3>Definition</h3>
+<pre>
+&lt;fp-overlay id="ID"&gt;&lt;/fp-overlay&gt;
+</pre>
+<table>
+  <tr>
+    <td><code>ID</code></td>
+    <td>own ID.</td>
+  </tr>
+</table>
+</div>
+
+<div class="act">
+<h3>Actions</h3>
+<table>
+  <tr>
+    <td><code>show</code></td>
+    <td>show the overlay. Only shows if an element has previously placed content into the overlay.</td>
+  </tr>
+  <tr>
+    <td><code>hide</code></td>
+    <td>hide the overlay.</td>
+  </tr>
+  <tr>
+    <td><code>toggle</code></td>
+    <td>show the overlay if currently hidden, hide if currently shown.</td>
+  </tr>
+</table>
+</div>
+
+
+<h2 id="stack">Plot Stack</h2>
+<p>
+  Display multiple <code class="cdef">&lt;fp-plot&gt;</code> or <code>&lt;img&gt;</code> elements on top of each other.
+</p>
+
+<div class="def">
+<h3>Definition</h3>
+<pre>
+&lt;fp-stack&gt;
+  &lt;fp-plot src="..."&gt;&lt;/fp-plot&gt;
+  &lt;img src="..."&gt;
+  [...]
+&lt;/fp-stack&gt;
+</pre>
+</div>
+
+</article>
+

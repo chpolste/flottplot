@@ -1,0 +1,70 @@
+<p>
+  How to use Flottplot in the best way and make the most of your pages.
+</p>
+
+<article>
+<h1 id="ssh">Flottplot via SSH</h1>
+
+<p>
+  Your plots might be saved on a remote machine that you only have SSH access to.
+  In this case instead of transferring all plots to your local machine, you can start a simple web server on the remote machine and use port forwarding to access your flottplot page in your local browser.
+  Many machines have Python 3 installed nowadays, so we can e.g. use the <code>http.simple</code> server.
+  By default, <code>http.simple</code> serves content on port 8000.
+  When connecting with SSH, specify that port 8000 on the local machine should be forwarded to port 8000 on the remote machine:
+</p>
+<pre>
+ssh -L localhost:8000:localhost:8000 user@remote
+</pre>
+<p>
+    If you are using a config file for your SSH connections, you can permanently specify the -L option with
+</p>
+<pre>
+LocalForward localhost:8000 localhost:8000
+</pre>
+<p>
+  there. When the connection is established, start the webserver with
+</p>
+<pre>
+python3 -m http.server
+</pre>
+<p>
+  on the remote machine.
+  It will tell you which port it is serving on.
+  This port must match the one just specified in the SSH command.
+  As long as the SSH connection is open, you can type
+</p>
+<pre>
+http://localhost:8000
+</pre>
+<p>
+  into your (local) browser's address bar to access the webserver started on the remote machine.
+  The server will show you the content of the directory that it was started in and if there is a file named <code>index.html</code> it will serve this file immediately (you can also access other files by navigating with the URL in the browser).
+  The server only has access to files inside that directory and its subdirectories, so if you want to access something that is saved in directory <code>~/aaa</code>, you should start the server in either <code>~</code> or <code>~/aaa</code>, but not <code>~/bbb</code>.
+  This not just applies to your flottplot page but also all the plots that you include in your flottplot.
+  Make sure you are using relative paths to reference files and employ softlinks to access remote locations you don't have a relative path to.
+</p>
+<p>
+  The server can be stopped with Ctrl-C when you are done.
+</p>
+</article>
+
+
+<!--
+<article>
+<h1 id="ipynb">Jupyter Notebook Integration</h1>
+
+<p>
+  Install the Flottplot Python package:
+</p>
+<pre>
+  $ pip install flottplot
+</pre>
+<p>
+  Images must be accessible from the root directory of the notebook server.
+  Unfortunately, the Jupyter notebook integration only works with the classic notebook interface.
+  Images are not loaded from the JupyterLab interface.
+</p>
+
+</article>
+-->
+

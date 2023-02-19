@@ -1,0 +1,191 @@
+@def-light: hsl(200, 50%, 90%);
+@def-dark:  hsl(200, 50%, 50%);
+@val-light: hsl(260, 80%, 92%);
+@val-dark:  hsl(260, 30%, 55%);
+@act-light: hsl(30, 100%, 90%);
+@act-dark:  hsl(30,  70%, 50%);
+@demo-light: hsl(90, 50%, 88%);
+@demo-dark:  hsl(90, 50%, 35%);
+
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+  color: #000;
+  font-family: sans-serif;
+}
+div.row {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1300px;
+}
+
+a {
+  color: darken(@def-dark, 20%);
+  text-decoration: underline;
+}
+a:hover {
+  color: @def-dark;
+  text-decoration: none;
+}
+
+div.sidebar {
+  flex-grow: 1;
+  width: 200px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  background-color: #EEE;
+  padding: 0 10px;
+}
+div.sidebar > ul { list-style: none; padding-left: 0; margin: 0; }
+div.sidebar > ul > li { padding: 3px 0; }
+div.sidebar > ul > li > a { font-weight: bold; }
+div.sidebar > ul > li > ul { list-style: none; padding-left: 15px; margin: 3px 0 12px 0; }
+div.sidebar > ul > li > ul > li {  }
+div.sidebar a { color: #000; display: block; text-decoration: none; }
+div.sidebar a:hover { color: @def-dark; }
+
+div.content {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: 400px;
+  padding: 10px;
+  background-color: #FFF;
+  z-index: 10;
+}
+
+div.header {
+  margin: 10px -10px 10px 0;
+  padding: 0 10px 10px 0;
+  font-size: 150%;
+  border-bottom: 2px solid #999;
+}
+#version {
+  color: #999;
+}
+#navbar {
+  margin: 0 0 10px -10px;
+  padding: 0 0 10px 10px;
+  border-color: #CCC;
+  text-align: right;
+}
+#navbar a {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+}
+#navbar a:hover {
+  color: @def-dark;
+}
+
+main { padding: 0 0 0 10px; margin: 0; }
+
+h1 {
+    font-size: 200%;
+    margin: 30px 0 10px 0;
+}
+h2 {
+    font-size: 120%;
+    margin: 40px 0 10px 0;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #DDD;
+}
+pre {
+    font-size: 1.1em;
+    overflow: scroll;
+}
+article>pre, main>pre {
+    padding: 10px;
+    border: 1px solid #999;
+    border-radius: 5px;
+}
+
+.box() {
+    position: relative;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    margin-top: 15px;
+    margin-bottom: 0;
+    h3 {
+        position: absolute;
+        right: 0;
+        margin: 5px 10px;
+        font-size: 15px;
+        color: #000;
+        opacity: 40%;
+    }
+    pre {
+        margin: 0;
+        padding: 8px 10px;
+        border-radius: 5px;
+    }
+    p, table {
+        margin: 10px;
+    }
+    td {
+        vertical-align: top;
+    }
+    table tr td:first-child {
+        text-align: right;
+        padding-right: 8px;
+    }
+}
+code { font-size: 1.2em; background-color: #EEE; padding: 0 3px; }
+
+
+.def {
+  .box();
+  border-color: @def-dark;
+  h3 {
+    color: @def-dark;
+  }
+  pre, td:first-child>code {
+    background-color: @def-light;
+  }
+}
+code.cdef { background-color: @def-light; }
+
+.val {
+  .box();
+  border-color: @val-dark;
+  h3 {
+    color: @val-dark;
+  }
+  pre, td:first-child>code {
+    background-color: @val-light;
+  }
+}
+code.cval { background-color: @val-light; }
+
+.act {
+  .box();
+  border-color: @act-dark;
+  h3 {
+    color: @act-dark;
+  }
+  pre, td:first-child>code {
+    background-color: @act-light;
+  }
+}
+code.cact { background-color: @act-light; }
+
+.demo {
+  .box();
+  border-color: @demo-dark;
+  h3 {
+    color: @demo-dark;
+  }
+  pre, td:first-child>code {
+    background-color: @demo-light;
+  }
+}
+
+em { color: darken(@val-dark, 10%); }
+input { vertical-align: middle; }
+

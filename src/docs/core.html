@@ -1,0 +1,445 @@
+<p>
+  To use these elements, include <a href="dist/flottplot-min.js" download>flottplot-min.js</a>:
+</p>
+<pre>
+&lt;script type="text/javascript" src="/path/to/flottplot-min.js"&gt;&lt;/script&gt;
+</pre>
+
+
+<article>
+<h1 id="displayelements">Display Elements</h1>
+<p>Elements that display content on the page.</p>
+
+<h2 id="plot">Plot</h2>
+<p>
+  Controllable image element.
+</p>
+
+<div class="def">
+<h3>Definition</h3>
+<pre>
+&lt;fp-plot id="ID" src="SOURCE"&gt;&lt;/fp-plot&gt;
+</pre>
+<table>
+  <tr>
+    <td><code>ID</code></td>
+    <td>(optional) own ID.</td>
+  </tr>
+  <tr>
+    <td><code>SOURCE</code></td>
+    <td>path/URL to an image file, can use <a href="values.html">value substitutions</a>.</td>
+  </tr>
+</table>
+</div>
+
+<div class="val">
+<h3>Value</h3>
+<p>Provides the current image URL as a <em>Text</em> value.</p>
+</div>
+
+</article>
+
+
+
+<article>
+<h1 id="valueelements">Value Elements</h1>
+<p>Elements that provide/generate values for use in <a href="values.html">value substitutions</a>.</p>
+
+<h2 id="range">Range</h2>
+<p>
+  Control elements that represent ranged values.
+</p>
+
+<div class="def">
+<h3>Definition</h3>
+<pre>
+&lt;fp-range id="ID" type="TYPE" step="STEP" min="MIN" max="MAX" init="INIT" wrap="WRAP" format="FORMAT"&gt;&lt;/fp-range&gt;
+</pre>
+<table>
+  <tr>
+    <td><code>ID</code></td>
+    <td>own ID.</td>
+  </tr>
+  <tr>
+    <td><code>TYPE</code></td>
+    <td>
+      (optional) type of control element used to represent the range on the page.
+      <ul>
+        <li><code>counter</code> (default): text box with forward and backwards buttons.</li>
+        <li><code>slider</code>: draggable slider (only finite ranges).</li>
+        <li><code>dropdown</code>: dropdown menu (only finite ranges).</li>
+        <li><code>radio</code>: radio buttons (only finite ranges).</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td><code>STEP</code></td>
+    <td>value of increment.</td>
+  </tr>
+  <tr>
+    <td><code>MIN</code></td>
+    <td>(optional*) lower bound of range.</td>
+  </tr>
+  <tr>
+    <td><code>MAX</code></td>
+    <td>(optional*) upper bound of range.</td>
+  </tr>
+  <tr>
+    <td><code>INIT</code></td>
+    <td>(optional*) initial value.</td>
+  </tr>
+  <tr>
+    <td><code>WRAP</code></td>
+    <td>(optional) values wrap around at bounds if set to <code>true</code>.</td>
+  </tr>
+  <tr>
+    <td><code>FORMAT</code></td>
+    <td>(optional) <a href="#values">format specification</a> used for labelling of the element (e.g. in the text box or a counter).</td>
+  </tr>
+</table>
+<p>
+  * at least one of <code class="cdef">MIN</code>, <code class="cdef">MAX</code> and <code class="cdef">INIT</code> has to be specified.
+  If no upper and/or lower bound is specified the range is non-finite and wrapping is not possible.
+</p>
+</div>
+
+<div class="val">
+<h3>Value</h3>
+<p>
+  Provides the selected value.
+</p>
+</div>
+
+<div class="act">
+<h3>Actions</h3>
+<table>
+  <tr>
+    <td><code>prev</code></td>
+    <td>select the next value.</td>
+  </tr>
+  <tr>
+    <td><code>next</code></td>
+    <td>select the previous value.</td>
+  </tr>
+  <tr>
+    <td><code>reset</code></td>
+    <td>select the initial value.</td>
+  </tr>
+</table>
+</div>
+
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+&lt;fp-range id="wrapped_range" type="counter" min="-5" max="5" step="2" init="0" wrap="true"&gt;&lt;/fp-range&gt;
+</pre><p>
+  <fp-range id="wrapped_range" type="counter" min="-5" max="5" step="2" init="0" wrap="true"></fp-range>
+</p>
+</div>
+
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+&lt;fp-range id="date_range" type="counter" min="2020-01-01" step="3h" format="%Y-%m-%d %H UTC"&gt;&lt;/fp-range&gt;
+</pre><p>
+  <fp-range id="date_range" type="counter" min="2020-01-01" step="3h" format="%Y-%m-%d %H UTC"></fp-range>
+</p>
+</div>
+
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+&lt;fp-range id="slider_range" type="slider" min="-5" max="5" step="1" init="-2"&gt;&lt;/fp-range&gt;
+</pre><p>
+  <fp-range id="slider_range" type="slider" min="-5" max="5" step="1" init="-2"></fp-range>
+</p>
+</div>
+
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+&lt;fp-range id="select_range" type="dropdown" min="-30" max="30" step="6" format="+04"&gt;&lt;/fp-range&gt;
+</pre><p>
+  <fp-range id="select_range" type="dropdown" min="-30" max="30" step="6" format="+04"></fp-range>
+</p>
+</div>
+
+
+<h2 id="select">Select &amp; Option</h2>
+<p>
+  Dropdown menu for enumerated values.
+</p>
+
+<div class="def">
+<h3>Definition</h3>
+<pre>
+&lt;fp-select id="ID" type="TYPE"&gt;
+  &lt;fp-option ATTR="VALUE" [...]&gt;LABEL&lt;/fp-option&gt;
+  [...]
+&lt;/fp-select&gt;
+</pre>
+<table>
+  <tr>
+    <td><code>ID</code></td>
+    <td>(optional) own ID.</td>
+  </tr>
+  <tr>
+    <td><code>TYPE</code></td>
+    <td>
+      (optional) type of control element used to represent the selection.
+      <ul>
+        <li><code>counter</code>: text box with forward and backwards buttons.</li>
+        <li><code>slider</code>: draggable slider.</li>
+        <li><code>dropdown</code> (default): dropdown menu.</li>
+        <li><code>radio</code>: labelled radio buttons.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td><code>ATTR="VALUE"</code></td>
+    <td>
+      (optional) additional, custom values attached via attributes.
+      Multiple can be specified.
+      It is generally recommended to specify the same attributes on all options to avoid attribute access errors during value substitution.
+    </td>
+  </tr>
+  <tr>
+    <td><code>LABEL</code></td>
+    <td>display text and default value of the option.</td>
+  </tr>
+</table>
+</div>
+
+<div class="val">
+<h3>Value</h3>
+<p>
+  Provides the label of the selected option.
+  Attached values are provided as <code class="cval">ATTR</code>-named attributes.
+</p>
+</div>
+
+<div class="act">
+<h3>Actions</h3>
+<table>
+  <tr>
+    <td><code>prev</code></td>
+    <td>select the next value.</td>
+  </tr>
+  <tr>
+    <td><code>next</code></td>
+    <td>select the previous value.</td>
+  </tr>
+  <tr>
+    <td><code>reset</code></td>
+    <td>select the initial value.</td>
+  </tr>
+</table>
+</div>
+
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+&lt;fp-select id="select"&gt;
+  &lt;fp-option letter="C"&gt;Entry No. 1&lt;/fp-option&gt;
+  &lt;fp-option letter="D"&gt;Entry No. 2&lt;/fp-option&gt;
+  &lt;fp-option letter="E"&gt;Entry No. 3&lt;/fp-option&gt;
+&lt;/fp-select&gt;
+&lt;fp-text&gt;{select_demo} with letter {select_demo.letter}&lt;/fp-text&gt;
+</pre>
+<p>
+  <fp-select id="select_demo">
+    <fp-option letter="C">Entry No. 1</fp-option>
+    <fp-option letter="D">Entry No. 2</fp-option>
+    <fp-option letter="E">Entry No. 3</fp-option>
+  </fp-select>
+  <fp-text>{select_demo} with letter {select_demo.letter}</fp-text>
+</p>
+</div>
+
+</article>
+
+
+
+<article>
+<h1 id="controlelements">Control Elements</h1>
+<p>
+  Elements that control other elements with actions.
+</p>
+
+<h2 id="animation">Animation</h2>
+<p>
+  Forward/backward animation controls for other elements.
+  Works with all elements that have <code class="cact">prev</code>, <code class="cact">next</code> and <code class="cact">reset</code> actions.
+</p>
+
+<div class="def">
+<h3>Definition</h3>
+<pre>
+&lt;fp-animation id="ID" target="TARGET[;TARGET ...]"&gt;&lt;/fp-animation&gt;
+</pre>
+<table>
+  <tr>
+    <td><code>ID</code></td>
+    <td>(optional) own ID.</td>
+  </tr>
+  <tr>
+    <td><code>TARGET</code></td>
+    <td>ID(s) of the element(s) to be animated.</td>
+  </tr>
+</table>
+</div>
+
+<div class="act">
+<h3>Actions</h3>
+<table>
+  <tr>
+    <td><code>reset</code></td>
+    <td>Stop the animation and reset all targets.</td>
+  </tr>
+  <tr>
+    <td><code>start</code></td>
+    <td>Start the animation if not running.</td>
+  </tr>
+  <tr>
+    <td><code>stop</code></td>
+    <td>Stop the animation if not stopped.</td>
+  </tr>
+  <tr>
+    <td><code>toggle</code></td>
+    <td>Start the animation if stopped of stop if running.</td>
+  </tr>
+  <tr>
+    <td><code>slower</code></td>
+    <td>Reduce the speed of the animation.</td>
+  </tr>
+  <tr>
+    <td><code>faster</code></td>
+    <td>Increase the speed of the animation.</td>
+  </tr>
+</table>
+</div>
+
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+&lt;fp-animation target="anim_target"&gt;&lt;/fp-animation&gt;
+&lt;fp-range type="slider" id="anim_target" min="0" max="10" step="1" wrap="true"&gt;&lt;/fp-range&gt;
+</pre>
+<p>
+  <fp-animation target="anim_target"></fp-animation>
+  <fp-range type="slider" id="anim_target" min="0" max="10" step="1" wrap="true"></fp-range>
+</p>
+</div>
+
+
+<h2 id="button">Button</h2>
+<p>
+  Trigger actions of other elements.
+</p>
+
+<div class="def">
+  <h3>Definition</h3>
+<pre>
+&lt;fp-button id="ID" action="ELEMENT.ACTION[;ELEMENT.ACTION ...]"&gt;LABEL&lt;/fp-button&gt;
+</pre>
+<table>
+  <tr>
+    <td><code>ID</code></td>
+    <td>(optional) own ID.</td>
+  </tr>
+  <tr>
+    <td><code>ELEMENT</code></td>
+    <td>ID of the target element.</td>
+  </tr>
+  <tr>
+    <td><code>ACTION</code></td>
+    <td>name of the action to trigger on the element.</td>
+  </tr>
+  <tr>
+    <td><code>LABEL</code></td>
+    <td>label shown on the button.</td>
+  </tr>
+</table>
+</div>
+
+<div class="act">
+<h3>Actions</h3>
+<table>
+  <tr>
+    <td><code>trigger</code></td>
+    <td>Trigger the action(s) bound to the button.</td>
+  </tr>
+</table>
+</div>
+
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+&lt;fp-button action="button_target.next"&gt;go to the next&lt;/fp-button&gt;
+&lt;fp-range type="dropdown" id="button_target" min="0" max="10" step="1" wrap="true"&gt;&lt;/fp-range&gt;
+</pre>
+<p>
+  <fp-button action="button_target.next">go to the next</fp-button>
+  <fp-range type="dropdown" id="button_target" min="0" max="10" step="1" wrap="true"></fp-range>
+</p>
+</div>
+
+
+<h2 id="keybinding">Key Binding</h2>
+<p>
+  Trigger action on key press.
+  Keys are bound with a (hidden) element:
+</p>
+
+<div class="def">
+<h3>Definition</h3>
+<pre>
+&lt;fp-bind key="KEY" action="ELEMENT.ACTION[;ELEMENT.ACTION ...]"&gt;&lt;/fp-bind&gt;
+</pre>
+<table>
+  <tr>
+    <td><code>KEY</code></td>
+    <td><a href="https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values">value</a> of the key to bind, e.g. <code>f</code> or <code>ArrowRight</code>.</td>
+  </tr>
+  <tr>
+    <td><code>ELEMENT</code></td>
+    <td>ID of the element.</td>
+  </tr>
+  <tr>
+    <td><code>ACTION</code></td>
+    <td>name of the action to trigger on the element.</td>
+  </tr>
+</table>
+</div>
+
+<p>
+  To avoid conflicts with browser-defined key bindings, key presses are not intercepted when a form element (text field, button, etc.) has focus.
+  Click elsewhere on the page to reset the focus to allow Flottplot to intercept keys again if the bindings don't work.
+</p>
+
+</article>
+
+
+<article>
+<h1 id="specialelements">Special Elements</h1>
+<p>Elements that activate and configure special features of Flottplot.</p>
+
+<h2 id="urlstate">URL State</h2>
+<p>
+  Enables encoding of the current state of all Flottplot elements into the URL's hash (the bit after <code>#</code>).
+</p>
+
+<div class="def">
+<h3>Definition</h3>
+<pre>
+&lt;fp-state&gt;&lt;/fp-state&gt;
+</pre>
+</div>
+
+<p>
+  The hash is updated with every change of the elements and when the page is loaded from an URL with a hash present, the encoded state will automatically be recovered.
+  If the page was changed between saving and loading (elements added, changed, removed), the recovery might fail.
+</p>
+
+</article>
+
