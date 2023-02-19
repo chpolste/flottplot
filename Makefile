@@ -13,6 +13,7 @@ all: \
 	dist/flottplot-extras.css
 
 documentation: \
+	docs/.nojekyll \
 	docs/index.html \
 	docs/values.html \
 	docs/core.html \
@@ -64,6 +65,9 @@ docs/%.html: src/docs/%.html src/docs/template.html tools/docbuilder.py | docs
 
 docs/dist/%: dist/% | docs/dist
 	cp $^ $@
+
+docs/.nojekyll:
+	touch $@
 
 docs:
 	mkdir -p docs
