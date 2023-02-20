@@ -5,25 +5,21 @@ MODULE := src/module.js src/dom.js src/core.js src/elements.js
 
 all: \
 	dist/flottplot.js \
+	dist/flottplot.css \
 	dist/flottplot-scan.js \
 	dist/flottplot-min.js \
-	dist/flottplot-scan-min.js \
-	dist/flottplot-extras.js \
-	dist/flottplot-extras-min.js \
-	dist/flottplot-extras.css
+	dist/flottplot-scan-min.js
 
 documentation: \
 	docs/.nojekyll \
 	docs/index.html \
 	docs/values.html \
-	docs/core.html \
-	docs/extras.html \
+	docs/elements.html \
 	docs/tips.html \
 	docs/docs.css \
 	docs/dist/flottplot-min.js \
-	docs/dist/flottplot-scan-min.js \
-	docs/dist/flottplot-extras-min.js \
-	docs/dist/flottplot-extras.css
+	docs/dist/flottplot.css \
+	docs/dist/flottplot-scan-min.js
 
 test: tests/tests.js
 	mocha $^
@@ -39,6 +35,9 @@ clean:
 dist/%-min.js: dist/%.js
 	uglifyjs $^ > $@
 
+dist/flottplot.css: src/style.less | dist
+	lessc $< > $@
+
 dist/flottplot.js: $(MODULE) | dist
 	python3 tools/preprocessor.py src/module.js > $@
 
@@ -48,7 +47,7 @@ dist/flottplot-scan.js: $(MODULE) src/scan.js | dist
 dist/flottplot-%.js: src/%/module.js src/%/elements.js | dist
 	python3 tools/preprocessor.py $< > $@
 
-dist/flottplot-%.css: src/%/style.css | dist
+dist/flottplot-%.css: src/%/style.less | dist
 	lessc $< > $@
 
 dist:
@@ -66,7 +65,7 @@ docs/%.html: src/docs/%.html src/docs/template.html tools/docbuilder.py | docs
 docs/dist/%: dist/% | docs/dist
 	cp $^ $@
 
-docs/.nojekyll:
+docs/.nojekyll: | docs
 	touch $@
 
 docs:

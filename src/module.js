@@ -218,9 +218,12 @@ var flottplot = function () {
     Flottplot.registerTag("fp-animation", FPAnimation, false);
     Flottplot.registerTag("fp-bind", FPBind, false);
     Flottplot.registerTag("fp-button", FPButton, false);
+    Flottplot.registerTag("fp-cursors", FPCursors, false);
+    Flottplot.registerTag("fp-overlay", FPOverlay, false);
     Flottplot.registerTag("fp-plot", FPPlot, false);
     Flottplot.registerTag("fp-range", FPRange, false);
     Flottplot.registerTag("fp-select", FPSelect, false);
+    Flottplot.registerTag("fp-stack", FPStack, true);
     Flottplot.registerTag("fp-state", FPState, false);
     Flottplot.registerTag("fp-text", FPText, true);
 
