@@ -8,7 +8,8 @@ all: \
 	dist/flottplot.css \
 	dist/flottplot-scan.js \
 	dist/flottplot-min.js \
-	dist/flottplot-scan-min.js
+	dist/flottplot-scan-min.js \
+	python/flottplot/flottplot-min.js
 
 documentation: \
 	docs/.nojekyll \
@@ -52,6 +53,12 @@ dist/flottplot-%.css: src/%/style.less | dist
 
 dist:
 	mkdir -p dist
+
+
+# Python package files
+
+python/flottplot/%: dist/%
+	cp $< $@
 
 
 # Documentation files

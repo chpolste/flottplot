@@ -1,0 +1,7 @@
+*.pyc
+*.egg-info/
+build/
+dist/
+*.ipynb
+flottplot/flottplot-min.js
+
