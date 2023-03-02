@@ -3,5 +3,5 @@
 build/
 dist/
 *.ipynb
-flottplot/flottplot-min.js
+flottplot/assets/
 

@@ -9,7 +9,8 @@ all: \
 	dist/flottplot-scan.js \
 	dist/flottplot-min.js \
 	dist/flottplot-scan-min.js \
-	python/flottplot/flottplot-min.js
+	python/flottplot/assets/flottplot-min.js \
+	python/flottplot/assets/flottplot.css
 
 documentation: \
 	docs/.nojekyll \
@@ -29,6 +30,7 @@ clean:
 	rm -rf docs
 	rm -rf dist
 	rm -rf tests
+	rm -rf python/flottplot/assets
 
 
 # Distribution files
@@ -57,8 +59,11 @@ dist:
 
 # Python package files
 
-python/flottplot/%: dist/%
+python/flottplot/assets/%: dist/% | python/flottplot/assets
 	cp $< $@
+
+python/flottplot/assets:
+	mkdir -p $@
 
 
 # Documentation files
