@@ -163,7 +163,7 @@
   </tr>
   <tr>
     <td><code>wrap</code></td>
-    <td>(optional) values wrap around at bounds if set to <code>true</code>.</td>
+    <td>(optional) boundaries at which values wrap around. Choose from <code>both</code>, <code>max</code> or <code>min</code>.</td>
   </tr>
   <tr>
     <td><code>format</code></td>
@@ -204,9 +204,9 @@
 <div class="demo">
 <h3>Demo</h3>
 <pre>
-&lt;fp-range id="wrapped_range" type="counter" min="-5" max="5" step="2" init="0" wrap="true"&gt;&lt;/fp-range&gt;
+&lt;fp-range id="wrapped_range" type="counter" min="-5" max="5" step="2" init="0" wrap="max"&gt;&lt;/fp-range&gt;
 </pre><p>
-  <fp-range id="wrapped_range" type="counter" min="-5" max="5" step="2" init="0" wrap="true"></fp-range>
+  <fp-range id="wrapped_range" type="counter" min="-5" max="5" step="2" init="0" wrap="max"></fp-range>
 </p>
 </div>
 
@@ -246,8 +246,8 @@
 <div class="def">
 <h3>Definition</h3>
 <pre>
-&lt;fp-select id="ID" type="TYPE"&gt;
-  &lt;fp-option ATTR="VALUE" [...]&gt;LABEL&lt;/fp-option&gt;
+&lt;fp-select id="ID" type="TYPE" wrap="WRAP"&gt;
+  &lt;fp-option ATTRIBUTE="VALUE" [...]&gt;LABEL&lt;/fp-option&gt;
   [...]
 &lt;/fp-select&gt;
 </pre>
@@ -269,16 +269,8 @@
     </td>
   </tr>
   <tr>
-    <td><code>ATTR</code></td>
-    <td>
-      (optional) additional, custom values attached via attributes.
-      Multiple can be specified.
-      It is generally recommended to specify the same attributes on all options to avoid attribute access errors during value substitution.
-    </td>
-  </tr>
-  <tr>
-    <td><code>label</code></td>
-    <td>display text and default value of the option.</td>
+    <td><code>wrap</code></td>
+    <td>(optional) boundaries at which values wrap around. Choose from <code>both</code>, <code>max</code> or <code>min</code>.</td>
   </tr>
 </table>
 </div>
@@ -286,8 +278,11 @@
 <div class="val">
 <h3>Value</h3>
 <p>
-  Provides the label of the selected option.
-  Attached values are provided as <code class="cval">ATTR</code>-named attributes.
+  Provides the <code class="cval">LABEL</code> of the currently selected option.
+</p>
+<p>
+  Additional <code class="cval">VALUE</code>s can be attached via custom <code class="cdef">ATTRIBUTE</code>s.
+  All options should generally have the same attributes specified to avoid attribute access errors during value substitution.
 </p>
 </div>
 
@@ -396,11 +391,11 @@
 <h3>Demo</h3>
 <pre>
 &lt;fp-animation target="anim_target"&gt;&lt;/fp-animation&gt;
-&lt;fp-range type="slider" id="anim_target" min="0" max="10" step="1" wrap="true"&gt;&lt;/fp-range&gt;
+&lt;fp-range type="slider" id="anim_target" min="0" max="10" step="1" wrap="both"&gt;&lt;/fp-range&gt;
 </pre>
 <p>
   <fp-animation target="anim_target"></fp-animation>
-  <fp-range type="slider" id="anim_target" min="0" max="10" step="1" wrap="true"></fp-range>
+  <fp-range type="slider" id="anim_target" min="0" max="10" step="1" wrap="both"></fp-range>
 </p>
 </div>
 
@@ -426,7 +421,7 @@
   </tr>
   <tr>
     <td><code>action</code></td>
-    <td><code class="cdef">ACTION</code> to trigger on the <code class="cdef">ELEMENT</code>.</td>
+    <td><code class="cact">ACTION</code> to trigger on the <code class="cdef">ELEMENT</code>.</td>
   </tr>
   <tr>
     <td><code>label</code></td>
@@ -449,11 +444,11 @@
 <h3>Demo</h3>
 <pre>
 &lt;fp-button action="button_target.next"&gt;go to the next&lt;/fp-button&gt;
-&lt;fp-range type="dropdown" id="button_target" min="0" max="10" step="1" wrap="true"&gt;&lt;/fp-range&gt;
+&lt;fp-range type="dropdown" id="button_target" min="0" max="10" step="1" wrap="both"&gt;&lt;/fp-range&gt;
 </pre>
 <p>
   <fp-button action="button_target.next">go to the next</fp-button>
-  <fp-range type="dropdown" id="button_target" min="0" max="10" step="1" wrap="true"></fp-range>
+  <fp-range type="dropdown" id="button_target" min="0" max="10" step="1" wrap="both"></fp-range>
 </p>
 </div>
 
@@ -476,7 +471,7 @@
   </tr>
   <tr>
     <td><code>action</code></td>
-    <td><code class="cdef">ACTION</code> to trigger on the <code class="cdef">ELEMENT</code>.</td>
+    <td><code class="cact">ACTION</code> to trigger on the <code class="cdef">ELEMENT</code>.</td>
   </tr>
 </table>
 </div>

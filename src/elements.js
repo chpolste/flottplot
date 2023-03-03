@@ -521,7 +521,7 @@ class FPRange {
         let step = Value.from(dom.getAttr(element, "step"), null, true);
         let min = Value.from(dom.getAttr(element, "min"), null, true);
         let max = Value.from(dom.getAttr(element, "max"), null, true);
-        let wrap = dom.parseBoolMaybe(dom.getAttr(element, "wrap"));
+        let wrap = dom.getAttr(element, "wrap");
         let range = new RangeItems(init, step, min, max, wrap);
         if (element.nodeName === "FP-RANGE") {
             let etype = dom.getAttr(element, "type", "counter");
@@ -538,7 +538,7 @@ class FPSelect {
 
     static from(element) {
         let init = Value.from(dom.getAttr(element, "init"), null, true);
-        let wrap = dom.parseBoolMaybe(dom.getAttr(element, "wrap"));
+        let wrap = dom.getAttr(element, "wrap");
         let format = dom.getAttr(element, "format");
         let values = [];
         for (let node of element.childNodes) {

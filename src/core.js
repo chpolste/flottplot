@@ -1091,14 +1091,28 @@ class FPElement {
 
 class Items {
 
-    // Derived classes must implement:
+    constructor() {
+        this.wrapMin = false;
+        this.wrapMax = false;
+    }
+
+    // Derived classes must implement/initialize:
     //  _selected :: integer
     //  index :: integer
     //  indexMax :: integer
     //  indexMin :: integer
     //  map(...args)
     //  value :: Value
-    //  wrap :: boolean
+
+    get wrap() {
+        return this.wrapMax || this.wrapMin;
+    }
+
+    set wrap(wrap) {
+        // backwards compatibility: "true" is alias for "both"
+        this.wrapMax = (wrap === "true" || wrap === "both" || wrap === "max");
+        this.wrapMin = (wrap === "true" || wrap === "both" || wrap === "min");
+    }
 
     get size() {
         return this.indexMax - this.indexMin + 1;
@@ -1113,7 +1127,7 @@ class Items {
     prev() {
         if (this._selected > this.indexMin) {
             this._selected -= 1;
-        } else if (this.wrap) {
+        } else if (this.wrapMin) {
             this._selected = this.indexMax;
             return Items.WRAP;
         }
@@ -1122,7 +1136,7 @@ class Items {
     next() {
         if (this._selected < this.indexMax) {
             this._selected += 1;
-        } else if (this.wrap) {
+        } else if (this.wrapMax) {
             this._selected = this.indexMin;
             return Items.WRAP;
         }
@@ -1139,8 +1153,7 @@ class OptionsItems extends Items {
         super();
         // Make a copy to protect against input mutation
         this._options = Array.from(options);
-        // Don't wrap by default
-        this.wrap = (wrap != null) && wrap;
+        this.wrap = wrap;
         // indexMin and indexMax as set up as inclusive
         this.indexMin = 0;
         this.indexMax = this._options.length - 1;
@@ -1187,8 +1200,7 @@ class RangeItems extends Items {
 
     constructor(init, step, min, max, wrap) {
         super();
-        // Don't wrap by default
-        this.wrap = (wrap != null) && wrap;
+        this.wrap = wrap;
         // Choose one of init, min or max for offset
         if (init != null) {
             this._offset = init;
