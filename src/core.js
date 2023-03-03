@@ -1098,7 +1098,7 @@ class Items {
     //  indexMin :: integer
     //  map(...args)
     //  value :: Value
-    //  wrap :: integer
+    //  wrap :: boolean
 
     get size() {
         return this.indexMax - this.indexMin + 1;
@@ -1115,6 +1115,7 @@ class Items {
             this._selected -= 1;
         } else if (this.wrap) {
             this._selected = this.indexMax;
+            return Items.WRAP;
         }
     }
 
@@ -1123,10 +1124,13 @@ class Items {
             this._selected += 1;
         } else if (this.wrap) {
             this._selected = this.indexMin;
+            return Items.WRAP;
         }
     }
 
 }
+// Special events emitted during manipulation of Items
+Items.WRAP = "WRAP";
 
 
 class OptionsItems extends Items {

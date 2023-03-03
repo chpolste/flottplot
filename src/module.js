@@ -162,6 +162,14 @@ var flottplot = function () {
             element.invoke(action);
         }
 
+        invokeAll(...calls) {
+            if (calls.length > 0 && calls[0] != null) {
+                for (let [target, action] of calls) {
+                    this.invoke(target, action);
+                }
+            }
+        }
+
         bindKey(key, target, action) {
             // Start intercepting keys once the first key is bound
             if (this.bindings.size === 0) {

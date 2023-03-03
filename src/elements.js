@@ -4,7 +4,7 @@ class FPItems extends FPElement {
     // Base class for control elements wrapping a Items instance. Most
     // subclasses should only need to implement constructor() and update().
 
-    constructor(id, items, format) {
+    constructor(id, items, format, calls) {
         super(id);
         this.items = items;
         this.format = format;
@@ -14,6 +14,8 @@ class FPItems extends FPElement {
         this.actions.add("reset"); // Reset to the initial value
         // Need to keep initial index for reset action
         this._reset_index = this.items.index;
+        // Actions triggered for own events (prev-wrap, next-wrap)
+        this.calls = (calls != null) ? calls : new Map();
     }
 
     get value() {
@@ -39,28 +41,34 @@ class FPItems extends FPElement {
     // Actions
 
     prev() {
-        this.items.prev();
+        let e = this.items.prev();
+        if (e === Items.WRAP) {
+            this.flottplot.invokeAll(this.calls.get("prev-wrap"));
+        }
     }
 
     next() {
-        this.items.next();
+        let e = this.items.next();
+        if (e === Items.WRAP) {
+            this.flottplot.invokeAll(this.calls.get("next-wrap"));
+        }
     }
 
     reset() {
         this.items.index = this._reset_index;
     }
 
-    static ofType(etype, eid, items, format) {
+    static ofType(etype, eid, items, format, calls) {
         // TODO tolower/toupper
         switch(etype) {
             case "counter":
-                return new FPCounter(eid, items, format);
+                return new FPCounter(eid, items, format, calls);
             case "slider":
-                return new FPSlider(eid, items, format);
+                return new FPSlider(eid, items, format, calls);
             case "dropdown":
-                return new FPDropdown(eid, items, format);
+                return new FPDropdown(eid, items, format, calls);
             case "radio":
-                return new FPRadio(eid, items, format);
+                return new FPRadio(eid, items, format, calls);
         }
         throw new ElementError("unknown items type '" + etype + "'");
     }
@@ -69,8 +77,8 @@ class FPItems extends FPElement {
 
 class FPCounter extends FPItems {
 
-    constructor(id, range, format) {
-        super(id, range, format);
+    constructor(id, range, format, calls) {
+        super(id, range, format, calls);
         this.box = dom.newNode("input");
         this.box.disabled = true;
         this.node = dom.newNode("span", {
@@ -90,8 +98,8 @@ class FPCounter extends FPItems {
 
 class FPDropdown extends FPItems {
 
-    constructor(id, options, format) {
-        super(id, options, format);
+    constructor(id, options, format, calls) {
+        super(id, options, format, calls);
         this.assertFinite();
         this.node = dom.newNode(
             "select",
@@ -118,8 +126,8 @@ class FPDropdown extends FPItems {
 
 class FPRadio extends FPItems {
 
-    constructor(id, options, format) {
-        super(id, options, format);
+    constructor(id, options, format, calls) {
+        super(id, options, format, calls);
         this.assertFinite();
         // Need to store all radios for update
         this.radios = this.items.map((_, i) => {
@@ -152,8 +160,8 @@ class FPRadio extends FPItems {
 
 class FPSlider extends FPItems {
 
-    constructor(id, range, format) {
-        super(id, range, format);
+    constructor(id, range, format, calls) {
+        super(id, range, format, calls);
         this.assertFinite();
         this.node = dom.newNode("input", {
             "type": "range",
@@ -297,9 +305,7 @@ class FPButton extends FPElement {
     // Actions
 
     trigger() {
-        for (let [target, action] of this.calls) {
-            this.flottplot.invoke(target, action);
-        }
+        this.flottplot.invokeAll(this.calls);
     }
 
     // Constructor from HTML element
