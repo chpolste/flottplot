@@ -31,17 +31,17 @@
 </pre>
 <table>
   <tr>
-    <td><code>ID</code></td>
+    <td><code>id</code></td>
     <td>(optional) own ID.</td>
   </tr>
   <tr>
-    <td><code>TARGET</code></td>
+    <td><code>target</code></td>
     <td>ID of the element included in the cursor group.</td>
   </tr>
   <tr>
     <td>
-      <code>CURSOR</code></td>
-      <td>(optional) cursor type.
+      <code>cursor</code></td>
+      <td>(optional) cursor type. Choose <code class="cdef">CURSOR</code> from:
       <ul>
         <li><code>pointer</code> (default): arrow-like pointer.</li>
         <li><code>hline</code>: horizontal line with width of target element.</li>
@@ -51,11 +51,11 @@
     </td>
   </tr>
   <tr>
-    <td><code>CLASS</code></td>
+    <td><code>class</code></td>
     <td>(optional) override for the default class name of the mirrored cursor.</td>
   </tr>
   <tr>
-    <td><code>STYLE</code></td>
+    <td><code>style</code></td>
     <td>(optional) override for the default style of the mirrored cursor. If a custom class is specified to style the cursor, set to empty to remove the default styling which might otherwise override the style specified in the class.</td>
   </tr>
 </table>
@@ -74,15 +74,15 @@
 <div class="def">
 <h3>Definition</h3>
 <pre>
-&lt;fp-plot id="ID" src="SOURCE"&gt;&lt;/fp-plot&gt;
+&lt;fp-plot id="ID" src="SRC"&gt;&lt;/fp-plot&gt;
 </pre>
 <table>
   <tr>
-    <td><code>ID</code></td>
+    <td><code>id</code></td>
     <td>(optional) own ID.</td>
   </tr>
   <tr>
-    <td><code>SOURCE</code></td>
+    <td><code>src</code></td>
     <td>path/URL to an image file, can use <a href="values.html">value substitutions</a>.</td>
   </tr>
 </table>
@@ -130,13 +130,13 @@
 </pre>
 <table>
   <tr>
-    <td><code>ID</code></td>
+    <td><code>id</code></td>
     <td>own ID.</td>
   </tr>
   <tr>
-    <td><code>TYPE</code></td>
+    <td><code>type</code></td>
     <td>
-      (optional) type of control element used to represent the range on the page.
+      (optional) type of control element used to represent the range on the page. Choose <code class="cdef">TYPE</code> from:
       <ul>
         <li><code>counter</code> (default): text box with forward and backwards buttons.</li>
         <li><code>slider</code>: draggable slider (only finite ranges).</li>
@@ -146,32 +146,32 @@
     </td>
   </tr>
   <tr>
-    <td><code>STEP</code></td>
+    <td><code>step</code></td>
     <td>value of increment.</td>
   </tr>
   <tr>
-    <td><code>MIN</code></td>
+    <td><code>min</code></td>
     <td>(optional*) lower bound of range.</td>
   </tr>
   <tr>
-    <td><code>MAX</code></td>
+    <td><code>max</code></td>
     <td>(optional*) upper bound of range.</td>
   </tr>
   <tr>
-    <td><code>INIT</code></td>
+    <td><code>init</code></td>
     <td>(optional*) initial value.</td>
   </tr>
   <tr>
-    <td><code>WRAP</code></td>
+    <td><code>wrap</code></td>
     <td>(optional) values wrap around at bounds if set to <code>true</code>.</td>
   </tr>
   <tr>
-    <td><code>FORMAT</code></td>
+    <td><code>format</code></td>
     <td>(optional) <a href="#values">format specification</a> used for labelling of the element (e.g. in the text box or a counter).</td>
   </tr>
 </table>
 <p>
-  * at least one of <code class="cdef">MIN</code>, <code class="cdef">MAX</code> and <code class="cdef">INIT</code> has to be specified.
+  * at least one of <code class="cdef">min</code>, <code class="cdef">max</code> and <code class="cdef">init</code> has to be specified.
   If no upper and/or lower bound is specified the range is non-finite and wrapping is not possible.
 </p>
 </div>
@@ -253,13 +253,13 @@
 </pre>
 <table>
   <tr>
-    <td><code>ID</code></td>
+    <td><code>id</code></td>
     <td>(optional) own ID.</td>
   </tr>
   <tr>
-    <td><code>TYPE</code></td>
+    <td><code>type</code></td>
     <td>
-      (optional) type of control element used to represent the selection.
+      (optional) type of control element used to represent the selection. Choose <code class="cdef">TYPE</code> from:
       <ul>
         <li><code>counter</code>: text box with forward and backwards buttons.</li>
         <li><code>slider</code>: draggable slider.</li>
@@ -269,7 +269,7 @@
     </td>
   </tr>
   <tr>
-    <td><code>ATTR="VALUE"</code></td>
+    <td><code>ATTR</code></td>
     <td>
       (optional) additional, custom values attached via attributes.
       Multiple can be specified.
@@ -277,7 +277,7 @@
     </td>
   </tr>
   <tr>
-    <td><code>LABEL</code></td>
+    <td><code>label</code></td>
     <td>display text and default value of the option.</td>
   </tr>
 </table>
@@ -352,11 +352,11 @@
 </pre>
 <table>
   <tr>
-    <td><code>ID</code></td>
+    <td><code>id</code></td>
     <td>(optional) own ID.</td>
   </tr>
   <tr>
-    <td><code>TARGET</code></td>
+    <td><code>target</code></td>
     <td>ID(s) of the element(s) to be animated.</td>
   </tr>
 </table>
@@ -417,19 +417,19 @@
 </pre>
 <table>
   <tr>
-    <td><code>ID</code></td>
+    <td><code>id</code></td>
     <td>(optional) own ID.</td>
   </tr>
   <tr>
-    <td><code>ELEMENT</code></td>
+    <td><code>element</code></td>
     <td>ID of the target element.</td>
   </tr>
   <tr>
-    <td><code>ACTION</code></td>
-    <td>name of the action to trigger on the element.</td>
+    <td><code>action</code></td>
+    <td><code class="cdef">ACTION</code> to trigger on the <code class="cdef">ELEMENT</code>.</td>
   </tr>
   <tr>
-    <td><code>LABEL</code></td>
+    <td><code>label</code></td>
     <td>label shown on the button.</td>
   </tr>
 </table>
@@ -471,16 +471,12 @@
 </pre>
 <table>
   <tr>
-    <td><code>KEY</code></td>
+    <td><code>key</code></td>
     <td><a href="https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values">value</a> of the key to bind, e.g. <code>f</code> or <code>ArrowRight</code>.</td>
   </tr>
   <tr>
-    <td><code>ELEMENT</code></td>
-    <td>ID of the element.</td>
-  </tr>
-  <tr>
-    <td><code>ACTION</code></td>
-    <td>name of the action to trigger on the element.</td>
+    <td><code>action</code></td>
+    <td><code class="cdef">ACTION</code> to trigger on the <code class="cdef">ELEMENT</code>.</td>
   </tr>
 </table>
 </div>
@@ -511,7 +507,7 @@
 </pre>
 <table>
   <tr>
-    <td><code>ID</code></td>
+    <td><code>id</code></td>
     <td>own ID.</td>
   </tr>
 </table>
