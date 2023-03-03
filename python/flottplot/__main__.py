@@ -1,11 +1,14 @@
 from pathlib import Path
 import argparse
 
-from .assets import write_asset, create_page
+from . import __version__
+from .assets import all_assets, write_asset, create_page
 
 
 parser = argparse.ArgumentParser()
+parser.add_argument("-v", "--version", action="store_true")
 subparsers = parser.add_subparsers(title="subcommands")
+
 
 def init(args):
     # Determine file extension that should be enforced
@@ -75,14 +78,21 @@ parser_init.add_argument("file", metavar="FILE", help="""
 parser_init.set_defaults(cmd=init)
 
 
-#parser_upgrade = subparsers.add_parser("upgrade", help="""
-#    TODO
-#""")
-#
-#def upgrade(args):
-#    print("UPGRADE", args)
-#
-#parser_server.set_defaults(cmd=server)
+def replace(args):
+    cwd = Path.cwd()
+    assets = all_assets()
+    for name in assets.keys():
+        if Path(cwd, name).is_file():
+            write_asset(name, cwd, overwrite=True)
+            print(f"replaced {name} with v{__version__}")
+
+parser_replace = subparsers.add_parser("replace", description="""
+    Replace Flottplot files (JavaScript, CSS) in the current directory, e.g. to
+    upgrade to a new version or repair corrupted files.
+""", help="""
+    Replace Flottplot files.
+""")
+parser_replace.set_defaults(cmd=replace)
 
 
 #parser_server = subparsers.add_parser("server", help="""
@@ -96,5 +106,11 @@ parser_init.set_defaults(cmd=init)
 
 
 args = parser.parse_args()
-args.cmd(args)
+if "cmd" in args:
+    args.cmd(args)
+else:
+    if args.version:
+        print(f"Flottplot {__version__}")
+    else:
+        parser.print_help()
 

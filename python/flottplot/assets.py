@@ -1,14 +1,21 @@
 import os
 from pathlib import Path
 
+
+PKG_ROOT = Path(__file__).parent
+AST_ROOT = Path(PKG_ROOT, "assets")
+
+
 def _relative_navigable_path(origin, target):
     # https://stackoverflow.com/questions/38083555
     return Path(os.path.relpath(target, origin))
 
 
+def all_assets():
+    return { path.name: path for path in AST_ROOT.glob("*") }
+
 def read_asset(asset):
-    pkg_root = Path(__file__).parent
-    return Path(pkg_root, "assets", asset).read_text()
+    return Path(AST_ROOT, asset).read_text()
 
 def write_asset(asset, outdir=".", overwrite=False):
     outpath = Path(outdir, asset)
