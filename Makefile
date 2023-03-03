@@ -10,6 +10,7 @@ all: \
 	dist/flottplot-min.js \
 	dist/flottplot-scan-min.js \
 	python/flottplot/assets/flottplot-min.js \
+	python/flottplot/assets/flottplot-scan-min.js \
 	python/flottplot/assets/flottplot.css
 
 documentation: \

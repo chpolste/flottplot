@@ -3,6 +3,7 @@ from setuptools import setup, find_packages
 
 assets = [
     "assets/flottplot-min.js",
+    "assets/flottplot-scan-min.js",
     "assets/flottplot.css",
 ]
 

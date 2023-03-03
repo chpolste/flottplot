@@ -27,11 +27,12 @@ def init(args):
         return
     # Prepare page assets (js and css files)
     assetdir = filename.parent if args.asset_dir is None else Path(args.asset_dir)
-    # Write flottplot-min.js
-    asset_js = write_asset("flottplot-min.js", assetdir, args.overwrite)
-    # Write flottplot.css only if required/asked for
+    # Write flottplot[-scan]-min.js
+    _js_file = "flottplot-scan-min.js" if args.scan else "flottplot-min.js"
+    asset_js = write_asset(_js_file, assetdir, args.overwrite)
+    # Write flottplot.css if requested
     asset_css = None
-    if args.styling or args.add_overlay:
+    if args.style:
         asset_css = write_asset("flottplot.css", assetdir, args.overwrite)
     # Write page with appropriate references to assets and all requested tags included
     tags = []
@@ -57,16 +58,18 @@ parser_init.add_argument("-a", "--asset-dir", default=None, metavar="DIR", help=
     all assets are put into the same directory as the created Flottplot page
     file.
 """)
-parser_init.add_argument("-s", "--styling", action="store_true", help="""
-    Include the Flottplot styling CSS file in the output page. If activated, an
-    additional flottplot.css file is created.
-""")
 parser_init.add_argument("-o", "--overwrite", action="store_true", help="""
     Allow overwriting of existing files.
 """)
+parser_init.add_argument("--no-style", action="store_false", dest="style", help="""
+    Do not include the Flottplot styling (CSS file) in the output page.
+""")
+parser_init.add_argument("--no-scan", action="store_false", dest="scan", help="""
+    Do not include the automatic element scan in the output page.
+""")
 parser_init.add_argument("--add-overlay", action="store_true", help="""
-    Include an <fp-overlay> tag. Activates -s even if it is not explicitly
-    selected.
+    Include an <fp-overlay> tag. The overlay element will not work properly if
+    --no-style is also set.
 """)
 parser_init.add_argument("--add-state", action="store_true", help="""
     Include an <fp-state> tag.
