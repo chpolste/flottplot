@@ -162,11 +162,10 @@ var flottplot = function () {
             element.invoke(action);
         }
 
-        invokeAll(...calls) {
-            if (calls.length > 0 && calls[0] != null) {
-                for (let [target, action] of calls) {
-                    this.invoke(target, action);
-                }
+        invokeAll(calls) {
+            if (calls == null) return;
+            for (let [target, action] of calls) {
+                this.invoke(target, action);
             }
         }
 
