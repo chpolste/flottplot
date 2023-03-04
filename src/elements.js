@@ -42,15 +42,17 @@ class FPItems extends FPElement {
 
     prev() {
         let e = this.items.prev();
+        // Min-wrap event might have associated actions
         if (e === Items.WRAP) {
-            this.flottplot.invokeAll(this.calls.get("prev-wrap"));
+            this.flottplot.invokeAll(this.calls.get("min-wrap"));
         }
     }
 
     next() {
         let e = this.items.next();
+        // Max-wrap event might have associated actions
         if (e === Items.WRAP) {
-            this.flottplot.invokeAll(this.calls.get("next-wrap"));
+            this.flottplot.invokeAll(this.calls.get("max-wrap"));
         }
     }
 
@@ -517,15 +519,19 @@ class FPRange {
     static from(element) {
         let eid = dom.getAttr(element, "id");
         let format = dom.getAttr(element, "format");
+        // Construct internal RangeItems object based on specification
         let init = Value.from(dom.getAttr(element, "init"), null, true);
         let step = Value.from(dom.getAttr(element, "step"), null, true);
         let min = Value.from(dom.getAttr(element, "min"), null, true);
         let max = Value.from(dom.getAttr(element, "max"), null, true);
         let wrap = dom.getAttr(element, "wrap");
         let range = new RangeItems(init, step, min, max, wrap);
+        // Process actions for special events (if given)
+        let calls = dom.getCalls(element, ["min-wrap", "max-wrap"]);
         if (element.nodeName === "FP-RANGE") {
+            // Default element type of fp-range is counter
             let etype = dom.getAttr(element, "type", "counter");
-            return FPItems.ofType(etype, eid, range, format);
+            return FPItems.ofType(etype, eid, range, format, calls);
         } else throw new ElementError(
             "cannot convert tag '" + element.nodeName + "' to a range"
         );
@@ -537,9 +543,9 @@ class FPRange {
 class FPSelect {
 
     static from(element) {
-        let init = Value.from(dom.getAttr(element, "init"), null, true);
-        let wrap = dom.getAttr(element, "wrap");
         let format = dom.getAttr(element, "format");
+        // Construct internal OptionsItems from child nodes based on specification
+        let init = Value.from(dom.getAttr(element, "init"), null, true);
         let values = [];
         for (let node of element.childNodes) {
             if (node.nodeType !== Node.ELEMENT_NODE) continue;
@@ -550,9 +556,13 @@ class FPSelect {
             }
             values.push(value);
         }
+        let wrap = dom.getAttr(element, "wrap");
         let options = new OptionsItems(values, init, wrap);
+        // Process actions for special events (if given)
+        let calls = dom.getCalls(element, ["min-wrap", "max-wrap"]);
+        // Default element type of fp-select is dropdown
         let etype = dom.getAttr(element, "type", "dropdown");
-        return FPItems.ofType(etype, element.id, options, format);
+        return FPItems.ofType(etype, element.id, options, format, calls);
     }
 
 }

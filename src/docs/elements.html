@@ -169,6 +169,14 @@
     <td><code>format</code></td>
     <td>(optional) <a href="#values">format specification</a> used for labelling of the element (e.g. in the text box or a counter).</td>
   </tr>
+  <tr>
+    <td><code>min-wrap-action</code></td>
+    <td>Action(s) invoked when wrapping at the lower bound.</td>
+  </tr>
+  <tr>
+    <td><code>max-wrap-action</code></td>
+    <td>Action(s) invoked when wrapping at the upper bound.</td>
+  </tr>
 </table>
 <p>
   * at least one of <code class="cdef">min</code>, <code class="cdef">max</code> and <code class="cdef">init</code> has to be specified.
@@ -271,6 +279,14 @@
   <tr>
     <td><code>wrap</code></td>
     <td>(optional) boundaries at which values wrap around. Choose from <code>both</code>, <code>max</code> or <code>min</code>.</td>
+  </tr>
+  <tr>
+    <td><code>min-wrap-action</code></td>
+    <td>Action(s) invoked when wrapping from the first to the last option.</td>
+  </tr>
+  <tr>
+    <td><code>max-wrap-action</code></td>
+    <td>Action(s) invoked when wrapping from the last to the first option.</td>
   </tr>
 </table>
 </div>
@@ -414,10 +430,6 @@
   <tr>
     <td><code>id</code></td>
     <td>(optional) own ID.</td>
-  </tr>
-  <tr>
-    <td><code>element</code></td>
-    <td>ID of the target element.</td>
   </tr>
   <tr>
     <td><code>action</code></td>

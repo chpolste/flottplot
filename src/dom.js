@@ -44,5 +44,12 @@ let dom = {
         return (calls == null) ? [] : calls.split(";").map(call => call.split("."));
     },
 
+    "getCalls": function (node, names) {
+        return new Map(names.map(name => [
+            name,
+            dom.parseCalls(dom.getAttr(node, name+"-action"))
+        ]));
+    },
+
 }
 
