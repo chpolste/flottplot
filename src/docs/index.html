@@ -2,6 +2,20 @@
   Quickly arrange and navigate collections of images in the browser.
 </p>
 
+<article>
+<h1 id="overview">Overview</h1>
+<p>
+  Flottplot helps you to quickly build a user interface to navigate a collection of images named with a common pattern.
+  It defines custom HTML tags and converts them into control and other elements that interact with each other.
+  Flottplot does not create new images, it just arranges images already plotted elsewhere.
+</p>
+<p>
+  The project was conceived as tool to view plots of meteorological and climate data with the ability to put multiple images containing different variables next to each other and click through them synchronously.
+</p>
+</article>
+
+
+
 <div class="demo">
 <h3>Demo</h3>
 <pre>
@@ -10,29 +24,50 @@
 &lt;head&gt;
   &lt;meta charset="utf-8"&gt;
   &lt;title&gt;A Page With Flottplot Elements&lt;/title&gt;
-  &lt;script type="text/javascript" src="dist/flottplot-scan-min.js"&gt;&lt;/script&gt;
+  <b>&lt;script type="text/javascript" src="dist/flottplot-scan-min.js"&gt;&lt;/script&gt;</b>
 &lt;/head&gt;
 &lt;body&gt;
- ...
+  &lt;p&gt;
+    Function:
+    <b>&lt;fp-select id="func"&gt;
+      &lt;fp-option name="sin"&gt;sine&lt;/fp-option&gt;
+      &lt;fp-option name="cos"&gt;cosine&lt;/fp-option&gt;
+    &lt;/fp-select&gt;</b>
+    with wavenumber
+    <b>&lt;fp-range id="waven" type="slider" min="1" max="3" step="1" init="2" wrap="both"&gt;&lt;/fp-range&gt;</b>
+    <b>&lt;fp-animation target="waven"&gt;&lt;/fp-animation&gt;</b>
+  &lt;/p&gt;
+  &lt;p&gt;
+    <b>&lt;fp-plot src="plot/{func.name}-{waven}x.png">&lt;/fp-plot&gt;</b>
+  &lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;
 </pre>
 <p>
-  TODO
+  Function:
+  <fp-select id="func">
+    <fp-option name="sin">sine</fp-option>
+    <fp-option name="cos">cosine</fp-option>
+  </fp-select>
+  with wavenumber
+  <fp-range id="waven" type="slider" min="1" max="3" step="1" init="2" wrap="both"></fp-range>
+  <fp-animation target="waven"></fp-animation>
 </p>
-</div>
-
-
-<article>
-<h1 id="overview">Overview</h1>
 <p>
-  Flottplot defines custom HTML tags and converts them into control and other elements that interact with each other.
-  The primary use case of Flottplot is to display and browse large collections of images in the browser.
-  Multiple images can be placed on a single page and navigated in a synchronized fashion.
-  Development of Flottplot mainly targets the organization of plots containing meteorological data.
-  Note that Flottplot does not create new images, it just arranges images already plotted elsewhere.
+  <fp-plot src="plot/{func.name}-{waven}x.png"></fp-plot>
 </p>
-</article>
+<h3>Files</h3>
+<pre>
+index.html
+flottplot-scan-min.js
+plot/<a href="plot/cos-1x.png">cos-1x.png</a>
+ .../<a href="plot/cos-2x.png">cos-2x.png</a>
+ .../<a href="plot/cos-3x.png">cos-3x.png</a>
+ .../<a href="plot/sin-1x.png">sin-1x.png</a>
+ .../<a href="plot/sin-2x.png">sin-2x.png</a>
+ .../<a href="plot/sin-3x.png">sin-3x.png</a>
+</pre>
+</div>
 
 
 <article>
@@ -62,7 +97,7 @@ Choose the file(s) that are right for you:
 <h1 id="overview">License</h1>
 
 <p>
-  Flottplot is in the public domain (Unlicense).
+  Flottplot is in the public domain.
 </p>
 </article>
 

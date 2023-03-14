@@ -22,7 +22,13 @@ documentation: \
 	docs/docs.css \
 	docs/dist/flottplot-min.js \
 	docs/dist/flottplot.css \
-	docs/dist/flottplot-scan-min.js
+	docs/dist/flottplot-scan-min.js \
+	docs/plot/cos-1x.png \
+	docs/plot/cos-2x.png \
+	docs/plot/cos-3x.png \
+	docs/plot/sin-1x.png \
+	docs/plot/sin-2x.png \
+	docs/plot/sin-3x.png
 
 test: tests/tests.js
 	mocha $^
@@ -81,11 +87,20 @@ docs/dist/%: dist/% | docs/dist
 docs/.nojekyll: | docs
 	touch $@
 
+docs/plot/sin-%x.png: tools/plot-trigonometric.py | docs/plot
+	python3 $< "sin" $* $@
+
+docs/plot/cos-%x.png: tools/plot-trigonometric.py | docs/plot
+	python3 $< "cos" $* $@
+
 docs:
 	mkdir -p docs
 
 docs/dist:
 	mkdir -p docs/dist
+
+docs/plot:
+	mkdir -p docs/plot
 
 
 # Unit tests

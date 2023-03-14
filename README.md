@@ -20,6 +20,6 @@ To build Flottplot locally, you need:
 
 - Modules: `node.js` with `uglify-js`, `less`; `python3`.
 - Tests: `node.js` with `mocha`; `python3`.
-- Documentation: `python3`.
+- Documentation: `python3` with `numpy`, `matplotlib`.
 - Python package: `python3` with `setuptools`.
 
