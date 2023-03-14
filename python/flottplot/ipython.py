@@ -36,6 +36,7 @@ class HTMLReprWrapper:
 
 # https://ipython.readthedocs.io/en/stable/config/custommagics.html
 def load_ipython_extension(ipython):
+    from IPython.display import display, HTML
     from IPython.core.magic import register_cell_magic
     @register_cell_magic
     def flottplot(self, cell):
