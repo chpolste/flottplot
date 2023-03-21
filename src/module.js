@@ -233,6 +233,7 @@ var flottplot = function () {
     Flottplot.registerTag("fp-stack", FPStack, true);
     Flottplot.registerTag("fp-state", FPState, false);
     Flottplot.registerTag("fp-text", FPText, true);
+    Flottplot.registerTag("fp-video", FPVideo, false);
 
     return {
         // ...

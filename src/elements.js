@@ -656,3 +656,46 @@ class FPText extends FPElement {
 
 }
 
+
+class FPVideo extends FPElement {
+
+    constructor(id, sources) {
+        super(id);
+        this.node = dom.newNode("video", {
+            "id": id
+        }, sources.map(
+            src => dom.newNode("source", { "src": src })
+        ));
+        this.actions.add("reset");
+        this.actions.add("play");
+        this.actions.add("pause");
+        this.actions.add("toggle");
+    }
+
+    reset() {
+        this.pause();
+        this.node.currentTime = 0;
+    }
+
+    play() {
+        this.node.play();
+    }
+
+    pause() {
+        this.node.pause();
+    }
+
+    toggle() {
+        if (this.node.paused) {
+            this.play();
+        } else {
+            this.pause();
+        }
+    }
+
+    static from(element) {
+        return new FPVideo(element.id, [dom.getAttr(element, "src")]);
+    }
+
+}
+
