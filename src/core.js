@@ -1010,11 +1010,12 @@ class FPElement {
     // Invoke an action of the element, update the element and notify all
     // dependent element
     invoke(action, ...args) {
-        if (!this.actions.has(action)) this.fail(
-            "action '" + action + "' does not exist"
-        );
-        this[action](...args);
-        this.notify();
+        if (!this.actions.has(action)) {
+            this.fail("action '" + action + "' does not exist");
+        } else {
+            this[action](...args);
+            this.notify();
+        }
     }
 
     // Notify the supervisor that this element has changed its value

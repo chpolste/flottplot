@@ -24,7 +24,7 @@ class FPItems extends FPElement {
 
     assertFinite() {
         if (!this.items.isFinite) {
-            this.fail("list of items is not finite");
+            return this.fail("list of items is not finite");
         }
     }
 
@@ -479,7 +479,9 @@ class FPPlot extends FPElement {
             if (this.flottplot.overlay != null) this.flottplot.overlay.put(this.overlay);
         });
         // ...
-        if (src == null) this.fail("must provide source (src) of plot");
+        if (src == null) {
+            return this.fail("must provide source (src) of plot");
+        }
         this.src = src;
         this.setDependenciesFrom(src);
         // More attributes not yet processed:
