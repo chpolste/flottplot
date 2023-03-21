@@ -470,28 +470,21 @@ class FPOverlay extends FPElement {
 
 class FPPlot extends FPElement {
 
-    constructor(id, src) {
+    constructor(id, src, attrs) {
         super(id);
-        this.node = dom.newNode("img", { "id": this.id, "src": src, "alt": src });
+        this.node = dom.newNode("img", attrs);
+        this.node.id = this.id;
+        this.node.src = src;
         // A second img-node for the overlay
         this.overlay = dom.newNode("img");
         this.node.addEventListener("click", () => {
             if (this.flottplot.overlay != null) this.flottplot.overlay.put(this.overlay);
         });
-        // ...
         if (src == null) {
             return this.fail("must provide source (src) of plot");
         }
         this.src = src;
         this.setDependenciesFrom(src);
-        // More attributes not yet processed:
-        // TODO alt
-        // TODO height
-        // TODO width
-        // TODO title
-        // TODO class
-        // TODO style
-        // TODO click to go fullscreen
         // TODO register onerror to detect missing images (then do what?)
     }
 
@@ -502,15 +495,12 @@ class FPPlot extends FPElement {
     update(substitution) {
         let src = this.substitute(this.src, substitution);
         this.node.src = src;
-        this.node.alt = src; // TODO only overwrite if not specified otherwise by user
-        // ...
         this.overlay.src = src;
     }
 
     static from(element) {
-        let eid = dom.getAttr(element, "id");
-        let src = dom.getAttr(element, "src");
-        return new FPPlot(eid, src); // TODO
+        let attrs = dom.Attributes.from(element);
+        return new FPPlot(attrs.id, attrs.pop("src"), attrs)
     }
 
 }
@@ -659,13 +649,12 @@ class FPText extends FPElement {
 
 class FPVideo extends FPElement {
 
-    constructor(id, sources) {
+    constructor(id, sources, attrs) {
         super(id);
-        this.node = dom.newNode("video", {
-            "id": id
-        }, sources.map(
+        this.node = dom.newNode("video", attrs, sources.map(
             src => dom.newNode("source", { "src": src })
         ));
+        this.node.id = this.id;
         this.actions.add("reset");
         this.actions.add("play");
         this.actions.add("pause");
@@ -694,7 +683,8 @@ class FPVideo extends FPElement {
     }
 
     static from(element) {
-        return new FPVideo(element.id, [dom.getAttr(element, "src")]);
+        let attrs = dom.Attributes.from(element);
+        return new FPVideo(attrs.id, [attrs.pop("src")], attrs);
     }
 
 }

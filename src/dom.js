@@ -2,11 +2,7 @@ let dom = {
 
     "newNode": function (tag, attrs, children) {
         let node = document.createElement(tag);
-        if (attrs != null) {
-            for (let name in attrs) {
-                node.setAttribute(name, attrs[name]);
-            }
-        }
+        dom.setAttrs(node, attrs);
         if (children != null) {
             for (let child of children) {
                 node.appendChild(isString(child) ? document.createTextNode(child) : child);
@@ -49,6 +45,64 @@ let dom = {
             name,
             dom.parseCalls(dom.getAttr(node, name+"-action"))
         ]));
+    },
+
+    setAttrs: function (node, attrs) {
+        if (node == null || attrs == null) {
+            return;
+        } else if (attrs instanceof dom.Attributes) {
+            attrs.assignTo(node);
+        } else {
+            for (let name in attrs) {
+                node.setAttribute(name, attrs[name]);
+            }
+        }
+    },
+
+    // ...
+    Attributes: class {
+
+        constructor() {
+            this._attrs = new Map();
+        }
+
+        set(attr, value) {
+            this._attrs.set(attr, value);
+            return this;
+        }
+
+        // TODO: value conversion, targets, calls, maybe
+        // Non-destructive attribute access
+        get(attr) {
+            return this._attrs.get(attr);
+        }
+
+        // Destructive attribute access
+        pop(attr) {
+            let value = this.get(attr);
+            this._attrs.delete(attr);
+            return value;
+        }
+
+        assignTo(node) {
+            for (let [attr, value] of this._attrs) {
+                node.setAttribute(attr, value);
+            }
+            this._attrs.clear();
+        }
+
+        get id() {
+            return this.get("id");
+        }
+
+        static from(node) {
+            const out = new dom.Attributes();
+            for (let attr of node.attributes) {
+                out.set(attr.name, attr.value);
+            }
+            return out;
+        }
+
     },
 
 }
