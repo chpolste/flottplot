@@ -101,6 +101,24 @@
 <p>Provides the current image URL as a <em>Text</em> value.</p>
 </div>
 
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"&gt;&lt;/fp-range&gt;&lt;br&gt;
+&lt;fp-plot src="plot/sin-{plotparam}x.png"&gt;&lt;/fp-plot&gt;
+</pre>
+<p>
+  Wavenumber: <fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"></fp-range><br>
+  <fp-plot src="plot/sin-{plotparam}x.png"></fp-plot>
+</p>
+<h3>Files</h3>
+<pre>
+plot/<a href="plot/sin-1x.png">sin-1x.png</a>
+ .../<a href="plot/sin-2x.png">sin-2x.png</a>
+ .../<a href="plot/sin-3x.png">sin-3x.png</a>
+</pre>
+</div>
+
 
 <h2 id="stack">Plot Stack*</h2>
 <p>
