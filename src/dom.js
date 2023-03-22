@@ -1,6 +1,6 @@
 let dom = {
 
-    "newNode": function (tag, attrs, children) {
+    newNode: function (tag, attrs, children) {
         let node = document.createElement(tag);
         dom.setAttrs(node, attrs);
         if (children != null) {
@@ -11,40 +11,13 @@ let dom = {
         return node;
     },
 
-    "newButton": function (attrs, label, f) {
+    newButton: function (attrs, label, f) {
         if (typeof label === "string") {
             label = [label];
         }
         let node = dom.newNode("button", attrs, label);
         node.addEventListener("click", f);
         return node;
-    },
-
-    "getAttr": function (node, name, fallback) {
-        let value = node.getAttribute(name);
-        if (value == null && fallback != null) {
-            return fallback;
-        }
-        return value;
-    },
-
-    "parseBoolMaybe": function (x) {
-        return x == null ? null : x.toLowerCase() === "true";
-    },
-
-    "parseTargets": function (targets) {
-        return (targets == null) ? [] : targets.split(";"); // TODO trim?
-    },
-
-    "parseCalls": function (calls) {
-        return (calls == null) ? [] : calls.split(";").map(call => call.split("."));
-    },
-
-    "getCalls": function (node, names) {
-        return new Map(names.map(name => [
-            name,
-            dom.parseCalls(dom.getAttr(node, name+"-action"))
-        ]));
     },
 
     setAttrs: function (node, attrs) {
@@ -71,26 +44,48 @@ let dom = {
             return this;
         }
 
-        // TODO: value conversion, targets, calls, maybe
         // Non-destructive attribute access
-        get(attr) {
-            return this._attrs.get(attr);
+        get(attr, fallback, asType) {
+            let value = this._attrs.has(attr) ? this._attrs.get(attr) : fallback;
+            switch (asType) {
+                case "VALUE":
+                    return Value.from(value);
+                case "ACTION":
+                    return (value == null) ? [] : value.split(";").map(call => call.split("."));
+                case "TARGET":
+                    return (value == null) ? [] : value.split(";"); // TODO trim?
+            }
+            return value;
         }
 
-        // Destructive attribute access
-        pop(attr) {
-            let value = this.get(attr);
+        // Destructive attribute access. The idea is to pop all attributes
+        // special to Flottplot during element creation, then assign all
+        // remaining attributes to the node of the element.
+        pop(attr, fallback, asType) {
+            const value = this.get(attr, fallback, asType);
             this._attrs.delete(attr);
             return value;
         }
 
+        // Conveniently collect actions in a Map
+        popActions(names) {
+            const out = new Map();
+            for (let name of names) {
+                let calls = this.pop(name + "-action", null, "ACTION");
+                if (calls != null) {
+                    out.set(name, calls);
+                }
+            }
+        }
+
+        // Assign attributes to a node
         assignTo(node) {
             for (let [attr, value] of this._attrs) {
                 node.setAttribute(attr, value);
             }
-            this._attrs.clear();
         }
 
+        // Convenience access to ID attribute
         get id() {
             return this.get("id");
         }

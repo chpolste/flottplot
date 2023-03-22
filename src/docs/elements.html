@@ -24,7 +24,7 @@
 <div class="def">
 <h3>Definition</h3>
 <pre>
-&lt;fp-cursors id="ID"&gt;
+&lt;fp-cursors id="ID" ...&gt;
   &lt;fp-cursor target="TARGET" cursor="CURSOR" class="CLASS" style="STYLE"&gt;&lt;/fp-cursor&gt;
   [...]
 &lt;/fp-cursors&gt;
@@ -32,11 +32,11 @@
 <table>
   <tr>
     <td><code>id</code></td>
-    <td>(optional) own ID.</td>
+    <td>(optional) own identifier.</td>
   </tr>
   <tr>
     <td><code>target</code></td>
-    <td>ID of the element included in the cursor group.</td>
+    <td>identifier of the element included in the cursor group.</td>
   </tr>
   <tr>
     <td>
@@ -58,6 +58,10 @@
     <td><code>style</code></td>
     <td>(optional) override for the default style of the mirrored cursor. If a custom class is specified to style the cursor, set to empty to remove the default styling which might otherwise override the style specified in the class.</td>
   </tr>
+  <tr>
+    <td><code>...</code></td>
+    <td>other attributes are attached to the <code>div</code> element containing the cursors.</td>
+  </tr>
 </table>
 </div>
 
@@ -74,16 +78,20 @@
 <div class="def">
 <h3>Definition</h3>
 <pre>
-&lt;fp-plot id="ID" src="SRC"&gt;&lt;/fp-plot&gt;
+&lt;fp-plot id="ID" src="SRC" ...&gt;&lt;/fp-plot&gt;
 </pre>
 <table>
   <tr>
     <td><code>id</code></td>
-    <td>(optional) own ID.</td>
+    <td>(optional) own identifier.</td>
   </tr>
   <tr>
     <td><code>src</code></td>
     <td>path/URL to an image file, can use <a href="values.html">value substitutions</a>.</td>
+  </tr>
+  <tr>
+    <td><code>...</code></td>
+    <td>other attributes are attached to the created <code>img</code> element.</td>
   </tr>
 </table>
 </div>
@@ -102,12 +110,22 @@
 <div class="def">
 <h3>Definition</h3>
 <pre>
-&lt;fp-stack&gt;
-  &lt;fp-plot src="..."&gt;&lt;/fp-plot&gt;
-  &lt;img src="..."&gt;
+&lt;fp-stack id="ID" ...&gt;
+  &lt;fp-plot src="SRC1"&gt;&lt;/fp-plot&gt;
+  &lt;img src="SRC2"&gt;
   [...]
 &lt;/fp-stack&gt;
 </pre>
+<table>
+  <tr>
+    <td><code>id</code></td>
+    <td>(optional) own identifier.</td>
+  </tr>
+  <tr>
+    <td><code>...</code></td>
+    <td>other attributes are attached to the stack container element.</td>
+  </tr>
+</table>
 </div>
 
 
@@ -119,7 +137,7 @@
 <div class="def">
 <h3>Definition</h3>
 <pre>
-&lt;fp-video id="ID" src="SRC"&gt;&lt;/fp-plot&gt;
+&lt;fp-video id="ID" src="SRC" ...&gt;&lt;/fp-plot&gt;
 </pre>
 <table>
   <tr>
@@ -129,6 +147,10 @@
   <tr>
     <td><code>src</code></td>
     <td>path/URL to a video file.</td>
+  </tr>
+  <tr>
+    <td><code>...</code></td>
+    <td>other attributes are attached to the created <code>video</code> element.</td>
   </tr>
 </table>
 </div>
@@ -176,7 +198,7 @@
 <table>
   <tr>
     <td><code>id</code></td>
-    <td>own ID.</td>
+    <td>own identifier.</td>
   </tr>
   <tr>
     <td><code>type</code></td>
@@ -307,7 +329,7 @@
 <table>
   <tr>
     <td><code>id</code></td>
-    <td>(optional) own ID.</td>
+    <td>(optional) own identifier.</td>
   </tr>
   <tr>
     <td><code>type</code></td>
@@ -404,16 +426,20 @@
 <div class="def">
 <h3>Definition</h3>
 <pre>
-&lt;fp-animation id="ID" target="TARGET[;TARGET ...]"&gt;&lt;/fp-animation&gt;
+&lt;fp-animation id="ID" target="TARGET[;TARGET ...]" ...&gt;&lt;/fp-animation&gt;
 </pre>
 <table>
   <tr>
     <td><code>id</code></td>
-    <td>(optional) own ID.</td>
+    <td>(optional) own identifier.</td>
   </tr>
   <tr>
     <td><code>target</code></td>
-    <td>ID(s) of the element(s) to be animated.</td>
+    <td>identifier(s) of the element(s) to be animated.</td>
+  </tr>
+  <tr>
+    <td><code>...</code></td>
+    <td>other attributes are attached to the container of the control elements.</td>
   </tr>
 </table>
 </div>
@@ -469,12 +495,12 @@
 <div class="def">
   <h3>Definition</h3>
 <pre>
-&lt;fp-button id="ID" action="ELEMENT.ACTION[;ELEMENT.ACTION ...]"&gt;LABEL&lt;/fp-button&gt;
+&lt;fp-button id="ID" action="ELEMENT.ACTION[;ELEMENT.ACTION ...]" ...&gt;LABEL&lt;/fp-button&gt;
 </pre>
 <table>
   <tr>
     <td><code>id</code></td>
-    <td>(optional) own ID.</td>
+    <td>(optional) own identifier.</td>
   </tr>
   <tr>
     <td><code>action</code></td>
@@ -483,6 +509,10 @@
   <tr>
     <td><code>label</code></td>
     <td>label shown on the button.</td>
+  </tr>
+  <tr>
+    <td><code>...</code></td>
+    <td>other attributes are attached to the created <code>button</code> element.</td>
   </tr>
 </table>
 </div>
@@ -555,12 +585,16 @@
 <div class="def">
 <h3>Definition</h3>
 <pre>
-&lt;fp-overlay id="ID"&gt;&lt;/fp-overlay&gt;
+&lt;fp-overlay id="ID" ...&gt;&lt;/fp-overlay&gt;
 </pre>
 <table>
   <tr>
     <td><code>id</code></td>
-    <td>own ID.</td>
+    <td>own identifier.</td>
+  </tr>
+  <tr>
+    <td><code>...</code></td>
+    <td>other attributes are attached to the overlay container.</td>
   </tr>
 </table>
 </div>

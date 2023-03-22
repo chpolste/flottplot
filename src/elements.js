@@ -189,7 +189,7 @@ class FPSlider extends FPItems {
 
 class FPAnimation extends FPElement {
 
-    constructor(id, targets) {
+    constructor(id, targets, attrs) {
         super(id);
         this.targets = targets;
         this.dependencies = new Set(targets);
@@ -199,12 +199,13 @@ class FPAnimation extends FPElement {
         // ...
         this.toggleButton = dom.newButton({}, "▶️", () => this.invoke("toggle"));
         // ...
-        this.node = dom.newNode("span", { "id": this.id }, [
+        this.node = dom.newNode("span", attrs, [
             dom.newButton({}, "⏪", () => this.invoke("slower")),
             dom.newButton({}, "⏹️", () => this.invoke("reset")),
             this.toggleButton,
             dom.newButton({}, "⏩", () => this.invoke("faster")),
         ]);
+        this.node.id = this.id;
         this.actions.add("reset"); // Stop the animation and reset all targets
         this.actions.add("start"); // Start the animation if not running
         this.actions.add("stop"); // Stop the animation if not stopped
@@ -264,7 +265,12 @@ class FPAnimation extends FPElement {
     // Constructor from HTML element
 
     static from(node) {
-        return new FPAnimation(dom.getAttr(node, "id"), dom.parseTargets(dom.getAttr(node, "target")));
+        let attrs = dom.Attributes.from(node);
+        return new FPAnimation(
+            attrs.id,
+            attrs.pop("target", null, "TARGET"),
+            attrs
+        );
     }
 
 }
@@ -284,19 +290,21 @@ class FPBind extends FPElement {
         }
     }
 
-    static from(element) {
-        let key = dom.getAttr(element, "key");
-        let calls = dom.parseCalls(dom.getAttr(element, "action"));
-        return new FPBind(key, calls);
+    static from(node) {
+        let attrs = dom.Attributes.from(node);
+        return new FPBind(
+            attrs.pop("key"),
+            attrs.pop("action", null, "ACTION")
+        );
     }
 }
 
 
 class FPButton extends FPElement {
 
-    constructor(id, label, calls) {
+    constructor(id, label, calls, attrs) {
         super(id);
-        this.node = dom.newButton({ "id": this.id }, label, () => this.invoke("trigger"));
+        this.node = dom.newButton(attrs, label, () => this.invoke("trigger"));
         this.calls = calls;
         // Need to set dependencies so cyclic calls are detected
         this.dependencies = new Set(calls.map(_ => _[0]));
@@ -312,11 +320,14 @@ class FPButton extends FPElement {
 
     // Constructor from HTML element
 
-    static from(element) {
-        let eid = dom.getAttr(element, "id");
-        let label = Array.from(element.childNodes);
-        let calls = dom.parseCalls(dom.getAttr(element, "action"));
-        return new FPButton(eid, label, calls);
+    static from(node) {
+        let attrs = dom.Attributes.from(node);
+        return new FPButton(
+            attrs.id,
+            Array.from(node.childNodes), // label
+            attrs.pop("action", null, "ACTION"),
+            attrs
+        );
     }
 
 }
@@ -334,7 +345,7 @@ function getPageRect(node) {
 
 class FPCursors extends FPElement {
 
-    constructor(id, cursors) {
+    constructor(id, cursors, attrs) {
         super(id);
         this.cursors = cursors;
         for (let cc of this.cursors) {
@@ -344,10 +355,9 @@ class FPCursors extends FPElement {
             if (cc["style"] != null) cc.node.setAttribute("style", cc["style"]);
             cc.node.style.position = "absolute";
         }
-        this.node = dom.newNode("div", {
-            "id": this.id,
-            "class": "fp-cursorgroup"
-        }, this.cursors.map(_ => _.node).filter(_ => _ != null));
+        this.node = dom.newNode("div", attrs, this.cursors.map(_ => _.node).filter(_ => _ != null));
+        this.node.id = this.id;
+        this.node.className = "fp-cursors"; // TODO append
     }
 
     initialize() {
@@ -396,21 +406,22 @@ class FPCursors extends FPElement {
         }
     }
 
-    static from(element) {
+    static from(node) {
         let cursors = [];
-        for (let node of element.childNodes) {
+        for (let child of node.childNodes) {
             // Skip anything that isn't a proper tag
-            if (node.nodeType !== Node.ELEMENT_NODE) continue;
+            if (child.nodeType !== Node.ELEMENT_NODE) continue;
             // Default cursor type is pointer
-            let cur = dom.getAttr(node, "cursor", "pointer"); // TODO check if valid
+            let attrs = dom.Attributes.from(child);
+            let cur = attrs.pop("cursor", "pointer"); // TODO check if valid?
             cursors.push({
-                "target": dom.getAttr(node, "target"),
+                "target": attrs.pop("target"),
                 "cursor": cur,
-                "style": dom.getAttr(node, "style"),
-                "class": dom.getAttr(node, "class", "fp-cursor fp-"+cur),
+                "style": attrs.pop("style"), // TODO hand over remaining attributes?
+                "class": attrs.pop("class", "fp-cursor fp-"+cur)
             });
         }
-        return new FPCursors(element.id, cursors);
+        return new FPCursors(node.id, cursors, dom.Attributes.from(node));
     }
 
 }
@@ -418,11 +429,13 @@ class FPCursors extends FPElement {
 
 class FPOverlay extends FPElement {
 
-    constructor(id) {
+    constructor(id, attrs) {
         super(id);
         this.inner = dom.newNode("div", { "class": "fp-overlay-inner" });
         // Outer container for proper centering of inner content
-        this.node = dom.newNode("div", { "class": "fp-overlay" }, [this.inner]);
+        this.node = dom.newNode("div", attrs, [this.inner]);
+        this.node.id = this.id;
+        this.node.className = "fp-overlay"
         // Overlay is hidden by default
         this.node.style.display = "none";
         // Close overlay by clicking anywhere
@@ -461,8 +474,8 @@ class FPOverlay extends FPElement {
         }
     }
 
-    static from(element) {
-        return new FPOverlay(element.id);
+    static from(node) {
+        return new FPOverlay(node.id, dom.Attributes.from(node));
     }
 
 }
@@ -498,8 +511,8 @@ class FPPlot extends FPElement {
         this.overlay.src = src;
     }
 
-    static from(element) {
-        let attrs = dom.Attributes.from(element);
+    static from(node) {
+        let attrs = dom.Attributes.from(node);
         return new FPPlot(attrs.id, attrs.pop("src"), attrs)
     }
 
@@ -508,24 +521,22 @@ class FPPlot extends FPElement {
 
 class FPRange {
 
-    static from(element) {
-        let eid = dom.getAttr(element, "id");
-        let format = dom.getAttr(element, "format");
+    static from(node) {
+        let attrs = dom.Attributes.from(node);
         // Construct internal RangeItems object based on specification
-        let init = Value.from(dom.getAttr(element, "init"), null, true);
-        let step = Value.from(dom.getAttr(element, "step"), null, true);
-        let min = Value.from(dom.getAttr(element, "min"), null, true);
-        let max = Value.from(dom.getAttr(element, "max"), null, true);
-        let wrap = dom.getAttr(element, "wrap");
-        let range = new RangeItems(init, step, min, max, wrap);
-        // Process actions for special events (if given)
-        let calls = dom.getCalls(element, ["min-wrap", "max-wrap"]);
-        if (element.nodeName === "FP-RANGE") {
-            // Default element type of fp-range is counter
-            let etype = dom.getAttr(element, "type", "counter");
-            return FPItems.ofType(etype, eid, range, format, calls);
-        } else throw new ElementError(
-            "cannot convert tag '" + element.nodeName + "' to a range"
+        let rng = new RangeItems(
+            attrs.pop("init", null, "VALUE"),
+            attrs.pop("step", null, "VALUE"),
+            attrs.pop("min", null, "VALUE"),
+            attrs.pop("max", null, "VALUE"),
+            attrs.pop("wrap")
+        );
+        return FPItems.ofType(
+            attrs.pop("type", "counter"), // default element type is counter
+            attrs.id,
+            rng,
+            attrs.pop("format"), // formatting for in-element value display
+            attrs.popActions("min-wrap", "max-wrap") // actions for special event
         );
     }
 
@@ -534,27 +545,31 @@ class FPRange {
 
 class FPSelect {
 
-    static from(element) {
-        let format = dom.getAttr(element, "format");
+    static from(node) {
+        let attrs = dom.Attributes.from(node);
         // Construct internal OptionsItems from child nodes based on specification
-        let init = Value.from(dom.getAttr(element, "init"), null, true);
         let values = [];
-        for (let node of element.childNodes) {
-            if (node.nodeType !== Node.ELEMENT_NODE) continue;
-            let value = Value.from(node.textContent);
+        for (let child of node.childNodes) {
+            if (child.nodeType !== Node.ELEMENT_NODE) continue;
+            let value = Value.from(child.textContent);
             // Attach additional values specified by the user
-            for (let attr of node.attributes) {
+            for (let attr of child.attributes) {
                 value[attr.name] = Value.from(attr.value);
             }
             values.push(value);
         }
-        let wrap = dom.getAttr(element, "wrap");
-        let options = new OptionsItems(values, init, wrap);
-        // Process actions for special events (if given)
-        let calls = dom.getCalls(element, ["min-wrap", "max-wrap"]);
-        // Default element type of fp-select is dropdown
-        let etype = dom.getAttr(element, "type", "dropdown");
-        return FPItems.ofType(etype, element.id, options, format, calls);
+        let options = new OptionsItems(
+            values,
+            attrs.pop("init", null, "VALUE"),
+            attrs.pop("wrap")
+        );
+        return FPItems.ofType(
+            attrs.pop("type", "dropdown"), // default type is dropdown menu
+            attrs.id,
+            options,
+            attrs.pop("format"),
+            attrs.popActions(["min-wrap", "max-wrap"]) // actions for special events
+        );
     }
 
 }
@@ -562,12 +577,12 @@ class FPSelect {
 
 class FPStack extends FPElement {
 
-    constructor(id, plots) {
+    constructor(id, plots, attrs) {
         super(id);
         this.plots = plots;
-        this.node = dom.newNode("div", {
-            "class": "fp-stack"
-        }, this.plots)
+        this.node = dom.newNode("div", attrs, this.plots)
+        this.node.id = this.id;
+        this.node.className = "fp-stack"; // TODO append
         // The overlay stack is constructed during initialization because it
         // needs the flottplot instance for element lookup
         this.overlay = dom.newNode("div", { "class": "fp-stack" });
@@ -594,20 +609,20 @@ class FPStack extends FPElement {
         }
     }
 
-    static from(element) {
+    static from(node) {
         // FPStack is registered with recursive descent conversion. When this
         // converter is called, all children have already been converted.
         let plots = [];
-        for (let node of element.childNodes) {
-            if (node.nodeType !== Node.ELEMENT_NODE) continue;
+        for (let child of node.childNodes) {
+            if (child.nodeType !== Node.ELEMENT_NODE) continue;
             // TODO: what about canvas, svg, ...? The problem is mainly the
             // overlay, where copies of all layers are made
-            if (node.nodeName !== "IMG") throw new flottplot.ElementError(
-                "invalid element '" + node.nodeName + "' in stack"
+            if (child.nodeName !== "IMG") throw new flottplot.ElementError(
+                "invalid element '" + child.nodeName + "' in stack"
             );
-            plots.push(node);
+            plots.push(child);
         }
-        return new FPStack(element.id, plots);
+        return new FPStack(node.id, plots, dom.Attributes.from(node));
     }
 
 }
@@ -619,8 +634,8 @@ class FPState extends FPElement {
         this.flottplot.urlstate = true;
     }
 
-    static from(element) {
-        return new FPState(element.id);
+    static from(node) {
+        return new FPState(node.id);
     }
 
 }
@@ -640,8 +655,8 @@ class FPText extends FPElement {
         this.node.textContent = text;
     }
 
-    static from(element) {
-        return new FPText(element.id, element.textContent);
+    static from(node) {
+        return new FPText(node.id, node.textContent);
     }
 
 }
@@ -682,8 +697,8 @@ class FPVideo extends FPElement {
         }
     }
 
-    static from(element) {
-        let attrs = dom.Attributes.from(element);
+    static from(node) {
+        let attrs = dom.Attributes.from(node);
         return new FPVideo(attrs.id, [attrs.pop("src")], attrs);
     }
 

@@ -186,10 +186,9 @@ class Value {
         return this;
     }
 
-    static from(value, only, maybe) {
-        // TODO process and handle only
-        // Convenience: act as identity function for null values if allowed
-        if (maybe && value == null) {
+    static from(value) {
+        // Act as identity function for null values
+        if (value == null) {
             return null;
         }
         // TextValue is fallback, but if specifically requested must be handled first
