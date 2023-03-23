@@ -15,6 +15,7 @@ all: \
 
 documentation: \
 	docs/.nojekyll \
+	docs/logo.svg \
 	docs/index.html \
 	docs/values.html \
 	docs/elements.html \
@@ -75,7 +76,10 @@ python/flottplot/assets:
 
 # Documentation files
 
-docs/docs.css: src/docs/docs.less | docs
+docs/%: src/docs/%
+	cp $^ $@
+
+docs/%.css: src/docs/%.less | docs
 	lessc $< $@
 
 docs/%.html: src/docs/%.html src/docs/template.html tools/docbuilder.py | docs

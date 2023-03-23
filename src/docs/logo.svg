@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="100">
+  <g transform="translate(60,10)">
+    <path d="M 100,80 150,80 150,0 100,0" fill="#9CC8DE"></path>
+    <path d="M 275,40 325,40 350,0 300,0" fill="#F0BD8A"></path>
+    <path d="M 400,80 450,80 450,0 400,0" fill="#AAC68F"></path>
+    <g stroke="#000" stroke-width="10" fill="none">
+      <path d="M -50,80 0,0 50,0 50,80 150,80 200,0"></path>
+      <path d="M -25,40 25,40"></path>
+      <path d="M 100,80 100,0 350,0 350,80 450,80 500,0"></path>
+      <path d="M 150,80 150,0"></path>
+      <path d="M 200,80 250,0"></path>
+      <path d="M 250,80 300,0"></path>
+      <path d="M 275,40 325,40 350,0"></path>
+      <path d="M 400,80 400,0 550,0"></path>
+      <path d="M 450,80 450,0"></path>
+    </g>
+  </g>
+</svg>
+
