@@ -81,7 +81,7 @@ class FPCounter extends FPItems {
 
     constructor(id, range, format, calls) {
         super(id, range, format, calls);
-        this.box = dom.newNode("input");
+        this.box = dom.newNode("input", { "type": "text" });
         this.box.disabled = true;
         this.node = dom.newNode("span", {
             "class": "fp-range fp-range-counter"

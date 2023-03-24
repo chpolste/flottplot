@@ -322,7 +322,22 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <pre>
 &lt;fp-range id="wrapped_range" type="counter" min="-5" max="5" step="2" init="0" wrap="max"&gt;&lt;/fp-range&gt;
 </pre><p>
+  Numeric counter:
   <fp-range id="wrapped_range" type="counter" min="-5" max="5" step="2" init="0" wrap="max"></fp-range>
+</p>
+</div>
+
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+&lt;fp-range id="link_range" type="counter" min="0" max="2" step="1" wrap="both"
+          min-wrap-action="link_target.prev" max-wrap-action="link_target.next"&gt;&lt;/fp-range&gt;
+&lt;fp-range id="link_target" type="counter" init="0" step="1"&gt;&lt;/fp-range&gt;
+</pre><p>
+  Linked ranges:
+  <fp-range id="link_range" type="counter" min="0" max="2" step="1" wrap="both"
+            min-wrap-action="link_target.prev" max-wrap-action="link_target.next"></fp-range>
+  <fp-range id="link_target" type="counter" init="0" step="1"></fp-range>
 </p>
 </div>
 
@@ -331,6 +346,7 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <pre>
 &lt;fp-range id="date_range" type="counter" min="2020-01-01" step="3h" format="%Y-%m-%d %H UTC"&gt;&lt;/fp-range&gt;
 </pre><p>
+  Date counter:
   <fp-range id="date_range" type="counter" min="2020-01-01" step="3h" format="%Y-%m-%d %H UTC"></fp-range>
 </p>
 </div>
@@ -340,6 +356,7 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <pre>
 &lt;fp-range id="slider_range" type="slider" min="-5" max="5" step="1" init="-2"&gt;&lt;/fp-range&gt;
 </pre><p>
+  Slider:
   <fp-range id="slider_range" type="slider" min="-5" max="5" step="1" init="-2"></fp-range>
 </p>
 </div>
@@ -349,6 +366,7 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <pre>
 &lt;fp-range id="select_range" type="dropdown" min="-30" max="30" step="6" format="+04"&gt;&lt;/fp-range&gt;
 </pre><p>
+  Dropdown:
   <fp-range id="select_range" type="dropdown" min="-30" max="30" step="6" format="+04"></fp-range>
 </p>
 </div>
