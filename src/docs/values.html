@@ -31,26 +31,45 @@
   Strings of text.
 </p>
 
-<ul>
-  <li>
-    <code>TEXT</code> <em>Text</em><br>
-    Defined for compatibility with other value types.
-  </li>
-</ul>
-<ul>
-  <li>
-    <code>+</code> (<em>Text</em>, <em>Text</em>) → <em>Text</em><br>
-    Concatenation.
-  </li>
-  <li>
-    <code>§</code> (<em>Number</em>, <em>Text</em>) → <em>Text</em><br>
-    Left slice.
-  </li>
-  <li>
-    <code>§</code> (<em>Text</em>, <em>Number</em>) → <em>Text</em><br>
-    Right slice.
-  </li>
-</ul>
+<div class="val">
+<h3>Attributes</h3>
+<table>
+  <tr>
+    <td><code>TEXT</code></td>
+    <td>
+      <em>Text</em><br>
+      Defined for compatibility with other value types.
+    </td>
+  </tr>
+</table>
+</div>
+
+<div class="val">
+<h3>Binary Operators</h3>
+<table>
+  <tr>
+    <td><code>+</code></td>
+    <td>
+      (<em>Text</em>, <em>Text</em>) → <em>Text</em><br>
+      Concatenation.
+    </td>
+  </tr>
+  <tr>
+    <td><code>§</code></td>
+    <td>
+      (<em>Number</em>, <em>Text</em>) → <em>Text</em><br>
+      Left slice.
+    </td>
+  </tr>
+  <tr>
+    <td><code>§</code></td>
+    <td>
+      (<em>Text</em>, <em>Number</em>) → <em>Text</em><br>
+      Right slice.
+    </td>
+  </tr>
+</table>
+</div>
 
 <p>
   A subset of Python's <a href="https://docs.python.org/3/library/string.html#formatspec">format specification mini-language</a> is implemented for Text values: <code>[[fill]align][sign][0][width]</code>.
@@ -64,23 +83,77 @@
   Number literals (constant values not associated with an element, e.g. <code>5</code>, <code>23</code>) can be used in operations.
 </p>
 
-<ul>
-  <li>
-    <code>TEXT</code> <em>Text</em><br>
-    The text from which the value was parsed or a text representation of the value if it was created directly.
-  </li>
-</ul>
-<ul>
-  <li><code>+</code> <em>Number</em> → <em>Number</em></li>
-  <li><code>-</code> <em>Number</em> → <em>Number</em></li>
-</ul>
-<ul>
-  <li><code>*</code> (<em>Number</em>, <em>Number</em>) → <em>Number</em> (commutative)</li>
-  <li><code>/</code> (<em>Number</em>, <em>Number</em>) → <em>Number</em></li>
-  <li><code>%</code> (<em>Number</em>, <em>Number</em>) → <em>Number</em></li>
-  <li><code>+</code> (<em>Number</em>, <em>Number</em>) → <em>Number</em> (commutative)</li>
-  <li><code>-</code> (<em>Number</em>, <em>Number</em>) → <em>Number</em></li>
-</ul>
+<div class="val">
+<h3>Attributes</h3>
+<table>
+  <tr>
+    <td><code>TEXT</code></td>
+    <td>
+      <em>Text</em><br>
+      The text from which the value was parsed or a text representation of the value if it was created directly.
+    </td>
+  </tr>
+</table>
+</div>
+
+<div class="val">
+<h3>Unary Operators</h3>
+<table>
+  <tr>
+    <td><code>+</code></td>
+    <td>
+      (<em>Number</em>) → <em>Number</em>
+    </td>
+  </tr>
+  <tr>
+    <td><code>-</code></td>
+    <td>
+      (<em>Number</em>) → <em>Number</em>
+    </td>
+  </tr>
+</table>
+</div>
+
+<div class="val">
+<h3>Binary Operators</h3>
+<table>
+  <tr>
+    <td><code>*</code></td>
+    <td>
+      (<em>Number</em>, <em>Number</em>) → <em>Number</em> (commutative)<br>
+      Multiplication.
+    </td>
+  </tr>
+  <tr>
+    <td><code>/</code></td>
+    <td>
+      (<em>Number</em>, <em>Number</em>) → <em>Number</em><br>
+      Division.
+    </td>
+  </tr>
+  <tr>
+    <td><code>%</code></td>
+    <td>
+      (<em>Number</em>, <em>Number</em>) → <em>Number</em><br>
+      Modulo.
+    </td>
+  </tr>
+  <tr>
+    <td><code>+</code></td>
+    <td>
+      (<em>Number</em>, <em>Number</em>) → <em>Number</em> (commutative)<br>
+      Addition.
+    </td>
+  </tr>
+  <tr>
+    <td><code>-</code></td>
+    <td>
+      (<em>Number</em>, <em>Number</em>) → <em>Number</em><br>
+      Subtraction.
+    </td>
+  </tr>
+</table>
+</div>
 
 <p>
   A subset of Python's <a href="https://docs.python.org/3/library/string.html#formatspec">format specification mini-language</a> is implemented for Number values: <code>[[fill]align][0][width]</code>.
@@ -93,23 +166,66 @@
   UTC dates.
 </p>
 
-<ul>
-  <li>
-    <code>TEXT</code> <em>Text</em><br>
-    The text from which the value was parsed or a text representation of the value if it was created directly.
-  </li>
-  <li><code>YEAR</code> <em>Number</em></li>
-  <li><code>MONTH</code> <em>Number</em></li>
-  <li><code>DAY</code> <em>Number</em></li>
-  <li><code>HOUR</code> <em>Number</em></li>
-  <li><code>MINUTE</code> <em>Number</em></li>
-  <li><code>SECOND</code> <em>Number</em></li>
-</ul>
-<ul>
-  <li><code>+</code> (<em>Date</em>, <em>DateDelta</em>) → <em>Date</em> (commutative)</li>
-  <li><code>-</code> (<em>Date</em>, <em>DateDelta</em>) → <em>Date</em></li>
-  <li><code>-</code> (<em>Date</em>, <em>Date</em>) → <em>DateDelta</em></li>
-</ul>
+<div class="val">
+<h3>Attributes</h3>
+<table>
+  <tr>
+    <td><code>TEXT</code></td>
+    <td>
+      <em>Text</em><br>
+      The text from which the value was parsed or a text representation of the value if it was created directly.
+    </td>
+  </tr>
+  <tr>
+    <td><code>YEAR</code></td>
+    <td><em>Number</em></td>
+  </tr>
+  <tr>
+    <td><code>MONTH</code></td>
+    <td><em>Number</em></td>
+  </tr>
+  <tr>
+    <td><code>DAY</code></td>
+    <td><em>Number</em></td>
+  </tr>
+  <tr>
+    <td><code>HOUR</code></td>
+    <td><em>Number</em></td>
+  </tr>
+  <tr>
+    <td><code>MINUTE</code></td>
+    <td><em>Number</em></td>
+  </tr>
+  <tr>
+    <td><code>SECOND</code></td>
+    <td><em>Number</em></td>
+  </tr>
+</table>
+</div>
+
+<div class="val">
+<h3>Binary Operators</h3>
+<table>
+  <tr>
+    <td><code>+</code></td>
+    <td>
+      (<em>Date</em>, <em>DateDelta</em>) → <em>Date</em> (commutative)
+    </td>
+  </tr>
+  <tr>
+    <td><code>-</code></td>
+    <td>
+      (<em>Date</em>, <em>DateDelta</em>) → <em>Date</em>
+    </td>
+  </tr>
+  <tr>
+    <td><code>-</code></td>
+    <td>
+      (<em>Date</em>, <em>Date</em>) → <em>DateDelta</em>
+    </td>
+  </tr>
+</table>
+</div>
 
 <p>
   Date values support a subset of the <a href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">strftime</a> format codes used by Python's datetime module:
@@ -138,47 +254,100 @@
   DateDelta literals (constant values not associated with an element, e.g. <code>5s</code>, <code>23m</code>, <code>12h</code>, <code>4d</code>) can be used in operations.
 </p>
 
-<ul>
-  <li>
-    <code>TEXT</code> <em>Text</em><br>
-    The text from which the value was parsed or a text representation of the value if it was created directly.
-  </li>
-  <li>
-    <code>SIGN</code> <em>Number</em><br>
-    Contains <code>+1</code> if the value is positive, else <code>-1</code>.
-  </li>
-  <li>
-    <code>DAYS</code> <em>Number</em><br>
-    Number of full days contained in the interval.
-  </li>
-  <li>
-    <code>HOURS</code> <em>Number</em><br>
-    Number of full hours contained in the interval after removal of all full days.
-  </li>
-  <li>
-    <code>MINUTES</code> <em>Number</em><br>
-    Number of full minutes contained in the interval after removal of all full hours.
-  </li>
-  <li>
-    <code>SECONDS</code> <em>Number</em><br>
-    Number of seconds remaining in the interval after removal of all full minutes.
-  </li>
-  <li>
-    <code>TOTAL_SECONDS</code> <em>Number</em><br>
-    The total number of seconds contained in the interval.
-  </li>
-</ul>
-<ul>
-  <li><code>+</code> <em>DateDelta</em> → <em>DateDelta</em></li>
-  <li><code>-</code> <em>DateDelta</em> → <em>DateDelta</em></li>
-</ul>
-<ul>
-  <li><code>*</code> (<em>DateDelta</em>, <em>Number</em>) → <em>DateDelta</em> (commutative)</li>
-  <li><code>/</code> (<em>DateDelta</em>, <em>Number</em>) → <em>DateDelta</em></li>
-  <li><code>/</code> (<em>DateDelta</em>, <em>DateDelta</em>) → <em>Number</em></li>
-  <li><code>+</code> (<em>DateDelta</em>, <em>DateDelta</em>) → <em>DateDelta</em> (commutative)</li>
-  <li><code>-</code> (<em>DateDelta</em>, <em>DateDelta</em>) → <em>DateDelta</em></li>
-</ul>
+<div class="val">
+<h3>Attributes</h3>
+<table>
+  <tr>
+    <td><code>TEXT</code></td>
+    <td>
+      <em>Text</em><br>
+      The text from which the value was parsed or a text representation of the value if it was created directly.
+    </td>
+  </tr>
+  <tr>
+    <td><code>SIGN</code></td>
+    <td>
+      <em>Number</em><br>
+      Contains <code>+1</code> if the value is positive, else <code>-1</code>.
+    </td>
+  </tr>
+  <tr>
+    <td><code>DAYS</code></td>
+    <td>
+      <em>Number</em><br>
+      Number of full days contained in the interval.
+    </td>
+  </tr>
+  <tr>
+    <td><code>HOURS</code></td>
+    <td>
+      <em>Number</em><br>
+      Number of full hours contained in the interval after removal of all full days.
+    </td>
+  </tr>
+  <tr>
+    <td><code>MINUTES</code></td>
+    <td>
+      <em>Number</em><br>
+      Number of full minutes contained in the interval after removal of all full hours.
+    </td>
+  </tr>
+  <tr>
+    <td><code>SECONDS</code></td>
+    <td>
+      <em>Number</em><br>
+      Number of seconds remaining in the interval after removal of all full minutes.
+    </td>
+  </tr>
+  <tr>
+    <td><code>TOTAL_SECONDS</code></td>
+    <td>
+      <em>Number</em><br>
+      The total number of seconds contained in the interval.
+    </td>
+  </tr>
+</table>
+</div>
+
+<div class="val">
+<h3>Unary Operators</h3>
+<table>
+  <tr>
+    <td><code>+</code></td>
+    <td>(<em>DateDelta</em>) → <em>DateDelta</em></td>
+  </tr>
+  <tr>
+    <td><code>-</code></td>
+    <td>(<em>DateDelta</em>) → <em>DateDelta</em></td>
+  </tr>
+</table>
+</div>
+
+<div class="val">
+<h3>Binary Operators</h3>
+<table>
+  <tr>
+    <td><code>*</code></td>
+    <td>(<em>DateDelta</em>, <em>Number</em>) → <em>DateDelta</em> (commutative)</td>
+  </tr>
+  <tr>
+    <td><code>/</code></td>
+    <td>(<em>DateDelta</em>, <em>Number</em>) → <em>DateDelta</em></td>
+  </tr>
+  <tr>
+    <td><code>/</code></td>
+    <td>(<em>DateDelta</em>, <em>DateDelta</em>) → <em>Number</em></td>
+  </tr>
+  <tr>
+    <td><code>+</code></td>
+    <td>(<em>DateDelta</em>, <em>DateDelta</em>) → <em>DateDelta</em> (commutative)</td>
+  </tr>
+  <tr>
+    <td><code>-</code></td>
+    <td>(<em>DateDelta</em>, <em>DateDelta</em>) → <em>DateDelta</em></td>
+  </tr>
+</table>
+</div>
 
 <p>
   DateDelta does not provide formatting options at the moment.
