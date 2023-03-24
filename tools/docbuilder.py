@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import warnings
 
 
 regex_h1 = re.compile(r"\<h1[^\>]*id=\"(.*)\"[^\>]*\>(.*)\</h1\>") # only h1 with id set
@@ -34,23 +35,23 @@ def print_substitute(template, source):
 
 
 def collect_headings(source):
+    refs = set() # collect to warn about duplicates
     headings = []
     with open(source, "r") as src:
         for line_src in src:
-            match = regex_h1.match(line_src)
-            if match is not None:
-                headings.append([{
-                    "lvl": "h1",
-                    "ref": match.group(1),
-                    "txt": match.group(2)
-                }])
-            match = regex_h2.match(line_src)
-            if match is not None:
-                headings[-1].append({
-                    "lvl": "h2",
-                    "ref": match.group(1),
-                    "txt": match.group(2)
-                })
+            for regex, lvl in [(regex_h1, "h1"), (regex_h2, "h2")]:
+                match = regex.match(line_src)
+                if match is not None:
+                    ref = match.group(1)
+                    txt = match.group(2)
+                    headings.append([{
+                        "lvl": lvl,
+                        "ref": ref,
+                        "txt": txt
+                    }])
+                    if ref in refs:
+                        warnings.warn(f"duplicate reference {ref} in '{line_src.strip()}'")
+                    refs.add(ref)
     return headings
 
 
