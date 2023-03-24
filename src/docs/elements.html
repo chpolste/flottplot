@@ -65,6 +65,29 @@
 </table>
 </div>
 
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+&lt;fp-plot id="cursortarget_sin" src="plot/sin-2x.png"&gt;&lt;/fp-plot&gt;
+&lt;fp-plot id="cursortarget_cos" src="plot/cos-2x.png"&gt;&lt;/fp-plot&gt;
+&lt;fp-cursors&gt;
+  &lt;fp-cursor target="cursortarget_sin" cursor="pointer"&gt;&lt;/fp-cursor&gt;
+  &lt;fp-cursor target="cursortarget_cos" cursor="vline"&gt;&lt;/fp-cursor&gt;
+  &lt;fp-cursor target="cursortarget_cos" cursor="hline"&gt;&lt;/fp-cursor&gt;
+&lt;/fp-cursors&gt;
+</pre>
+<p>
+  <fp-plot id="cursortarget_sin" src="plot/sin-2x.png" style="width:300px;"></fp-plot>
+  <fp-plot id="cursortarget_cos" src="plot/cos-2x.png" style="width:300px;"></fp-plot>
+</p>
+</div>
+<fp-cursors>
+  <fp-cursor target="cursortarget_sin" cursor="pointer"></fp-cursor>
+  <fp-cursor target="cursortarget_cos" cursor="vline"></fp-cursor>
+  <fp-cursor target="cursortarget_cos" cursor="hline"></fp-cursor>
+</fp-cursors>
+
+
 <p>
   <code>&lt;fp-cursor&gt;</code> elements should be placed directly into the body of the document as they use absolute positioning to place the additional cursors.
 </p>
@@ -109,7 +132,7 @@ Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"
 </pre>
 <p>
   Wavenumber: <fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"></fp-range><br>
-  <fp-plot src="plot/sin-{plotparam}x.png"></fp-plot>
+  <fp-plot src="plot/sin-{plotparam}x.png" style="width:450px;"></fp-plot>
 </p>
 <h3>Files</h3>
 <pre>
