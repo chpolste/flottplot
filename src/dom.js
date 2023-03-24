@@ -76,6 +76,7 @@ let dom = {
                     out.set(name, calls);
                 }
             }
+            return out;
         }
 
         // Assign attributes to a node

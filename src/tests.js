@@ -421,7 +421,7 @@ describe("RangeItems", function () {
             new NumberValue(1), // step
             new NumberValue(0), // min
             new NumberValue(3), // max
-            true                // wrap
+            "both"              // wrap
         );
         assert.equal(range.value, 0);
         range.prev();
@@ -444,7 +444,7 @@ describe("RangeItems", function () {
             new NumberValue(3), // step
             new NumberValue(1), // min
             new NumberValue(5), // max
-            true                // wrap
+            "both"              // wrap
         );
         // ...
         assert.equal(range.value, 2);
@@ -461,6 +461,36 @@ describe("RangeItems", function () {
         assert.equal(range.value, 5);
         range.value = new NumberValue(-100);
         assert.equal(range.value, 2);
+    });
+
+});
+
+
+
+describe("dom.Attributes", function () {
+
+    //include dom.js
+
+    it("popActions with no matches returns Map", function() {
+        let attrs = new dom.Attributes();
+        attrs.set("foo", "bar");
+        attrs.set("baz-action", "bla");
+        let actions = attrs.popActions(["foo"]);
+        assert.equal(actions.size, 1);
+        assert.deepEqual(actions.get("foo"), []);
+    });
+
+    it("popActions with match returns Map of actions", function() {
+        let attrs = new dom.Attributes();
+        attrs.set("foo", "bar");
+        attrs.set("baz-action", "bla.next");
+        attrs.set("bar-action", "foo.prev");
+        let actions = attrs.popActions(["baz", "goo", "bar"]);
+        assert.equal(actions.size, 3);
+        assert.deepEqual(actions.get("baz"), [["bla", "next"]]);
+        assert.deepEqual(actions.get("bar"), [["foo", "prev"]]);
+        assert.deepEqual(actions.get("goo"), []);
+
     });
 
 });

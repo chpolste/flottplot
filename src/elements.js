@@ -536,7 +536,7 @@ class FPRange {
             attrs.id,
             rng,
             attrs.pop("format"), // formatting for in-element value display
-            attrs.popActions("min-wrap", "max-wrap") // actions for special event
+            attrs.popActions(["min-wrap", "max-wrap"]) // actions for special event
         );
     }
 
