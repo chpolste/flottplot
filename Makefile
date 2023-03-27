@@ -16,6 +16,7 @@ all: \
 documentation: \
 	docs/.nojekyll \
 	docs/logo.svg \
+	docs/favicon.png \
 	docs/index.html \
 	docs/values.html \
 	docs/elements.html \
