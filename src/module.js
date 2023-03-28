@@ -236,19 +236,14 @@ var flottplot = function () {
     Flottplot.registerTag("fp-video", FPVideo, false);
 
     return {
-        // ...
+        __version__: "2.1.0",
         Flottplot: Flottplot,
-        // ...
         FPElement: FPElement,
-        // ...
         Value: Value,
-        // ...
         OptionsItems: OptionsItems,
         RangeItems: RangeItems,
-        // ...
         FlottplotError: FlottplotError,
         ElementError: ElementError,
-        // ...
         dom: dom,
     };
 

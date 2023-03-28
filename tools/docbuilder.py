@@ -5,6 +5,7 @@ import subprocess
 import sys
 import warnings
 
+from flottplot import __version__
 
 regex_h1 = re.compile(r"\<h1[^\>]*id=\"(.*)\"[^\>]*\>(.*)\</h1\>") # only h1 with id set
 regex_h2 = re.compile(r"\<h2[^\>]*id=\"(.*)\"[^\>]*\>(.*)\</h2\>") # only h2 with id set
@@ -12,6 +13,7 @@ regex_h2 = re.compile(r"\<h2[^\>]*id=\"(.*)\"[^\>]*\>(.*)\</h2\>") # only h2 wit
 regex_content = re.compile(r"^\s*\<!--\s*content\s*--\>\s*$")
 regex_navigation = re.compile(r"^\s*\<!--\s*navigation\s*--\>\s*$")
 regex_title = re.compile(r"\<!--\s*title\s*--\>")
+regex_version = re.compile(r"\<!--\s*version\s*--\>")
 
 def template_substitute(template, source):
     assert os.path.isfile(template)
@@ -33,6 +35,7 @@ def template_substitute(template, source):
                 print(navigation)
                 continue
             line_tmp = re.sub(regex_title, title, line_tmp)
+            line_tmp = re.sub(regex_version, __version__, line_tmp)
             print(line_tmp, end="")
 
 
