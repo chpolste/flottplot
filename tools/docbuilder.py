@@ -1,5 +1,7 @@
+import html
 import os
 import re
+import subprocess
 import sys
 import warnings
 
@@ -11,7 +13,7 @@ regex_content = re.compile(r"^\s*\<!--\s*content\s*--\>\s*$")
 regex_navigation = re.compile(r"^\s*\<!--\s*navigation\s*--\>\s*$")
 regex_title = re.compile(r"\<!--\s*title\s*--\>")
 
-def print_substitute(template, source):
+def template_substitute(template, source):
     assert os.path.isfile(template)
     assert os.path.isfile(source)
     title = os.path.splitext(os.path.basename(source))[0]
@@ -24,7 +26,7 @@ def print_substitute(template, source):
             if match is not None:
                 with open(source, "r") as src:
                     for line_src in src:
-                        print(line_src, end="")
+                        content_substitute(line_src, end="")
                 continue
             match = regex_navigation.match(line_tmp)
             if match is not None:
@@ -32,6 +34,20 @@ def print_substitute(template, source):
                 continue
             line_tmp = re.sub(regex_title, title, line_tmp)
             print(line_tmp, end="")
+
+
+regex_shell = re.compile(r"^\<!--\s*\$\s+(.*)\s*--\>$")
+
+def content_substitute(line, **print_kwargs):
+    # To auto-generate parts of the documentation of the python package,
+    # execute subcommands of the CLI interface, capture the output of the
+    # subcommand help and substitute into the document.
+    match = regex_shell.match(line)
+    if match is not None:
+        text = subprocess.getoutput(match.group(1))
+        print(html.escape(text))
+        return
+    print(line, **print_kwargs)
 
 
 def collect_headings(source):
@@ -85,5 +101,5 @@ if __name__ == "__main__":
     assert len(sys.argv) == 3
     _, template, source = sys.argv
 
-    print_substitute(template, source)
+    template_substitute(template, source)
 

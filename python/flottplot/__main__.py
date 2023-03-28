@@ -5,7 +5,7 @@ from . import __version__
 from .assets import all_assets, write_asset, create_page
 
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(prog="flottplot")
 parser.add_argument("-v", "--version", action="store_true")
 subparsers = parser.add_subparsers(title="subcommands")
 

@@ -20,7 +20,7 @@ documentation: \
 	docs/index.html \
 	docs/values.html \
 	docs/elements.html \
-	docs/tips.html \
+	docs/python.html \
 	docs/docs.css \
 	docs/dist/flottplot-min.js \
 	docs/dist/flottplot.css \

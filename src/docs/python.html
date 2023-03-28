@@ -1,9 +1,51 @@
 <p>
-  How to use Flottplot in the best way and make the most of your pages.
+  Install the Flottplot Python package from <a href="https://pypi.org/project/flottplot">PyPI</a>
+</p><pre>
+pip3 install flottplot
+</pre><p>
+  or download a current version from <a href="https://github.com/chpolste/flottplot/tree/main/python">GitHub</a>.
 </p>
 
+
 <article>
-<h1 id="ssh">Flottplot via SSH</h1>
+<h1 id="ipynb">Jupyter Integration</h1>
+<p>
+  After loading the notebook extension with
+</p><pre>
+%load_ext flottplot
+</pre><p>
+  Flottplot cells can be created with a <code>%%flottplot</code> magic command.
+  Flottplot elements added to the cell body will be converted when executing the cell.
+  Each Flottplot cell is independent and elements cannot interact between them.
+</p><p>
+  Note that all images must be reachable from the root directory of the notebook server.
+  Because JupyterLab does not serve images directly via URL, the extension does not work properly with the lab interface at the moment.
+</p>
+</article>
+
+
+<article>
+<h1 id="cli">Command Line Interface</h1>
+<p>
+  Convenient Flottplot management from the command line:
+</p><pre>
+python3 -m flottplot SUBCOMMAND ARGS...
+</pre>
+
+<h2 id="cli-init">init</h2>
+<pre>
+<!-- $ python3 -m flottplot init --help -->
+</pre>
+
+<h2 id="cli-replace">replace</h2>
+<pre>
+<!-- $ python3 -m flottplot replace --help -->
+</pre>
+</article>
+
+
+<article>
+<h1 id="server">Access via SSH</h1>
 
 <p>
   Your plots might be saved on a remote machine that you only have SSH access to.
@@ -47,24 +89,4 @@ http://localhost:8000
   The server can be stopped with Ctrl-C when you are done.
 </p>
 </article>
-
-
-<!--
-<article>
-<h1 id="ipynb">Jupyter Notebook Integration</h1>
-
-<p>
-  Install the Flottplot Python package:
-</p>
-<pre>
-  $ pip install flottplot
-</pre>
-<p>
-  Images must be accessible from the root directory of the notebook server.
-  Unfortunately, the Jupyter notebook integration only works with the classic notebook interface.
-  Images are not loaded from the JupyterLab interface.
-</p>
-
-</article>
--->
 
