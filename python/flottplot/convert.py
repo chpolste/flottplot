@@ -81,22 +81,20 @@ class Element:
 def convert(x):
     raise NotImplementedError()
 
-#@convert.register(range)
-#def _(rng):
-#    out = Element("fp-range")
-#    if rng.start is not None:
-#        out["min"] = rng.start
-#    if rng.stop is not None:
-#        out["max"] = rng.stop # TODO
-#    if rng.step is not None:
-#        out["step"] = rng.step
-#    return out
-
 @convert.register(abc.Iterable)
 def _(xs, **attrs):
     out = Element("fp-select", **attrs)
     for x in xs:
         out.appendChild(Element("fp-option").appendChild(x))
+    return out
+
+@convert.register(range)
+def _(rng, **attrs):
+    out = Element("fp-range", **attrs)
+    out["min"] = rng.start
+    out["step"] = rng.step
+    # Python's range is right-exclusive, Flottplot's is inclusive
+    out["max"] = rng.stop - rng.step
     return out
 
 @convert.register(abc.Mapping)
