@@ -3,6 +3,7 @@
 let fp = new flottplot.Flottplot();
 
 document.addEventListener("DOMContentLoaded", function () {
-    fp.scan(document).initialize();
+    fp.convert(document);
+    fp.initialize();
 });
 

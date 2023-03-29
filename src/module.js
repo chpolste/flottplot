@@ -25,38 +25,9 @@ var flottplot = function () {
             return element;
         }
 
-        // ...
-
-        convert(original) {
-            let tag = Flottplot.tags.get(original.nodeName);
-            if (tag == null) throw new ElementError(
-                "unable to convert '" + original.nodeName + "': no corresponding flottplot element found"
-            );
-            // Intercept errors in element creation and replace these elements
-            // with a red error message
-            let element;
-            try {
-                element = tag.Class.from(original);
-            } catch (error) {
-                if (!(error instanceof FlottplotError)) {
-                    throw error;
-                }
-                original.replaceWith(dom.newNode("div", {
-                    "style": "border:3px solid #F00;background-color:#FCC;padding:3px;",
-                }, [
-                    dom.newNode("b", {}, [error.constructor.name, ": "]),
-                    error.message
-                ]));
-                console.error(error);
-                return;
-            }
-            // Remove the original element or replace with it's flottplotted
-            // counterpart in the DOM tree if one is specified
-            if (element.node == null) {
-                original.remove();
-            } else {
-                original.replaceWith(element.node);
-            }
+        // TODO there isn't a tested procedure in place to add elements after
+        // initialization. This may work fine or only partially or not at all.
+        add(element) {
             // Make sure id doesn't already exist in the collection
             if (this._elements.has(element.id)) {
                 element.fail("duplicate id");
@@ -71,23 +42,58 @@ var flottplot = function () {
             }
             // Give the element a supervisor
             element.flottplot = this;
-            // Enable method chaining
-            return this;
         }
 
-        scan(root) {
-            let tag = Flottplot.tags.get(root.nodeName);
+        convert(node) {
+            const tag = Flottplot.tags.get(node.nodeName);
+            // Recursive descent into node's children if the element is not
+            // known to Flottplot (any regular element: <p>, <div>, ...) or if
+            // the element is known and requires recursive descent. The
+            // conversion of children is carried out before the conversion of
+            // parents to make sure that parent elements can work with
+            // converted children at construction time.
             if (tag == null || tag.isRecursive) {
-                let children = Array.from(root.childNodes);
-                for (let child of children) {
-                    this.scan(child);
+                // Conversion changes the DOM, cannot use a live list of nodes
+                const children = Array.from(node.childNodes);
+                for (const child of children) {
+                    this.convert(child);
                 }
             }
-            if (tag != null) {
-                this.convert(root);
+            // Recursive descent is all there is to do for non-FP elements
+            if (tag == null || tag.Class == null) {
+                return;
             }
-            // Enable method chaining
-            return this;
+            // Instantiate a Flottplot element from the node
+            let element;
+            try {
+                element = tag.Class.from(node);
+            } catch (error) {
+                // No special treatment for "regular" errors
+                if (!(error instanceof FlottplotError)) {
+                    throw error;
+                }
+                // Place an error message in the document
+                // TODO find a better way of styling these messages
+                node.replaceWith(dom.newNode("div", {
+                    "style": "border:3px solid #F00;background-color:#FCC;padding:3px;",
+                }, [
+                    dom.newNode("b", {}, [error.constructor.name, ": "]),
+                    error.message
+                ]));
+                // Additionally log the error on the console
+                console.error(error);
+                return;
+            }
+            // Remove the original element or replace with its flottplotted
+            // counterpart in the DOM tree if one is specified
+            if (element.node == null) {
+                node.remove();
+            } else {
+                node.replaceWith(element.node);
+            }
+            // And finally add the element to the supervisor (replacing the
+            // node first allows for better placement of errors)
+            this.add(element);
         }
 
         // Element updating and update communication
@@ -114,7 +120,6 @@ var flottplot = function () {
                     this._state = JSON.parse(window.atob(hash));
                 }
             }
-            // This should be the last call, so end the method chain
         }
 
         // Notify that an element (identified by id) has changed, propagate the
