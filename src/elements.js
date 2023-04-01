@@ -427,6 +427,35 @@ class FPCursors extends FPElement {
 }
 
 
+class FPFrame extends FPElement {
+
+    constructor(id, attrs, children, calls) {
+        super(id);
+        this.node = dom.newNode("div", attrs, Array.from(children));
+        this.node.id = this.id;
+        this.node.className = "fp-frame";
+        this.calls = (calls != null) ? calls : new Map();
+        this.actions.add("fullscreen");
+    }
+
+    fullscreen() {
+        this.flottplot.fullscreen.show(
+            this.node,
+            () => this.flottplot.invokeAll(this.calls.get("enter")),
+            () => this.flottplot.invokeAll(this.calls.get("exit")),
+            () => this.fail("browser refused fullscreen request, see console for more information")
+        );
+    }
+
+    static from(node) {
+        const attrs = dom.Attributes.from(node);
+        const calls = attrs.popActions(["enter", "exit"]);
+        return new FPFrame(attrs.id, attrs, node.children, calls);
+    }
+
+}
+
+
 class FPOverlay extends FPElement {
 
     constructor(id, attrs) {

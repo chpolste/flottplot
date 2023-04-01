@@ -5,7 +5,10 @@ let dom = {
         dom.setAttrs(node, attrs);
         if (children != null) {
             for (let child of children) {
-                node.appendChild(isString(child) ? document.createTextNode(child) : child);
+                if ((typeof child == "string") || (child instanceof String)) {
+                    child = document.createTextNode(child);
+                }
+                node.appendChild(child);
             }
         }
         return node;
@@ -97,6 +100,28 @@ let dom = {
                 out.set(attr.name, attr.value);
             }
             return out;
+        }
+
+    },
+
+    Fullscreen: class {
+        
+        constructor() {
+            this.exitCalls = [];
+            document.addEventListener("fullscreenchange", () => {
+                if (document.fullscreenElement == null && this.exitCalls.length > 0) {
+                    this.exitCalls.pop()();
+                }
+            });
+        }
+
+        show(node, onenter, onexit, onfail) {
+            node.requestFullscreen().then(() => {
+                this.exitCalls.push(onexit);
+                onenter();
+            }).catch(() => {
+                onfail();
+            });
         }
 
     },

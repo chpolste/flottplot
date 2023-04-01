@@ -1,7 +1,7 @@
 "use strict";
 
 var flottplot = function () {
-     
+
     //include core.js
     //include dom.js
     //include elements.js
@@ -11,6 +11,8 @@ var flottplot = function () {
         constructor() {
             this._elements = new Map();
             this._graph = new UpdateGraph();
+            // Fullscreen management
+            this.fullscreen = new dom.Fullscreen();
             // Special fields used by extension elements
             this.overlay = null; // fullscreen overlay with FPOverlay (extras)
             this.bindings = new Map(); // keybindings loopkup table: key -> callable
@@ -231,6 +233,7 @@ var flottplot = function () {
     Flottplot.registerTag("fp-bind", FPBind, false);
     Flottplot.registerTag("fp-button", FPButton, false);
     Flottplot.registerTag("fp-cursors", FPCursors, false);
+    Flottplot.registerTag("fp-frame", FPFrame, true);
     Flottplot.registerTag("fp-overlay", FPOverlay, false);
     Flottplot.registerTag("fp-plot", FPPlot, false);
     Flottplot.registerTag("fp-range", FPRange, false);
