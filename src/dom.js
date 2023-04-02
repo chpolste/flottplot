@@ -1,5 +1,15 @@
 let dom = {
 
+    getPageRect: function (node) {
+        const rect = node.getBoundingClientRect();
+        return {
+            x: window.pageXOffset + rect.left,
+            y: window.pageYOffset + rect.top,
+            w: rect.width,
+            h: rect.height
+        };
+    },
+
     newNode: function (tag, attrs, children) {
         let node = document.createElement(tag);
         dom.setAttrs(node, attrs);

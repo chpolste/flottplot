@@ -642,6 +642,41 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 </div>
 
 
+<h2 id="controls">Controls</h2>
+<p>
+  Auto-generated buttons for all available actions of an element.
+</p>
+
+<div class="def">
+  <h3>Definition</h3>
+<pre>
+&lt;fp-controls id="ID" target="TARGET"&gt;&lt;/fp-controls&gt;
+</pre>
+<table>
+  <tr>
+    <td><code>id</code></td>
+    <td>(optional) own identifier.</td>
+  </tr>
+  <tr>
+    <td><code>target</code></td>
+    <td>identifier of the target element for which controls are generated.</td>
+  </tr>
+</table>
+</div>
+
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+&lt;fp-range id="controlled" type="slider" min="0" max="9" step="1" wrap="both"&gt;&lt;/fp-range&gt;
+&lt;fp-controls target="controlled"&gt;&lt;/fp-controls&gt;
+</pre>
+<p>
+  <fp-range id="controlled" type="slider" min="0" max="9" step="1" wrap="both"></fp-range>
+  <fp-controls target="controlled"></fp-controls>
+</p>
+</div>
+
+
 <h2 id="keybinding">Key Binding</h2>
 <p>
   Trigger action on key press.
@@ -685,7 +720,7 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <table>
   <tr>
     <td><code>id</code></td>
-    <td>own identifier.</td>
+    <td>(optional) own identifier.</td>
   </tr>
   <tr>
     <td><code>url</code></td>

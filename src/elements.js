@@ -333,15 +333,36 @@ class FPButton extends FPElement {
 }
 
 
-function getPageRect(node) {
-    let rect = node.getBoundingClientRect();
-    return {
-        x: window.pageXOffset + rect.left,
-        y: window.pageYOffset + rect.top,
-        w: rect.width,
-        h: rect.height
-    };
+class FPControls extends FPElement {
+
+    constructor(id, target) {
+        super(id);
+        this.node = dom.newNode("span")
+        this.node.id = this.id;
+        this.node.className = "fp-controls";
+        this.target = target;
+    }
+
+    initialize() {
+        const element = this.flottplot.getElement(this.target);
+        for (const action of element.actions) {
+            this.node.appendChild(dom.newButton({}, action, () => {
+                this.flottplot.invoke(element.id, action);
+            }));
+        }
+    }
+
+    static from(node) {
+        const attrs = dom.Attributes.from(node);
+        const targets = attrs.pop("target", null, "TARGET");
+        if (targets.length > 1) {
+            throw new ElementError("only one target allowed");
+        }
+        return new FPControls(attrs.id, targets[0]);
+    }
+
 }
+
 
 class FPCursors extends FPElement {
 
@@ -373,7 +394,7 @@ class FPCursors extends FPElement {
             // Mouse movement in elements of the group -> reposition cursors
             origin.node.addEventListener("mousemove", (event) => {
                 // Event target (where the mouse is) rectangle (page-relative)
-                let etr = getPageRect(event.target);
+                let etr = dom.getPageRect(event.target);
                 // Normalized position of cursor in origin element
                 let x = (event.pageX - etr.x) / etr.w;
                 let y = (event.pageY - etr.y) / etr.h;
@@ -382,7 +403,7 @@ class FPCursors extends FPElement {
                     let target = this.flottplot.getElement(cc.target);
                     if (origin.id === target.id || cc.node == null) continue;
                     let style = cc.node.style;
-                    let ctr = getPageRect(target.node);
+                    let ctr = dom.getPageRect(target.node);
                     if (cc.cursor === "hline") {
                         style.top = (ctr.y + y * ctr.h) + "px";
                         style.left = (ctr.x) + "px";

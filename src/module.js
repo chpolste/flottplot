@@ -230,6 +230,7 @@ var flottplot = function () {
     // Create element registry and initialize with core elements
     Flottplot.tags = new Map()
     Flottplot.registerTag("fp-animation", FPAnimation, false);
+    Flottplot.registerTag("fp-controls", FPControls, false);
     Flottplot.registerTag("fp-bind", FPBind, false);
     Flottplot.registerTag("fp-button", FPButton, false);
     Flottplot.registerTag("fp-cursors", FPCursors, false);
