@@ -57,6 +57,8 @@ let dom = {
                     return (value == null) ? [] : value.split(";").map(call => call.split("."));
                 case "TARGET":
                     return (value == null) ? [] : value.split(";"); // TODO trim?
+                case "BOOL":
+                    return (value === "true");
             }
             return value;
         }

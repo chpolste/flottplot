@@ -119,7 +119,7 @@ var flottplot = function () {
             if (this.urlstate) {
                 let hash = window.location.hash.substring(1);
                 if (hash.length !== 0) {
-                    this._state = JSON.parse(window.atob(hash));
+                    this.state = JSON.parse(window.atob(hash));
                 }
             }
         }
@@ -135,7 +135,7 @@ var flottplot = function () {
                 element.update(this._substitutionFor(element));
             }
             if (this.urlstate) {
-                window.location.hash = window.btoa(JSON.stringify(this._state));
+                window.location.hash = window.btoa(JSON.stringify(this.state));
             }
         }
 
@@ -196,7 +196,7 @@ var flottplot = function () {
 
         // Load from #-part of URL if set at startup
 
-        get _state() {
+        get state() {
             let out = {};
             for (let [id, element] of this._elements) {
                 if (id.startsWith("_")) continue;
@@ -207,7 +207,7 @@ var flottplot = function () {
             return out;
         }
 
-        set _state(state) {
+        set state(state) {
             for (let id of this._graph.orderedNodes) {
                 if (!state.hasOwnProperty(id)) continue;
                 let element = this._elements.get(id);

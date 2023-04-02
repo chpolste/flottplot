@@ -677,22 +677,46 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 </div>
 
 
-<h2 id="urlstate">URL State</h2>
+<h2 id="urlstate">State</h2>
 <p>
-  Enables encoding of the current state of all Flottplot elements into the URL's hash (the bit after <code>#</code>).
+  Save and restore snapshots of the current state of all Flottplot elements.
+  Configure automatic save/restore of the Flottplot state into the URL hash (the bit after <code>#</code>).
 </p>
 
 <div class="def">
 <h3>Definition</h3>
 <pre>
-&lt;fp-state&gt;&lt;/fp-state&gt;
+&lt;fp-state id="ID" url="true"&gt;&lt;/fp-state&gt;
 </pre>
+<table>
+  <tr>
+    <td><code>id</code></td>
+    <td>own identifier.</td>
+  </tr>
+  <tr>
+    <td><code>url</code></td>
+    <td>
+      if set to <code>true</code>, the state of all Flottplot elements is stored in the URL hash and will be automatically updated with every change.
+      When the page is loaded from an URL with a hash present, the contained state will be recovered.
+      If the page was changed between saving and loading (elements added, changed, removed), the recovery might fail.
+    </td>
+  </tr>
+</table>
 </div>
 
-<p>
-  The hash is updated with every change of the elements and when the page is loaded from an URL with a hash present, the encoded state will automatically be recovered.
-  If the page was changed between saving and loading (elements added, changed, removed), the recovery might fail.
-</p>
+<div class="act">
+<h3>Actions</h3>
+<table>
+  <tr>
+    <td><code>save</code></td>
+    <td>make a copy of the current state of all Flottplot elements and store it for later restoration.</td>
+  </tr>
+  <tr>
+    <td><code>restore</code></td>
+    <td>restore the saved copy of the Flottplot state to all elements. If no copy is stored, nothing happens.</td>
+  </tr>
+</table>
+</div>
 
 </article>
 
