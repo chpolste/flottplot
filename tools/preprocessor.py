@@ -3,10 +3,10 @@ import re
 import sys
 
 
-regex_include = re.compile(r"^\s*\/\/include\s(.*)\s*$")
+regex_include = re.compile(r"^\s*\/\/include\s*(.*)\s*$")
 
 def print_include(source):
-    assert os.path.isfile(source)
+    assert os.path.isfile(source), f"not a file: {source}"
     root = os.path.dirname(source)
     with open(source, "r") as src:
         for line_src in src:
