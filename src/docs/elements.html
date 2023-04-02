@@ -93,6 +93,49 @@
 </p>
 
 
+<h2 id="overlay">Overlay*</h2>
+<p>
+  Overlay when clicking on an image (e.g. <code>&lt;fp-plot&gt;</code> or <code>&lt;fp-stack&gt;</code>).
+  In the overlay, the plot will have its native resolution or is scaled to the maximum possible size that fits the browser's viewport if the native size is larger than the viewport.
+  Click anywhere to close the overlay again.
+</p>
+
+<div class="def">
+<h3>Definition</h3>
+<pre>
+&lt;fp-overlay id="ID" ...&gt;&lt;/fp-overlay&gt;
+</pre>
+<table>
+  <tr>
+    <td><code>id</code></td>
+    <td>own identifier.</td>
+  </tr>
+  <tr>
+    <td><code>...</code></td>
+    <td>other attributes are attached to the overlay container.</td>
+  </tr>
+</table>
+</div>
+
+<div class="act">
+<h3>Actions</h3>
+<table>
+  <tr>
+    <td><code>show</code></td>
+    <td>show the overlay. Only shows if an element has previously placed content into the overlay.</td>
+  </tr>
+  <tr>
+    <td><code>hide</code></td>
+    <td>hide the overlay.</td>
+  </tr>
+  <tr>
+    <td><code>toggle</code></td>
+    <td>show the overlay if currently hidden, hide if currently shown.</td>
+  </tr>
+</table>
+</div>
+
+
 <h2 id="plot">Plot</h2>
 <p>
   Controllable image element.
@@ -626,55 +669,6 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
   To avoid conflicts with browser-defined key bindings, key presses are not intercepted when a form element (text field, button, etc.) has focus.
   Click elsewhere on the page to reset the focus to allow Flottplot to intercept keys again if the bindings don't work.
 </p>
-
-</article>
-
-
-<article>
-<h1 id="specialelements">Special Elements</h1>
-<p>Elements that activate and configure special features of Flottplot.</p>
-
-<h2 id="overlay">Fullscreen Overlay*</h2>
-<p>
-  Fullscreen overlay when clicking on an image (e.g. <code>&lt;fp-plot&gt;</code> or <code>&lt;fp-stack&gt;</code>).
-  In the overlay, the plot will have its native resolution or is scaled to the maximum possible size that fits the browser's viewport if the native size is larger than the viewport.
-  Click anywhere to close the overlay again.
-</p>
-
-<div class="def">
-<h3>Definition</h3>
-<pre>
-&lt;fp-overlay id="ID" ...&gt;&lt;/fp-overlay&gt;
-</pre>
-<table>
-  <tr>
-    <td><code>id</code></td>
-    <td>own identifier.</td>
-  </tr>
-  <tr>
-    <td><code>...</code></td>
-    <td>other attributes are attached to the overlay container.</td>
-  </tr>
-</table>
-</div>
-
-<div class="act">
-<h3>Actions</h3>
-<table>
-  <tr>
-    <td><code>show</code></td>
-    <td>show the overlay. Only shows if an element has previously placed content into the overlay.</td>
-  </tr>
-  <tr>
-    <td><code>hide</code></td>
-    <td>hide the overlay.</td>
-  </tr>
-  <tr>
-    <td><code>toggle</code></td>
-    <td>show the overlay if currently hidden, hide if currently shown.</td>
-  </tr>
-</table>
-</div>
 
 
 <h2 id="urlstate">State</h2>
