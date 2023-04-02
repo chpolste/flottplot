@@ -193,12 +193,11 @@ class FPAnimation extends FPElement {
         super(id);
         this.targets = targets;
         this.dependencies = new Set(targets);
-        // ...
+        // Internal state
         this.speed = 4;
         this.timeout = null;
-        // ...
+        // Combined play/pause button
         this.toggleButton = dom.newButton({}, "▶️", () => this.invoke("toggle"));
-        // ...
         this.node = dom.newNode("span", attrs, [
             dom.newButton({}, "⏪", () => this.invoke("slower")),
             dom.newButton({}, "⏹️", () => this.invoke("reset")),
@@ -225,7 +224,26 @@ class FPAnimation extends FPElement {
         this.timeout = setTimeout(() => this.trigger(), 2000 / Math.abs(this.speed));
     }
 
-    // Actions
+    get state() {
+        return {
+            playing: (this.timeout != null),
+            speed: this.speed
+        };
+    }
+
+    set state(state) {
+        this.speed = state.speed;
+        if (state.playing) {
+            this.start();
+        } else {
+            this.stop();
+        }
+    }
+
+    // Actions. Animations currently don't produce a value so there is no need
+    // to notify the supervisor about changes. State changes (playing/speed)
+    // that need to be included in the URL hash should be taken care of by the
+    // update that follows changes in the animated element.
 
     reset() {
         this.stop();
@@ -261,8 +279,6 @@ class FPAnimation extends FPElement {
     faster() {
         this.speed += 1 + (this.speed === -1); // Skip over speed zero
     }
-
-    // Constructor from HTML element
 
     static from(node) {
         let attrs = dom.Attributes.from(node);
