@@ -122,7 +122,10 @@ let dom = {
             this.exitCalls = [];
             document.addEventListener("fullscreenchange", () => {
                 if (document.fullscreenElement == null && this.exitCalls.length > 0) {
-                    this.exitCalls.pop()();
+                    const call = this.exitCalls.pop();
+                    if (call != null) {
+                        call();
+                    }
                 }
             });
         }
@@ -130,9 +133,13 @@ let dom = {
         show(node, onenter, onexit, onfail) {
             node.requestFullscreen().then(() => {
                 this.exitCalls.push(onexit);
-                onenter();
+                if (onenter != null) {
+                    onenter();
+                }
             }).catch(() => {
-                onfail();
+                if (onfail != null) {
+                    onfail();
+                }
             });
         }
 

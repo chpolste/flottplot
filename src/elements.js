@@ -549,10 +549,17 @@ class FPPlot extends FPElement {
         this.src = src;
         this.setDependenciesFrom(src);
         // TODO register onerror to detect missing images (then do what?)
+        this.actions.add("fullscreen");
     }
 
     get value() {
         return Value.from(this.node.src);
+    }
+
+    fullscreen() {
+        this.flottplot.fullscreen.show(this.node, null, null, () => {
+            this.fail("browser refused fullscreen request, see console for more information");
+        });
     }
 
     update(substitution) {
