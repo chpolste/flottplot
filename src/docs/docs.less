@@ -4,7 +4,7 @@
 @val-dark:  hsl(260, 30%, 55%);
 @act-light: hsl(30, 100%, 90%);
 @act-dark:  hsl(30,  70%, 50%);
-@demo-light: hsl(90, 50%, 88%);
+@demo-light: hsl(90, 50%, 90%);
 @demo-dark:  hsl(90, 50%, 35%);
 
 body {
@@ -49,7 +49,7 @@ div.sidebar a:hover { color: @def-dark; }
 div.content {
   flex-basis: 0;
   flex-grow: 999;
-  min-inline-size: 400px;
+  min-inline-size: 600px;
   padding: 10px;
   background-color: #FFF;
   z-index: 10;
@@ -87,115 +87,116 @@ div.header {
 
 main { padding: 0 0 0 10px; margin: 0; }
 
-h1 {
-    font-size: 200%;
-    margin: 30px 0 10px 0;
+main h1 {
+  font-size: 200%;
+  margin: 30px 0 10px 0;
 }
-h2 {
-    font-size: 120%;
-    margin: 40px 0 10px 0;
-    padding: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
-    background-color: #DDD;
+main h2 {
+  font-size: 130%;
+  margin: 30px 0 10px 0;
+  border-bottom: 2px solid #CCC;
+  padding-bottom: 5px;
 }
-pre {
-    font-size: 1.1em;
-    overflow: scroll;
+main h3 {
+  font-size: 100%;
+  margin: 20px 0 10px 0;
 }
-article>pre, main>pre {
-    padding: 10px;
-    border: 1px solid #999;
-    border-radius: 5px;
+main ul {
+  margin: 10px 0;
+  padding-left: 30px;
+  list-style: none;
+}
+main p {
+  margin: 10px 0;
+}
+main p:first-child {
+  margin-top: revert;
+}
+main ul>li::before {
+  content: "●";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 20px; /* Also needed for space (tweak if needed) */
+  margin-left: -20px; /* Also needed for space (tweak if needed) */
+  color: #999;
+}
+main ul li ul {
+  margin: 0 0 10px 0;
+}
+main pre {
+  margin: 10px 0;
+  font-size: 1.1em;
+  overflow: scroll;
+  padding: 8px 10px;
+  border-radius: 3px;
+  background-color: #EEE;
+}
+main code {
+  font-size: 1.2em;
+  background-color: #EEE;
+  padding: 1px 4px;
+  border-radius: 3px;
 }
 
 .downloads a {
-    font-weight: bold;
-    font-size: 110%;
+  font-weight: bold;
 }
-
-.box() {
-    position: relative;
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 5px;
-    margin-top: 15px;
-    margin-bottom: 0;
-    h3 {
-        position: absolute;
-        right: 0;
-        margin: 5px 10px;
-        font-size: 15px;
-        color: #000;
-        opacity: 40%;
-    }
-    pre {
-        margin: 0;
-        padding: 8px 10px;
-        border-radius: 5px;
-    }
-    p, table {
-        margin: 10px;
-    }
-    td {
-        vertical-align: top;
-    }
-    table tr td:first-child {
-        text-align: right;
-        padding-right: 8px;
-    }
-}
-code { font-size: 1.2em; background-color: #EEE; padding: 0 3px; }
-
 
 .def {
-  .box();
-  border-color: @def-dark;
+  border-color: @def-light;
   h3 {
     color: @def-dark;
   }
-  pre, td:first-child>code {
+  >ul>li::before {
+    color: @def-dark;
+  }
+  pre, >ul>li>code:first-child {
     background-color: @def-light;
   }
 }
-code.cdef { background-color: @def-light; }
-
 .val {
-  .box();
-  border-color: @val-dark;
+  border-color: @val-light;
   h3 {
     color: @val-dark;
   }
-  pre, td:first-child>code {
+  >ul>li::before {
+    color: @val-dark;
+  }
+  pre, >ul>li>code:first-child {
     background-color: @val-light;
   }
 }
-code.cval { background-color: @val-light; }
-
 .act {
-  .box();
-  border-color: @act-dark;
+  border-color: @act-light;
   h3 {
     color: @act-dark;
   }
-  pre, td:first-child>code {
+  >ul>li::before {
+    color: @act-dark;
+  }
+  pre, >ul>li>code:first-child {
     background-color: @act-light;
   }
 }
-code.cact { background-color: @act-light; }
-
 .demo {
-  .box();
-  border-color: @demo-dark;
+  border-color: @demo-light;
   h3 {
     color: @demo-dark;
   }
-  pre, td:first-child>code {
+  >ul>li::before {
+    color: @demo-dark;
+  }
+  pre, >ul>li>code:first-child {
     background-color: @demo-light;
   }
 }
 
+code.cdef { background-color: @def-light; }
+code.cval { background-color: @val-light; }
+code.cact { background-color: @act-light; }
+
+
 em { color: darken(@val-dark, 10%); }
 input[type=range] { vertical-align: middle; }
 .fp-range-counter input[type=text] { text-align: center; }
+.fp-radio label:not(:first-child) { margin-left: 10px; }
 

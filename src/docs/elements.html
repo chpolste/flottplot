@@ -19,40 +19,33 @@
   [...]
 &lt;/fp-cursors&gt;
 </pre>
-<table>
-  <tr>
-    <td><code>id</code></td>
-    <td>(optional) own identifier.</td>
-  </tr>
-  <tr>
-    <td><code>target</code></td>
-    <td>identifier of the element included in the cursor group.</td>
-  </tr>
-  <tr>
-    <td>
-      <code>cursor</code></td>
-      <td>(optional) cursor type. Choose <code class="cdef">CURSOR</code> from:
-      <ul>
-        <li><code>pointer</code> (default): arrow-like pointer.</li>
-        <li><code>hline</code>: horizontal line with width of target element.</li>
-        <li><code>vline</code>: vertical line with height of target element.</li>
-        <li><code>hidden</code>: no mirrored cursor is shown for the target, but the mouse position is still broadcast to the other elements in the cursor group.</li>
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <td><code>class</code></td>
-    <td>(optional) override for the default class name of the mirrored cursor.</td>
-  </tr>
-  <tr>
-    <td><code>style</code></td>
-    <td>(optional) override for the default style of the mirrored cursor. If a custom class is specified to style the cursor, set to empty to remove the default styling which might otherwise override the style specified in the class.</td>
-  </tr>
-  <tr>
-    <td><code>...</code></td>
-    <td>other attributes are attached to the <code>div</code> element containing the cursors.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>id</code> (optional)<br>
+    Own identifier.
+  </li>
+  <li><code>target</code><br>
+    Identifier of the element included in the cursor group.
+  </li>
+  <li><code>cursor</code> (optional)<br>
+    Cursor type. Choose from:
+    <ul>
+      <li><code>pointer</code> (default): arrow-like pointer.</li>
+      <li><code>hline</code>: horizontal line with width of target element.</li>
+      <li><code>vline</code>: vertical line with height of target element.</li>
+      <li><code>hidden</code>: no mirrored cursor is shown for the target, but the mouse position is still broadcast to the other elements in the cursor group.</li>
+    </ul>
+  </li>
+  <li><code>class</code> (optional)<br>
+    Override for the default class name of the mirrored cursor.
+  </li>
+  <li><code>style</code> (optional)<br>
+    Override for the default style of the mirrored cursor.
+    If a custom class is specified to style the cursor, set to empty to remove the default styling which might otherwise override the style specified in the class.
+  </li>
+  <li><code>...</code><br>
+    Other attributes are attached to the <code>div</code> element containing the cursors.
+  </li>
+</ul>
 </div>
 
 <div class="demo">
@@ -79,7 +72,7 @@
 
 
 <p>
-  <code>&lt;fp-cursor&gt;</code> elements should be placed directly into the body of the document as they use absolute positioning to place the additional cursors.
+  <code class="cdef">&lt;fp-cursors&gt;</code> elements should be placed directly into the body of the document as they use absolute positioning to place the additional cursors.
 </p>
 
 
@@ -95,34 +88,29 @@
 <pre>
 &lt;fp-overlay id="ID" ...&gt;&lt;/fp-overlay&gt;
 </pre>
-<table>
-  <tr>
-    <td><code>id</code></td>
-    <td>own identifier.</td>
-  </tr>
-  <tr>
-    <td><code>...</code></td>
-    <td>other attributes are attached to the overlay container.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>id</code> (optional)<br>
+    Own identifier.
+  </li>
+  <li><code>...</code><br>
+    Other attributes are attached to the overlay container.
+  </li>
+</ul>
 </div>
 
 <div class="act">
 <h3>Actions</h3>
-<table>
-  <tr>
-    <td><code>show</code></td>
-    <td>show the overlay. Only shows if an element has previously placed content into the overlay.</td>
-  </tr>
-  <tr>
-    <td><code>hide</code></td>
-    <td>hide the overlay.</td>
-  </tr>
-  <tr>
-    <td><code>toggle</code></td>
-    <td>show the overlay if currently hidden, hide if currently shown.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>show</code><br>
+    Show the overlay. Only shows if an element has previously placed content into the overlay.
+  </li>
+  <li><code>hide</code><br>
+    Hide the overlay.
+  </li>
+  <li><code>toggle</code><br>
+    Show the overlay if currently hidden, hide if currently shown.
+  </li>
+</ul>
 </div>
 
 
@@ -136,20 +124,17 @@
 <pre>
 &lt;fp-plot id="ID" src="SRC" ...&gt;&lt;/fp-plot&gt;
 </pre>
-<table>
-  <tr>
-    <td><code>id</code></td>
-    <td>(optional) own identifier.</td>
-  </tr>
-  <tr>
-    <td><code>src</code></td>
-    <td>path/URL to an image file, can use <a href="values.html">value substitutions</a>.</td>
-  </tr>
-  <tr>
-    <td><code>...</code></td>
-    <td>other attributes are attached to the created <code>img</code> element.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>id</code> (optional)<br>
+    Own identifier.
+  </li>
+  <li><code>src</code><br>
+    Path/URL to an image file, can use <a href="values.html">value substitutions</a>.
+  </li>
+  <li><code>...</code><br>
+    Other attributes are attached to the created <code>img</code> element.
+  </li>
+</ul>
 </div>
 
 <div class="val">
@@ -167,12 +152,6 @@ Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"
   Wavenumber: <fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"></fp-range><br>
   <fp-plot src="plot/sin-{plotparam}x.png" style="width:450px;"></fp-plot>
 </p>
-<h3>Files</h3>
-<pre>
-plot/<a href="plot/sin-1x.png">sin-1x.png</a>
- .../<a href="plot/sin-2x.png">sin-2x.png</a>
- .../<a href="plot/sin-3x.png">sin-3x.png</a>
-</pre>
 </div>
 
 
@@ -190,16 +169,14 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
   [...]
 &lt;/fp-stack&gt;
 </pre>
-<table>
-  <tr>
-    <td><code>id</code></td>
-    <td>(optional) own identifier.</td>
-  </tr>
-  <tr>
-    <td><code>...</code></td>
-    <td>other attributes are attached to the stack container element.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>id</code> (optional)<br>
+    Own identifier.
+  </li>
+  <li><code>...</code><br>
+    Other attributes are attached to the stack container element.
+  </li>
+</ul>
 </div>
 
 
@@ -213,42 +190,35 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <pre>
 &lt;fp-video id="ID" src="SRC" ...&gt;&lt;/fp-plot&gt;
 </pre>
-<table>
-  <tr>
-    <td><code>id</code></td>
-    <td>(optional) own identifier.</td>
-  </tr>
-  <tr>
-    <td><code>src</code></td>
-    <td>path/URL to a video file.</td>
-  </tr>
-  <tr>
-    <td><code>...</code></td>
-    <td>other attributes are attached to the created <code>video</code> element.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>id</code> (optional)<br>
+    Own identifier.
+  </li>
+  <li><code>src</code><br>
+    Path/URL to a video file.
+  </li>
+  <li><code>...</code><br>
+    Other attributes are attached to the created <code>video</code> element.
+  </li>
+</ul>
 </div>
 
 <div class="act">
 <h3>Actions</h3>
-<table>
-  <tr>
-    <td><code>reset</code></td>
-    <td>pause playback and reset the video to the beginning (00:00).</td>
-  </tr>
-  <tr>
-    <td><code>play</code></td>
-    <td>start playback.</td>
-  </tr>
-  <tr>
-    <td><code>pause</code></td>
-    <td>pause playback.</td>
-  </tr>
-  <tr>
-    <td><code>toggle</code></td>
-    <td>start playback if paused or pause if playing.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>reset</code><br>
+    Pause playback and reset the video to the beginning (00:00).
+  </li>
+  <li><code>play</code><br>
+    Start playback.
+  </li>
+  <li><code>pause</code><br>
+    Pause playback.
+  </li>
+  <li><code>toggle</code><br>
+    Start playback if paused or pause if playing.
+  </li>
+</ul>
 </div>
 
 </article>
@@ -269,58 +239,46 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <pre>
 &lt;fp-range id="ID" type="TYPE" step="STEP" min="MIN" max="MAX" init="INIT" wrap="WRAP" format="FORMAT"&gt;&lt;/fp-range&gt;
 </pre>
-<table>
-  <tr>
-    <td><code>id</code></td>
-    <td>own identifier.</td>
-  </tr>
-  <tr>
-    <td><code>type</code></td>
-    <td>
-      (optional) type of control element used to represent the range on the page. Choose <code class="cdef">TYPE</code> from:
-      <ul>
-        <li><code>counter</code> (default): text box with forward and backwards buttons.</li>
-        <li><code>slider</code>: draggable slider (only finite ranges).</li>
-        <li><code>dropdown</code>: dropdown menu (only finite ranges).</li>
-        <li><code>radio</code>: radio buttons (only finite ranges).</li>
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <td><code>step</code></td>
-    <td>value of increment.</td>
-  </tr>
-  <tr>
-    <td><code>min</code></td>
-    <td>(optional*) lower bound of range.</td>
-  </tr>
-  <tr>
-    <td><code>max</code></td>
-    <td>(optional*) upper bound of range.</td>
-  </tr>
-  <tr>
-    <td><code>init</code></td>
-    <td>(optional*) initial value.</td>
-  </tr>
-  <tr>
-    <td><code>wrap</code></td>
-    <td>(optional) boundaries at which values wrap around. Choose from <code>both</code>, <code>max</code> or <code>min</code>.</td>
-  </tr>
-  <tr>
-    <td><code>format</code></td>
-    <td>(optional) <a href="#values">format specification</a> used for labelling of the element (e.g. in the text box or a counter).</td>
-  </tr>
-  <tr>
-    <td><code>min-wrap-action</code></td>
-    <td>Action(s) invoked when wrapping at the lower bound.</td>
-  </tr>
-  <tr>
-    <td><code>max-wrap-action</code></td>
-    <td>Action(s) invoked when wrapping at the upper bound.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>id</code><br>
+    own identifier.
+  </li>
+  <li><code>type</code> (optional)<br>
+    Type of control element used to represent the range on the page. Choose from:
+    <ul>
+      <li><code>counter</code> (default): text box with forward and backwards buttons.</li>
+      <li><code>slider</code>: draggable slider (only finite ranges).</li>
+      <li><code>dropdown</code>: dropdown menu (only finite ranges).</li>
+      <li><code>radio</code>: radio buttons (only finite ranges).</li>
+    </ul>
+  </li>
+  <li><code>step</code><br>
+    Value of increment.
+  </li>
+  <li><code>min</code> (optional*)<br>
+    Lower bound of range.
+  </li>
+  <li><code>max</code> (optional*)<br>
+    Upper bound of range.
+  </li>
+  <li><code>init</code> (optional*)<br>
+    Initial value.
+  </li>
+  <li><code>wrap</code> (optional)<br>
+    Boundaries at which values wrap around. Choose from <code>both</code>, <code>max</code> or <code>min</code>.
+  </li>
+  <li><code>format</code> (optional)<br>
+    <a href="#values">Format specification</a> used for labelling of the element (e.g. in the text box or a counter).
+  </li>
+  <li><code>min-wrap-action</code> (optional)<br>
+    Action(s) invoked when wrapping at the lower bound.
+  </li>
+  <li><code>max-wrap-action</code> (optional)<br>
+    Action(s) invoked when wrapping at the upper bound.
+  </li>
+</ul>
 <p>
-  * at least one of <code class="cdef">min</code>, <code class="cdef">max</code> and <code class="cdef">init</code> has to be specified.
+  * At least one of <code class="cdef">min</code>, <code class="cdef">max</code> and <code class="cdef">init</code> has to be specified.
   If no upper and/or lower bound is specified the range is non-finite and wrapping is not possible.
 </p>
 </div>
@@ -334,40 +292,35 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 
 <div class="act">
 <h3>Actions</h3>
-<table>
-  <tr>
-    <td><code>prev</code></td>
-    <td>select the next value.</td>
-  </tr>
-  <tr>
-    <td><code>next</code></td>
-    <td>select the previous value.</td>
-  </tr>
-  <tr>
-    <td><code>reset</code></td>
-    <td>select the initial value.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>prev</code><br>
+    Select the next value.
+  </li>
+  <li><code>next</code><br>
+    Select the previous value.
+  </li>
+  <li><code>reset</code><br>
+    Select the initial value.
+  </li>
+</ul>
 </div>
 
 <div class="demo">
-<h3>Demo</h3>
+<h3>Demo: Numeric Counter</h3>
 <pre>
 &lt;fp-range id="wrapped_range" type="counter" min="-5" max="5" step="2" init="0" wrap="max"&gt;&lt;/fp-range&gt;
 </pre><p>
-  Numeric counter:
   <fp-range id="wrapped_range" type="counter" min="-5" max="5" step="2" init="0" wrap="max"></fp-range>
 </p>
 </div>
 
 <div class="demo">
-<h3>Demo</h3>
+<h3>Demo: Linked Ranges</h3>
 <pre>
 &lt;fp-range id="link_range" type="counter" min="0" max="2" step="1" wrap="both"
           min-wrap-action="link_target.prev" max-wrap-action="link_target.next"&gt;&lt;/fp-range&gt;
 &lt;fp-range id="link_target" type="counter" init="0" step="1"&gt;&lt;/fp-range&gt;
 </pre><p>
-  Linked ranges:
   <fp-range id="link_range" type="counter" min="0" max="2" step="1" wrap="both"
             min-wrap-action="link_target.prev" max-wrap-action="link_target.next"></fp-range>
   <fp-range id="link_target" type="counter" init="0" step="1"></fp-range>
@@ -375,31 +328,28 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 </div>
 
 <div class="demo">
-<h3>Demo</h3>
+<h3>Demo: Date Counter</h3>
 <pre>
 &lt;fp-range id="date_range" type="counter" min="2020-01-01" step="3h" format="%Y-%m-%d %H UTC"&gt;&lt;/fp-range&gt;
 </pre><p>
-  Date counter:
   <fp-range id="date_range" type="counter" min="2020-01-01" step="3h" format="%Y-%m-%d %H UTC"></fp-range>
 </p>
 </div>
 
 <div class="demo">
-<h3>Demo</h3>
+<h3>Demo: Slider</h3>
 <pre>
 &lt;fp-range id="slider_range" type="slider" min="-5" max="5" step="1" init="-2"&gt;&lt;/fp-range&gt;
 </pre><p>
-  Slider:
   <fp-range id="slider_range" type="slider" min="-5" max="5" step="1" init="-2"></fp-range>
 </p>
 </div>
 
 <div class="demo">
-<h3>Demo</h3>
+<h3>Demo: Dropdown</h3>
 <pre>
 &lt;fp-range id="select_range" type="dropdown" min="-30" max="30" step="6" format="+04"&gt;&lt;/fp-range&gt;
 </pre><p>
-  Dropdown:
   <fp-range id="select_range" type="dropdown" min="-30" max="30" step="6" format="+04"></fp-range>
 </p>
 </div>
@@ -418,36 +368,31 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
   [...]
 &lt;/fp-select&gt;
 </pre>
-<table>
-  <tr>
-    <td><code>id</code></td>
-    <td>(optional) own identifier.</td>
-  </tr>
-  <tr>
-    <td><code>type</code></td>
-    <td>
-      (optional) type of control element used to represent the selection. Choose <code class="cdef">TYPE</code> from:
+<ul>
+  <li><code>id</code> (optional)<br>
+    Own identifier.
+  </li>
+  <li><code>type</code> (optional)<br>
+      Type of control element used to represent the selection. Choose from:
       <ul>
         <li><code>counter</code>: text box with forward and backwards buttons.</li>
         <li><code>slider</code>: draggable slider.</li>
         <li><code>dropdown</code> (default): dropdown menu.</li>
         <li><code>radio</code>: labelled radio buttons.</li>
       </ul>
-    </td>
-  </tr>
-  <tr>
-    <td><code>wrap</code></td>
-    <td>(optional) boundaries at which values wrap around. Choose from <code>both</code>, <code>max</code> or <code>min</code>.</td>
-  </tr>
-  <tr>
-    <td><code>min-wrap-action</code></td>
-    <td>Action(s) invoked when wrapping from the first to the last option.</td>
-  </tr>
-  <tr>
-    <td><code>max-wrap-action</code></td>
-    <td>Action(s) invoked when wrapping from the last to the first option.</td>
-  </tr>
-</table>
+  </li>
+  <li><code>wrap</code> (optional)<br>
+    Boundaries at which values wrap around.
+    Choose from <code>both</code>, <code>max</code> or <code>min</code>.
+    Wrapping is disabled by default.
+  </li>
+  <li><code>min-wrap-action</code> (optional)<br>
+    Action(s) invoked when wrapping from the first to the last option.
+  </li>
+  <li><code>max-wrap-action</code> (optional)<br>
+    Action(s) invoked when wrapping from the last to the first option.
+  </li>
+</ul>
 </div>
 
 <div class="val">
@@ -463,24 +408,21 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 
 <div class="act">
 <h3>Actions</h3>
-<table>
-  <tr>
-    <td><code>prev</code></td>
-    <td>select the next value.</td>
-  </tr>
-  <tr>
-    <td><code>next</code></td>
-    <td>select the previous value.</td>
-  </tr>
-  <tr>
-    <td><code>reset</code></td>
-    <td>select the initial value.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>prev</code><br>
+    Select the next value.
+  </li>
+  <li><code>next</code><br>
+    Select the previous value.
+  </li>
+  <li><code>reset</code><br>
+    Select the initial value.
+  </li>
+</ul>
 </div>
 
 <div class="demo">
-<h3>Demo</h3>
+<h3>Demo: Dropdown With Custom Attribute</h3>
 <pre>
 &lt;fp-select id="select_demo"&gt;
   &lt;fp-option letter="C"&gt;Entry No. 1&lt;/fp-option&gt;
@@ -500,7 +442,7 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 </div>
 
 <div class="demo">
-<h3>Demo</h3>
+<h3>Demo: Radio Options</h3>
 <pre>
 &lt;fp-select id="select_demo_radio" type="radio"&gt;
   &lt;fp-option&gt;Option 1&lt;/fp-option&gt;
@@ -538,50 +480,41 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <pre>
 &lt;fp-animation id="ID" target="TARGET[;TARGET ...]" ...&gt;&lt;/fp-animation&gt;
 </pre>
-<table>
-  <tr>
-    <td><code>id</code></td>
-    <td>(optional) own identifier.</td>
-  </tr>
-  <tr>
-    <td><code>target</code></td>
-    <td>identifier(s) of the element(s) to be animated.</td>
-  </tr>
-  <tr>
-    <td><code>...</code></td>
-    <td>other attributes are attached to the container of the control elements.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>id</code> (optional)<br>
+    Own identifier.
+  </li>
+  <li><code>target</code><br>
+    Identifier(s) of the element(s) to be animated.
+  </li>
+  <li><code>...</code><br>
+    Other attributes are attached to the container of the control elements.
+  </li>
+</ul>
 </div>
 
 <div class="act">
 <h3>Actions</h3>
-<table>
-  <tr>
-    <td><code>reset</code></td>
-    <td>Stop the animation and reset all targets.</td>
-  </tr>
-  <tr>
-    <td><code>start</code></td>
-    <td>Start the animation if not running.</td>
-  </tr>
-  <tr>
-    <td><code>stop</code></td>
-    <td>Stop the animation if not stopped.</td>
-  </tr>
-  <tr>
-    <td><code>toggle</code></td>
-    <td>Start the animation if stopped of stop if running.</td>
-  </tr>
-  <tr>
-    <td><code>slower</code></td>
-    <td>Reduce the speed of the animation.</td>
-  </tr>
-  <tr>
-    <td><code>faster</code></td>
-    <td>Increase the speed of the animation.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>reset</code><br>
+    Stop the animation and reset all targets.
+  </li>
+  <li><code>start</code><br>
+    Start the animation if not running.
+  </li>
+  <li><code>stop</code><br>
+    Stop the animation if not stopped.
+  </li>
+  <li><code>toggle</code><br>
+    Start the animation if stopped of stop if running.
+  </li>
+  <li><code>slower</code><br>
+    Reduce the speed of the animation.
+  </li>
+  <li><code>faster</code><br>
+    Increase the speed of the animation.
+  </li>
+</ul>
 </div>
 
 <div class="demo">
@@ -607,34 +540,26 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <pre>
 &lt;fp-button id="ID" action="ELEMENT.ACTION[;ELEMENT.ACTION ...]" ...&gt;LABEL&lt;/fp-button&gt;
 </pre>
-<table>
-  <tr>
-    <td><code>id</code></td>
-    <td>(optional) own identifier.</td>
-  </tr>
-  <tr>
-    <td><code>action</code></td>
-    <td><code class="cact">ACTION</code> to trigger on the <code class="cdef">ELEMENT</code>.</td>
-  </tr>
-  <tr>
-    <td><code>label</code></td>
-    <td>label shown on the button.</td>
-  </tr>
-  <tr>
-    <td><code>...</code></td>
-    <td>other attributes are attached to the created <code>button</code> element.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>id</code> (optional)<br>
+    Own identifier.
+  </li>
+  <li><code>action</code><br>
+    <code class="cact">ACTION</code> to trigger on the <code class="cdef">ELEMENT</code>.
+  </li>
+  <li><code>...</code><br>
+    Other attributes are attached to the created <code>button</code> element.
+  </li>
+</ul>
 </div>
 
 <div class="act">
 <h3>Actions</h3>
-<table>
-  <tr>
-    <td><code>trigger</code></td>
-    <td>Trigger the action(s) bound to the button.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>trigger</code><br>
+    Trigger the action(s) bound to the button.
+  </li>
+</ul>
 </div>
 
 <div class="demo">
@@ -660,16 +585,14 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <pre>
 &lt;fp-controls id="ID" target="TARGET"&gt;&lt;/fp-controls&gt;
 </pre>
-<table>
-  <tr>
-    <td><code>id</code></td>
-    <td>(optional) own identifier.</td>
-  </tr>
-  <tr>
-    <td><code>target</code></td>
-    <td>identifier of the target element for which controls are generated.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>id</code> (optional)<br>
+    Own identifier.
+  </li>
+  <li><code>target</code><br>
+    Identifier of the target element for which controls are generated.
+  </li>
+</ul>
 </div>
 
 <div class="demo">
@@ -696,16 +619,14 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <pre>
 &lt;fp-bind key="KEY" action="ELEMENT.ACTION[;ELEMENT.ACTION ...]"&gt;&lt;/fp-bind&gt;
 </pre>
-<table>
-  <tr>
-    <td><code>key</code></td>
-    <td><a href="https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values">value</a> of the key to bind, e.g. <code>f</code> or <code>ArrowRight</code>.</td>
-  </tr>
-  <tr>
-    <td><code>action</code></td>
-    <td><code class="cact">ACTION</code> to trigger on the <code class="cdef">ELEMENT</code>.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>key</code><br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values">Value</a> of the key to bind, e.g. <code>f</code> or <code>ArrowRight</code>.
+  </li>
+  <li><code>action</code><br>
+    <code class="cact">ACTION</code> to trigger on the <code class="cdef">ELEMENT</code>.
+  </li>
+</ul>
 </div>
 
 <p>
@@ -725,34 +646,28 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <pre>
 &lt;fp-state id="ID" url="true"&gt;&lt;/fp-state&gt;
 </pre>
-<table>
-  <tr>
-    <td><code>id</code></td>
-    <td>(optional) own identifier.</td>
-  </tr>
-  <tr>
-    <td><code>url</code></td>
-    <td>
-      if set to <code>true</code>, the state of all Flottplot elements is stored in the URL hash and will be automatically updated with every change.
-      When the page is loaded from an URL with a hash present, the contained state will be recovered.
-      If the page was changed between saving and loading (elements added, changed, removed), the recovery might fail.
-    </td>
-  </tr>
-</table>
+<ul>
+  <li><code>id</code> (optional)<br>
+    Own identifier.
+  </li>
+  <li><code>url</code> (optional)<br>
+    If set to <code>true</code>, the state of all Flottplot elements is stored in the URL hash and will be automatically updated with every change.
+    When the page is loaded from an URL with a hash present, the contained state will be recovered.
+    If the page was changed between saving and loading (elements added, changed, removed), the recovery might fail.
+  </li>
+</ul>
 </div>
 
 <div class="act">
 <h3>Actions</h3>
-<table>
-  <tr>
-    <td><code>save</code></td>
-    <td>make a copy of the current state of all Flottplot elements and store it for later restoration.</td>
-  </tr>
-  <tr>
-    <td><code>restore</code></td>
-    <td>restore the saved copy of the Flottplot state to all elements. If no copy is stored, nothing happens.</td>
-  </tr>
-</table>
+<ul>
+  <li><code>save</code><br>
+    Make a copy of the current state of all Flottplot elements and store it for later restoration.
+  </li>
+  <li><code>restore</code><br>
+    Restore the saved copy of the Flottplot state to all elements. If no copy is stored, nothing happens.
+  </li>
+</ul>
 </div>
 
 </article>
