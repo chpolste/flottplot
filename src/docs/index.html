@@ -12,9 +12,6 @@
 <p>
   The project was conceived as tool to view plots of meteorological and climate data with the ability to put multiple images containing different variables next to each other and click through them synchronously.
 </p>
-</article>
-
-
 
 <div class="demo">
 <h3>Demo</h3>
@@ -68,36 +65,54 @@ plot/<a href="plot/cos-1x.png">cos-1x.png</a>
  .../<a href="plot/sin-3x.png">sin-3x.png</a>
 </pre>
 </div>
-
-
-<article>
-<h1 id="download">Downloads</h1>
-
 <p>
-Choose the file(s) that are right for you:
-</p>
-<ul>
-  <li>
-    <a href="dist/flottplot-min.js" download>flottplot-min.js</a>.
-  </li>
-  <li>
-    <a href="dist/flottplot.css" download>flottplot.css</a>: Additional styling required for some elements.
-  </li>
-  <li>
-    <a href="dist/flottplot-scan-min.js" download>flottplot-scan-min.js</a>: Flottplot with automatic scan and element conversion after page has loaded.
-  </li>
-</ul>
-<p>
-  Visit the <a href="https://github.com/chpolste/flottplot">GitHub page</a> for the latest updates.
+  Flottplot is in a usable state, but also under active development.
+  Some features (e.g. error reporting) are still a little rough around the edges.
+  If you run into a problem, please open an issue on <a href="https://github.com/chpolste/flottplot/issues">GitHub</a>.
 </p>
 </article>
 
 
 <article>
-<h1 id="license">License</h1>
+<h1 id="download">Downloads</h1>
 
-<p>
-  Flottplot is in the public domain.
-</p>
+<p>Choose the files that are right for you:</p>
+
+<h2 id="scripts">Script Files</h2>
+<ul class="downloads">
+  <li>
+    <a href="dist/flottplot-scan-min.js" download>flottplot-scan-min.js</a> (recommended)<br>
+    Flottplot module with automatic page scan on load.
+  </li>
+  <li>
+    <a href="dist/flottplot-min.js" download>flottplot-min.js</a><br>
+    The Flottplot module only, in case you want more control over the initialization of Flottplot.
+  </li>
+</ul>
+<p>Include JavaScript (.js) files with</p>
+<pre>&lt;script type="text/javascript" src="<b>path/to/file.js</b>"&gt;&lt;/script&gt;</pre>
+<p>in the <code>&lt;head&gt;</code>header or <code>&lt;body&gt;</code> of your page.</p>
+
+<h2 id="styles">Style Files</h2>
+<ul class="downloads">
+  <li>
+    <a href="dist/flottplot.css" download>flottplot.css</a><br>
+    If you use elements that require additional styling (e.g. <code class="cdef">fp-cursors</code>), include this CSS file.
+  </li>
+</ul>
+<p>Include CSS (.css) files with</p>
+<pre>&lt;link rel="stylesheet" type="text/css" href="<b>path/to/file.css</b>"&gt;</pre>
+<p>in the <code>&lt;head&gt;</code> of your page.</p>
+
+<h2 id="python">Python Package</h2>
+<p>The Flottplot Python package can be installed from PyPI:</p>
+<pre>pip3 install flottplot</pre>
+<p>Refer to the <a href="python.html">Python package documentation</a> for more information.</p>
+</article>
+
+
+<article>
+<h1 id="license">License</h1>
+<p>Flottplot is in the public domain.</p>
 </article>
 
