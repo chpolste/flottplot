@@ -492,7 +492,7 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
 <div class="demo">
 <h3>Demo</h3>
 <pre>
-&lt;fp-select id="select"&gt;
+&lt;fp-select id="select_demo"&gt;
   &lt;fp-option letter="C"&gt;Entry No. 1&lt;/fp-option&gt;
   &lt;fp-option letter="D"&gt;Entry No. 2&lt;/fp-option&gt;
   &lt;fp-option letter="E"&gt;Entry No. 3&lt;/fp-option&gt;
@@ -506,6 +506,24 @@ plot/<a href="plot/sin-1x.png">sin-1x.png</a>
     <fp-option letter="E">Entry No. 3</fp-option>
   </fp-select>
   <fp-text>{select_demo} with letter {select_demo.letter}</fp-text>
+</p>
+</div>
+
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+&lt;fp-select id="select_demo_radio" type="radio"&gt;
+  &lt;fp-option&gt;Option 1&lt;/fp-option&gt;
+  &lt;fp-option&gt;Another Option&lt;/fp-option&gt;
+  &lt;fp-option&gt;Choose me!&lt;/fp-option&gt;
+&lt;/fp-select&gt;
+</pre>
+<p>
+  <fp-select id="select_demo_radio" type="radio">
+    <fp-option letter="C">Option 1</fp-option>
+    <fp-option letter="D">Another Option</fp-option>
+    <fp-option letter="E">Choose me!</fp-option>
+  </fp-select>
 </p>
 </div>
 
