@@ -79,10 +79,20 @@ class FPItems extends FPElement {
 
 class FPCounter extends FPItems {
 
-    constructor(id, range, format, calls) {
-        super(id, range, format, calls);
+    constructor(id, items, format, calls) {
+        super(id, items, format, calls);
         this.box = dom.newNode("input", { "type": "text" });
-        this.box.disabled = true;
+        this.box.addEventListener("change", () => {
+            try {
+                this.items.value = this.box.value;
+            } catch (err) {
+                // TODO: for now, ignore the error. Try to temporarily show an
+                // error on the page in the future.
+                //this.failWith(err);
+                console.error(err);
+            }
+            this.update();
+        });
         this.node = dom.newNode("span", {
             "class": "fp-range fp-range-counter"
         }, [

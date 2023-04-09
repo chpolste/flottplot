@@ -190,18 +190,18 @@ class Value {
         // Act as identity function for null values
         if (value == null) {
             return null;
-        }
-        // TextValue is fallback, but if specifically requested must be handled first
-        if (false) {
-            return new TextValue(value);
-        }
-        // ...
-        for (let Cls of [NumberValue, DateDeltaValue, DateValue, TextValue]) {
-            try {
-                return new Cls(value);
-            } catch (error) {
-                if (!(error instanceof ParseError)) {
-                    throw error;
+        // No need to convert already-Value values
+        } else if (value instanceof Value) {
+            return value;
+        // Try parsing into all available types
+        } else {
+            for (let Cls of [NumberValue, DateDeltaValue, DateValue, TextValue]) {
+                try {
+                    return new Cls(value);
+                } catch (error) {
+                    if (!(error instanceof ParseError)) {
+                        throw error;
+                    }
                 }
             }
         }
@@ -1181,6 +1181,7 @@ class OptionsItems extends Items {
     }
 
     set value(value) {
+        value = Value.from(value);
         // Use _eq relation of Value-types
         let index = this._options.findIndex(_ => _._eq(value));
         if (index < 0) throw new ItemsError(
@@ -1200,7 +1201,12 @@ class RangeItems extends Items {
 
     constructor(init, step, min, max, wrap) {
         super();
-        this.wrap = wrap;
+        this.wrap = wrap; // TODO: should this be handled by the super constructor?
+        // Make sure everything is a value or null
+        init = Value.from(init);
+        step = Value.from(step);
+        min = Value.from(min);
+        max = Value.from(max);
         // Choose one of init, min or max for offset
         if (init != null) {
             this._offset = init;
@@ -1212,11 +1218,23 @@ class RangeItems extends Items {
             // TODO can build range from step only but where to start then depends on value type
             "range requires specification of at least one of init, min or max"
         );
-        // ...
-        if (step == null) throw new ItemsError(
-            "no step specified" // TODO
+        // The type of this._offset determines the type of all values this
+        // range produces. This type is accessible via the valueType property
+        // for instanceof comparisons. First, verify that min and max have the
+        // appropriate type. init does not need to be checked (if it is not
+        // null, it is this._offset). step is allowed to have a different type
+        // (e.g., the step between dates is a datedelta).
+        if (!(min == null || min instanceof this.valueType)) throw new ItemsError(
+            "min is a " + min.constructor.name + " but range expects " + this.valueType.name
         );
-        this._factor = step;
+        if (!(max == null || max instanceof this.valueType)) throw new ItemsError(
+            "max is a " + max.constructor.name + " but range expects " + this.valueType.name
+        );
+        // TODO
+        if (step == null) throw new ItemsError(
+            "no step specified"
+        );
+        this._factor = Value.from(step);
         // Determine the boundary indices of an inclusive range. Range can be
         // open at one or both ends. Use Infinity boundaries to indicate this.
         this.indexMin = min == null ? Number.NEGATIVE_INFINITY
@@ -1232,6 +1250,10 @@ class RangeItems extends Items {
         this.value = this._offset;
     }
 
+    get valueType() {
+        return this._offset.constructor;
+    }
+
     _genValue(index) {
         // TODO: attach index?
         // Because this is not going through proper Expression evaluation, the
@@ -1242,7 +1264,13 @@ class RangeItems extends Items {
     }
 
     _genIndex(value) {
-        return Math.round(value._sub(this._offset)._div(this._factor)._value);
+        value = Value.from(value);
+        if (value instanceof this.valueType) {
+            // Clip value into range
+            return Math.round(value._sub(this._offset)._div(this._factor)._value);
+         } else throw new ItemsError(
+            "range expects " + this.valueType.name + " but received " + value.constructor.name
+         );
     }
 
     get index() {
