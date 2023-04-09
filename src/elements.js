@@ -351,11 +351,11 @@ class FPButton extends FPElement {
 
 class FPControls extends FPElement {
 
-    constructor(id, target) {
+    constructor(id, target, attrs) {
         super(id);
-        this.node = dom.newNode("span")
+        this.node = dom.newNode("span", attrs)
         this.node.id = this.id;
-        this.node.className = "fp-controls";
+        this.node.classList.add("fp-controls");
         this.target = target;
     }
 
@@ -374,7 +374,7 @@ class FPControls extends FPElement {
         if (targets.length > 1) {
             throw new ElementError("only one target allowed");
         }
-        return new FPControls(attrs.id, targets[0]);
+        return new FPControls(attrs.id, targets[0], attrs);
     }
 
 }
@@ -386,15 +386,14 @@ class FPCursors extends FPElement {
         super(id);
         this.cursors = cursors;
         for (let cc of this.cursors) {
-            if (cc["cursor"] === "hidden") continue;
-            cc.node = dom.newNode("div");
-            if (cc["class"] != null) cc.node.setAttribute("class", cc["class"]);
-            if (cc["style"] != null) cc.node.setAttribute("style", cc["style"]);
+            if (cc.cursor === "hidden") continue;
+            cc.node = dom.newNode("div", cc.attrs);
+            cc.node.classList.add("fp-cursor", "fp-"+cc.cursor);
             cc.node.style.position = "absolute";
         }
-        this.node = dom.newNode("div", attrs, this.cursors.map(_ => _.node).filter(_ => _ != null));
+        this.node = dom.newNode("div", attrs, this.cursors.map(_ => _.node));
         this.node.id = this.id;
-        this.node.className = "fp-cursors"; // TODO append
+        this.node.classList.add("fp-cursors");
     }
 
     initialize() {
@@ -449,13 +448,11 @@ class FPCursors extends FPElement {
             // Skip anything that isn't a proper tag
             if (child.nodeType !== Node.ELEMENT_NODE) continue;
             // Default cursor type is pointer
-            let attrs = dom.Attributes.from(child);
-            let cur = attrs.pop("cursor", "pointer"); // TODO check if valid?
+            const attrs = dom.Attributes.from(child);
             cursors.push({
                 "target": attrs.pop("target"),
-                "cursor": cur,
-                "style": attrs.pop("style"), // TODO hand over remaining attributes?
-                "class": attrs.pop("class", "fp-cursor fp-"+cur)
+                "cursor": attrs.pop("cursor", "pointer"),
+                "attrs": attrs
             });
         }
         return new FPCursors(node.id, cursors, dom.Attributes.from(node));
@@ -470,7 +467,7 @@ class FPFrame extends FPElement {
         super(id);
         this.node = dom.newNode("div", attrs, Array.from(children));
         this.node.id = this.id;
-        this.node.className = "fp-frame";
+        this.node.classList.add("fp-frame");
         this.calls = (calls != null) ? calls : new Map();
         this.actions.add("fullscreen");
     }
@@ -501,7 +498,7 @@ class FPOverlay extends FPElement {
         // Outer container for proper centering of inner content
         this.node = dom.newNode("div", attrs, [this.inner]);
         this.node.id = this.id;
-        this.node.className = "fp-overlay"
+        this.node.classList.add("fp-overlay");
         // Overlay is hidden by default
         this.node.style.display = "none";
         // Close overlay by clicking anywhere
@@ -655,7 +652,7 @@ class FPStack extends FPElement {
         this.plots = plots;
         this.node = dom.newNode("div", attrs, this.plots)
         this.node.id = this.id;
-        this.node.className = "fp-stack"; // TODO append
+        this.node.classList.add("fp-stack");
         // The overlay stack is constructed during initialization because it
         // needs the flottplot instance for element lookup
         this.overlay = dom.newNode("div", { "class": "fp-stack" });
