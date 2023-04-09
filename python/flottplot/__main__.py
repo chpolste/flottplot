@@ -34,13 +34,8 @@ def init(args):
     asset_css = None
     if args.style:
         asset_css = write_asset("flottplot.css", assetdir, args.overwrite)
-    # Write page with appropriate references to assets and all requested tags included
-    tags = []
-    if args.add_overlay:
-        tags.append("fp-overlay")
-    if args.add_state:
-        tags.append("fp-state")
-    filename.write_text(create_page(filename, js=asset_js, css=asset_css, tags=tags))
+    # Write page with appropriate references to assets
+    filename.write_text(create_page(filename, js=asset_js, css=asset_css))
 
 parser_init = subparsers.add_parser("init", description="""
     Create a new Flottplot page.
@@ -66,13 +61,6 @@ parser_init.add_argument("--no-style", action="store_false", dest="style", help=
 """)
 parser_init.add_argument("--no-scan", action="store_false", dest="scan", help="""
     Do not include the automatic element scan in the output page.
-""")
-parser_init.add_argument("--add-overlay", action="store_true", help="""
-    Include an <fp-overlay> tag. The overlay element will not work properly if
-    --no-style is also set.
-""")
-parser_init.add_argument("--add-state", action="store_true", help="""
-    Include an <fp-state> tag.
 """)
 parser_init.add_argument("file", metavar="FILE", help="""
     File name for the new Flottplot page. The file extension ".html" is added
