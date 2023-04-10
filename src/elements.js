@@ -9,9 +9,9 @@ class FPItems extends FPElement {
         this.items = items;
         this.format = format;
         // Actions
+        this.actions.add("reset"); // Reset to the initial value
         this.actions.add("prev"); // Go to the previous value
         this.actions.add("next"); // Go to the next value
-        this.actions.add("reset"); // Reset to the initial value
         // Need to keep initial index for reset action
         this._reset_index = this.items.index;
         // Actions triggered for own events (prev-wrap, next-wrap)
@@ -40,6 +40,10 @@ class FPItems extends FPElement {
 
     // Actions
 
+    reset() {
+        this.items.index = this._reset_index;
+    }
+
     prev() {
         let e = this.items.prev();
         // Min-wrap event might have associated actions
@@ -54,10 +58,6 @@ class FPItems extends FPElement {
         if (e === Items.WRAP) {
             this.flottplot.invokeAll(this.calls.get("max-wrap"));
         }
-    }
-
-    reset() {
-        this.items.index = this._reset_index;
     }
 
     static ofType(etype, eid, items, format, calls) {
@@ -380,13 +380,13 @@ class FPCalendar extends FPElement {
         this.node.type = "date";
         this.node.value = init;
         this.node.addEventListener("change", () => this.notify());
+        this.actions.add("reset");
         this.actions.add("prevYear");
         this.actions.add("prevMonth");
         this.actions.add("prev");
         this.actions.add("next");
         this.actions.add("nextMonth");
         this.actions.add("nextYear");
-        this.actions.add("reset");
     }
 
     static from(node) {
