@@ -452,7 +452,9 @@ class FPControls extends FPElement {
     initialize() {
         const element = this.flottplot.getElement(this.target);
         for (const action of element.actions) {
-            this.node.appendChild(dom.newButton({}, action, () => {
+            // Convert camelCase names to camel case
+            let label = action.replace(/([A-Z])/g, " $1").toLowerCase();
+            this.node.appendChild(dom.newButton({}, label, () => {
                 this.flottplot.invoke(element.id, action);
             }));
         }
