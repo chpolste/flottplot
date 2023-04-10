@@ -234,6 +234,7 @@ var flottplot = function () {
     Flottplot.registerTag("fp-bind", FPBind, false);
     Flottplot.registerTag("fp-button", FPButton, false);
     Flottplot.registerTag("fp-cursors", FPCursors, false);
+    Flottplot.registerTag("fp-calendar", FPCalendar, false);
     Flottplot.registerTag("fp-frame", FPFrame, true);
     Flottplot.registerTag("fp-overlay", FPOverlay, false);
     Flottplot.registerTag("fp-plot", FPPlot, false);

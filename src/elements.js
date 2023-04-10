@@ -359,6 +359,86 @@ class FPButton extends FPElement {
 }
 
 
+class FPCalendar extends FPElement {
+
+    constructor(id, init, attrs) {
+        super(id);
+        // Initialize internal state: if no initial value is given, use today's
+        // date else truncate a given date.
+        if (init == null) {
+            init = (new Date()).toISOString().slice(0, 10);
+        } else if (init instanceof DateValue) {
+            init = init.toString("%Y-%m-%d");
+        } else throw new ValueError(
+            "cannot initialize calendar with " + init.constructor.name
+        );
+        // Keep initial value for reset action
+        this._resetValue = init;
+        // HTML offers an input type with a nice date selector
+        this.node = dom.newNode("input", attrs);
+        this.node.id = this.id;
+        this.node.type = "date";
+        this.node.value = init;
+        this.node.addEventListener("change", () => this.notify());
+        this.actions.add("prevYear");
+        this.actions.add("prevMonth");
+        this.actions.add("prev");
+        this.actions.add("next");
+        this.actions.add("nextMonth");
+        this.actions.add("nextYear");
+        this.actions.add("reset");
+    }
+
+    static from(node) {
+        const attrs = dom.Attributes.from(node);
+        return new FPCalendar(
+            attrs.id,
+            attrs.pop("init", null, "VALUE"),
+            attrs
+        );
+    }
+
+    get value() {
+        return Value.from(this.node.value);
+    }
+
+    get _date() {
+        return new Date(this.node.valueAsNumber);
+    }
+
+    // Actions
+
+    reset() {
+        this.node.value = this._resetValue;
+    }
+
+    prev() {
+        this.node.valueAsNumber = this._date.setUTCDate(this._date.getUTCDate() - 1);
+    }
+
+    next() {
+        this.node.valueAsNumber = this._date.setUTCDate(this._date.getUTCDate() + 1);
+    }
+
+    prevMonth() {
+        this.node.valueAsNumber = this._date.setUTCMonth(this._date.getUTCMonth() - 1);
+    }
+
+    nextMonth() {
+        this.node.valueAsNumber = this._date.setUTCMonth(this._date.getUTCMonth() + 1);
+    }
+
+    prevYear() {
+        this.node.valueAsNumber = this._date.setUTCFullYear(this._date.getUTCFullYear() - 1);
+    }
+
+    nextYear() {
+        this.node.valueAsNumber = this._date.setUTCFullYear(this._date.getUTCFullYear() + 1);
+    }
+
+}
+
+
 class FPControls extends FPElement {
 
     constructor(id, target, attrs) {

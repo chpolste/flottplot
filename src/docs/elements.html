@@ -229,6 +229,73 @@ Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"
 <h1 id="valueelements">Value Elements</h1>
 <p>Elements that provide/generate values for use in <a href="values.html">value substitutions</a>.</p>
 
+<h2 id="calendar">Calendar</h2>
+<p>
+  Date input field.
+</p>
+
+<div class="def">
+<h3>Definition <span class="vadd">v2.2+</span></h3>
+<pre>&lt;fp-calendar id="ID" init="INIT" ...&gt;&lt;/fp-calendar&gt;</pre>
+<ul>
+  <li><code>id</code> (optional)<br>
+    Own identifier
+  </li>
+  <li><code>init</code> (optional)<br>
+    Initial value. If not given, the element is initialized with the current date.
+  </li>
+  <li><code>...</code><br>
+    Other attributes are attached to the created <code>input</code> element.
+  </li>
+</ul>
+</div>
+
+<div class="val">
+<h3>Value</h3>
+<p>Provides the selected date as a <em>DateValue</em>.</p>
+</div>
+
+<div class="act">
+<h3>Actions</h3>
+<ul>
+  <li><code>reset</code><br>
+    Select the initial value.
+  </li>
+  <li><code>prev</code><br>
+    Select the previous day.
+  </li>
+  <li><code>next</code><br>
+    Select the next day.
+  </li>
+  <li><code>prevMonth</code><br>
+    Select the previous month.
+  </li>
+  <li><code>nextMonth</code><br>
+    Select the next month.
+  </li>
+  <li><code>prevYear</code><br>
+    Select the previous year.
+  </li>
+  <li><code>nextYear</code><br>
+    Select the next year.
+  </li>
+</ul>
+</div>
+
+<div class="demo">
+<h3>Demo</h3>
+<pre>
+&lt;fp-button action="cal.prevYear"&gt;-Y&lt;/fp-button&gt;
+&lt;fp-calendar id="cal"&gt;&lt;/fp-calendar&gt;
+&lt;fp-button action="cal.nextYear"&gt;+Y&lt;/fp-button&gt;
+</pre><p>
+  <fp-button action="cal.prevYear">-Y</fp-button>
+  <fp-calendar id="cal"></fp-calendar>
+  <fp-button action="cal.nextYear">+Y</fp-button>
+</p>
+</div>
+
+
 <h2 id="range">Range</h2>
 <p>
   Control elements that represent ranged values.
