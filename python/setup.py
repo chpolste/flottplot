@@ -13,7 +13,7 @@ for asset in assets:
 setup(
     name="flottplot",
     description="Quickly arrange and navigate collections of images in the browser.",
-    version="2.0.0",
+    version="2.2.0",
     author="Christopher Polster",
     url="https://github.com/chpolste/flottplot",
     packages=find_packages(),

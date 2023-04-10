@@ -246,7 +246,7 @@ var flottplot = function () {
     Flottplot.registerTag("fp-video", FPVideo, false);
 
     return {
-        __version__: "2.1.0",
+        VERSION: "2.2.0",
         Flottplot: Flottplot,
         FPElement: FPElement,
         Value: Value,
