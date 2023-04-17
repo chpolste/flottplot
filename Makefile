@@ -18,8 +18,9 @@ documentation: \
 	docs/logo.svg \
 	docs/favicon.png \
 	docs/index.html \
-	docs/values.html \
+	docs/tutorial.html \
 	docs/elements.html \
+	docs/values.html \
 	docs/python.html \
 	docs/docs.css \
 	docs/dist/flottplot-min.js \
