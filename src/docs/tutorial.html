@@ -8,43 +8,79 @@
 <article>
 <h1 id="basic">A Basic Page</h1>
 <p>
-...
+TODO: introduction.
+</p>
+<p>
+Many errors are reported by Flottplot at the elements where they occur.
+Some problems cannot be caught by Flottplot and need to be diagnosed with tools from the browser.
+Open developer tools, JavaScript console.
+</p>
+<p>
+Common error is unfinished HTML tags, e.g. because the closing tag (the one with <code>/</code>) is missing.
 </p>
 
 <h2 id="basic-1">Initializing</h2>
-<p>Download Flottplot scan.</p>
-<p>Copy the HTML template into a new file <code>test.html</code>.</p>
+<p>
+Download the Flottplot JavaScript library with automatic element scan (<a href="dist/flottplot-scan-min.js" download>flottplot-scan-min.js</a>).
+Create new text file, e.g. <code>page.html</code>, in the same folder.
+Open the file with a text editor and insert the following HTML code:
+</p>
 <div class="demo">
 <pre>
 &lt;!doctype html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;meta charset="utf-8"&gt;
-  &lt;title&gt;A Basic Flottplot Page&lt;/title&gt;
+  &lt;title&gt;A Flottplot Page&lt;/title&gt;
   &lt;script type="text/javascript" src="flottplot-scan-min.js"&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
-
+  &lt;!-- page content goes here --&gt;
 &lt;/body&gt;
 &lt;/html&gt;
 </pre>
 </div>
-<p>Open the HTML file with a browser.</p>
+<p>
+This code sets up the basic structure of an HTML page.
+The title text (inside the title tag, i.e. between <code>&lt;title&gt;</code> and <code>&lt;/title&gt;</code>) can be freely chosen.
+Open the HTML file with a browser and you should see an empty page.
+</p>
 
-<p>With the <a href="python.html">Flottplot Python package</a>, a new page <code>test.html</code> as shown above can be initialized more easily by running</p>
+<p>With the <a href="python.html">Flottplot Python package</a>, a new page as above can be initialized more easily by running</p>
 <pre>python3 -m flottplot init test.html</pre>
 <p>on the command line.</p>
 
 <h2 id="basic-2">Adding Elements</h2>
 <p>
+First add control elements.
 Add a dropdown menu.
 Add a slider.
 </p>
+<div class="demo">
+<pre class="convert">
+&lt;fp-select id="" type="dropdown"&gt;
+  &lt;fp-option&gt;foo&lt;/fp-option&gt;
+  &lt;fp-option&gt;bar&lt;/fp-option&gt;
+&lt;/fp-select&gt;
+&lt;fp-range id="" type="slider" min="0" max="144" step="12"&gt;&lt;/fp-range&gt;
+</pre>
+</div>
 
 <h2 id="basic-3">Controlling a Plot</h2>
 <p>
 Add a plot and link it with the dropdown menu and the slider.
 </p>
+<div class="demo">
+<pre class="convert">
+&lt;fp-select id="" type="dropdown"&gt;
+  &lt;fp-option&gt;foo&lt;/fp-option&gt;
+  &lt;fp-option&gt;bar&lt;/fp-option&gt;
+&lt;/fp-select&gt;
+&lt;fp-range id="" type="slider" min="0" max="144" step="12"&gt;&lt;/fp-range&gt;
+&lt;br&gt;
+<b>&lt;fp-plot src=""&gt;&lt;/fp-plot&gt;</b>
+</pre>
+</div>
 </article>
 
 
