@@ -5,7 +5,7 @@
 
 <h2 id="prelim-files">Files and Folders</h2>
 <p>
-  The goal of this tutorial is arrange the following collection of plots with a Flottplot page:
+  The goal of this tutorial is make the following collection of plots accessible with Flottplot:
 </p>
 <div class="filelist">
   <a href="plot/adv_bwd_000.png"><code>plot/adv_bwd_000.png</code><img src="plot/adv_bwd_000.png"></a>,
@@ -24,38 +24,40 @@
   <a href="plot/adv_lag_120.png"><code>plot/adv_lag_120.png</code><img src="plot/adv_lag_120.png"></a>.
 </div>
 <p>
-  These image files show the results of integrating a 1-dimensional advection equation in three different ways: using explicit Euler time-stepping (<code>fwd</code>), using implicit Euler time-stepping (<code>bwd</code>) and using a semi-Lagrangian (<code>lag</code>) scheme.
+  These image files show the results of integrating a one-dimensional advection equation in three different ways: using explicit Euler time-stepping (<code>fwd</code>), using implicit Euler time-stepping (<code>bwd</code>) and using a semi-Lagrangian (<code>lag</code>) scheme.
   Plots were produced for every 12 time units out to time 120 and the respective time of each plot can be determined from a three-digit zero-padded number in each file name.
 </p>
 <p>
-  It is not necessary to understand the contents of these plots for the tutorial.
+  It is not necessary to understand the contents of these plots.
   However, it is important that information about the plots is contained in the file names.
-  Flottplot cannot extract information from the file contents or metadata, therefore all relevant information must be be exposed via the file names.
+  Flottplot cannot extract information from file contents, therefore all relevant information must be be exposed via the file names.
 </p>
 
 <h2 id="prelim-errors">Working with HTML</h2>
 <p>
-  Flottplot pages are written in HyperText Markup Language (HTML).
-  HTML mostly defines the structure of a page, but Flottplot defines some special elements (also called "tags") that are infused with  additional functionality when the page is loaded in a JavaScript-enabled web browser.
-  The elements provided by Flottplot can be integrated into any other (standard) HTML elements.
+  Flottplot pages are written in HTML, the markup language of the web.
+  Flottplot defines custom HTML elements (so-called "tags") and infuses them with additional functionality in a JavaScript-enabled web browser.
+  The custom elements can be integrated with any other (standard) HTML elements.
+  No prior HTML knowledge is required for Flottplot, but some basic knowlegde might lead to nicer pages.
 </p>
 <p>
-  Web browsers are generally quite error-tolerant and will try to display HTML as best as they can, even if it contains errors.
-  If an element is missing in a page, first make sure that your HTML tags are well-formed.
-  A common mistake is to leave HTML tags unfinished, usually because the closing tag (the one with <code>/</code> at the start) is missing.
+  Web browsers are built to be error tolerant and will try to display HTML as best as they can, even if it contains errors.
+  If you find that an element is missing in a page or encounter other issues, first make sure that your HTML tags are well-formed.
+  A common mistake is to leave HTML tags unfinished, usually because the closing tag (the one with a <code>/</code> before the name) is missing.
 </p>
 <p>
-  Many errors are reported by Flottplot in the form of red boxes around the elements on which they occur directly in the page.
-  But some problems cannot be caught by Flottplot (or are not yet caught).
-  These errors can unfortunately must be diagnosed with the developer tools integrated into the browser (JavaScript console).
-  If you stumble on a bug in Flottplot, consider reporting it via the <a href="https://github.com/chpolste/flottplot/issues">GitHub issue tracker</a>.
+  Flottplot usually reports errors directly in the page with red boxes around the elements on which they occur.
+  However, some errors are not caught by Flottplot (yet).
+  These errors can be diagnosed with the developer tools integrated into the browser.
+  When encountering a problem, additional information might be found in the JavaScript console.
+  Flottplot bugs can be reported via the <a href="https://github.com/chpolste/flottplot/issues">GitHub issue tracker</a>.
 </p>
 </article>
 
 <article>
 <h1 id="basic">A Basic Page</h1>
 <p>
-  The goal of this section of the tutorial is to create a basic page with controls for the content a single plot panel from scratch.
+  The goal of this first part of the tutorial is to create a basic page with controls for the content of a single plot panel from scratch.
 </p>
 
 <h2 id="basic-init">Initializing</h2>
@@ -80,38 +82,37 @@
 </pre>
 </div>
 <p>
-  (or you can download this file <a href="data:text/html;base64,PCFkb2N0eXBlIGh0bWw+CjxodG1sPgo8aGVhZD4KICA8bWV0YSBjaGFyc2V0PSJ1dGYtOCI+CiAgPHRpdGxlPkEgRmxvdHRwbG90IFBhZ2U8L3RpdGxlPgogIDxzY3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0IiBzcmM9ImZsb3R0cGxvdC1zY2FuLW1pbi5qcyI+PC9zY3JpcHQ+CjwvaGVhZD4KPGJvZHk+Cgo8L2JvZHk+CjwvaHRtbD4K" download="page.html">here</a>).
-  This code sets up the basic structure of an HTML page.
-  The title text inside the <code>title</code> element, i.e. between <code>&lt;title&gt;</code> and <code>&lt;/title&gt;</code>, can be freely chosen.
-  Page content is placed inside the <code>&lt;body&gt;</code> element.
+  This code contains the basic structure of an HTML page.
+  The title text between <code>&lt;title&gt;</code> and <code>&lt;/title&gt;</code> can be freely chosen.
+  All page content is placed between <code>&lt;body&gt;</code> and <code>&lt;/body&gt;</code>.
   Open the HTML file with a browser and you should see an empty page.
 </p>
 
-<p>With the <a href="python.html">Flottplot Python package</a>, a new page as above can be initialized more easily by running</p>
+<p>With the <a href="python.html">Flottplot Python package</a>, such a page can be initialized more easily by running</p>
 <pre>python3 -m flottplot init test.html</pre>
 <p>on the command line.</p>
 
 <h2 id="basic-elements">Adding Elements</h2>
 <p>
-  The names of the <a href="#prelim-files">files</a> contain two variable parts: the scheme used (<code>fwd</code>, <code>bwd</code> or <code>lag</code>) and the time step (<code>000</code>, <code>012</code>, ..., <code>120</code>).
+  The names of the <a href="#prelim-files">files</a> in the collection contain two variable parts: the scheme (<code>fwd</code>, <code>bwd</code> or <code>lag</code>) and the time step (<code>000</code>, <code>012</code>, ..., <code>120</code>).
 </p>
 <p>
-  First, we add a slider control element for the time step into the <code>&lt;body&gt;</code> of the page.
-  Because the values are <a href="values.html#numbervalue">numeric</a> and regularly spaced, we can use an <a href="elements.html#range"><code class="cdef">&lt;fp-range&gt;</code> element</a>:
+  First, we add a slider element for the time step into the <code>&lt;body&gt;</code> of the page.
+  Because the time step is numeric and regularly spaced, we can recreate a matching sequence of <a href="values.html#numbervalue">numbers</a> with an <a href="elements.html#range"><code class="cdef">&lt;fp-range&gt;</code> element</a>:
 </p>
 <div class="demo">
 <pre class="convert">
-<strong>&lt;fp-range id="step" type="slider" min="0" max="120" step="12"&gt;&lt;/fp-range&gt;</strong>
+&lt;fp-range id="step" type="slider" min="0" max="120" step="12"&gt;&lt;/fp-range&gt;
 </pre>
 </div>
 <p>
   The leftmost position of the slider corresponds to its minimum value (<code class="cval">0</code>), with values increasing by <code class="cval">12</code> for each step the slider takes to right.
-  Because we need to address the value of the slider later in the file names, the identifier <code>step</code> is given to the element.
+  Because we need to refer to the value of the slider later, the identifier <code>step</code> is given to the element.
   Note that it is not necessary to account for the zero-padded formatting of the number in the file names already here.
-  Formatting of values can be applied during the pattern substitution in the plot element later.
+  Formatting of values is carried out later during pattern substitution.
 </p>
 <p>
-  Next, we add a dropdown menu with three options for the scheme-part in the file names.
+  Next, we add a dropdown menu with three options for the scheme-part of the file names.
   We can specify the three values with an <a href="elements.html#select"><code class="cdef">&lt;fp-select&gt;</code> element</a>:
 </p>
 <div class="demo">
@@ -130,7 +131,7 @@
 
 <h2 id="basic-plot">Controlling a Plot</h2>
 <p>
-  Finally we add a plot panel to the page and connect it to both control elements via a substitution pattern:
+  Finally we add a plot panel to the page and connect it to both value-providing elements via a substitution pattern:
 </p>
 <div class="demo">
 <pre class="convert">
@@ -151,6 +152,8 @@
 <p>
   Here, <code>{scheme}</code> is replaced with either <code class="cval">fwd</code>, <code class="cval">bwd</code> or <code class="cval">lag</code>, depending on the state of the element named <code>scheme</code> (i.e. the dropdown menu introduced earlier).
   Multiple substitutions are allowed, so we also substitute the value of our range <code>step</code>, with additional formatting to match the format of the number in the file names.
+</p>
+<p>
   Formatting options in Flottplot work just as they do in <a href="https://docs.python.org/3/library/string.html#formatspec">Python's <code>format</code> method</a> and are separated from the value with a colon inside the substitution which is enclosed by the curly braces.
   The format <code>03</code> for numeric values used here means: enable zero-padding and fill up to a three-digit output.
 </p>
@@ -186,14 +189,14 @@
 </div>
 <p>
   Note that the choice of the attribute name is free and multiple attributes can be added in general.
-  Attribute are available on the value of the element during substitution.
-  <code>{scheme}</code> still refers to the label of the option, e.g. <code class="cval">Explicit Euler</code>, while <code>{scheme.abbrev}</code> accesses the associated value stored in the attribute <code class="cdef">abbrev</code>, e.g. <code class="cval">fwd</code>.
+  Attributes are available on the value of the <code class="cdef">&lt;fp-select&gt;</code>element during substitution.
+  In the example, <code>{scheme}</code> still refers to the label of the option, e.g. <code class="cval">Explicit Euler</code>, while <code>{scheme.abbrev}</code> accesses the associated value stored in the attribute <code class="cdef">abbrev</code> (which was the label previously), e.g. <code class="cval">fwd</code>.
 </p>
 
 <h2 id="advanced-sync">Synchronized Control</h2>
 <p>
   We now add a second plot panel to the page that shows an additional time step.
-  This time step is supposed to always be 12 units later than the one already shown, so we need to perform an addition before substitution in the new plot:
+  This time step is supposed to always be 12 time units later than the one already shown, so we need to perform an addition before substitution in the new plot:
 </p>
 <div class="demo">
 <pre class="convert">
@@ -209,7 +212,7 @@
 </pre>
 </div>
 <p>
-  The value obtained from element <code>step</code> is increased by 12 before the substitution and also kept synchronized with the slider as usual by Flottplot.
+  The value obtained from element <code>step</code> is increased by 12 before the substitution and also kept synchronized with the slider by Flottplot.
   Common mathematical operations are available for <a href="values.html#numbervalue">numeric values</a>.
 </p>
 <p>
@@ -241,10 +244,10 @@
 </pre>
 </div>
 <p>
-  The second dropdown menu is just a copy of the already existing one and both get new identifiers so they can be individually addressed (Flottplot would not accept duplicated identifiers anyway).
+  The second dropdown menu is just a copy of the already existing one and both get new identifiers so they can be individually addressed (Flottplot enforces unique identifiers).
   The new menu has its second option, <code class="cval">Implicit Euler</code>, selected by default.
   The two rows of plots are connected to one of the dropdown menus each.
-  However, both are synchronized with the slider providing a value for <code>step</code>.
+  All plots are synchronized with the slider providing a value for <code>step</code>.
 </p>
 
 <h2 id="advanced-convenience">Adding Convenience</h2>
@@ -285,14 +288,21 @@
   Wrapping is enabled on the slider with <code class="cdef">wrap="both"</code> to allow the animation (and buttons) to loop indefinitely.
 </p>
 <p>
-  Finally cursor mirroring between the left plots in each row is enabled with an <a href="elements.html#cursors"><code class="cdef">&lt;fp-cursors&gt;</code> element</a>.
+  Cursor mirroring between the left plots in each row is enabled with an <a href="elements.html#cursors"><code class="cdef">&lt;fp-cursors&gt;</code> element</a>.
   Moving the cursor into one of these plots will now show a second cursor at the same location in the other plot for easy comparison of values.
 </p>
+</article>
+
+<article>
+<h1 id="Conclusions">Conclusions</h1>
 <p>
-  This concludes the directly Flottplot-related part of the tutorial.
   We have build a page with 4 synchronized plots, controlled by multiple value-providing elements through substitution patterns that are automatically kept up to date by Flottplot.
-  The values of these elements can be modified by computation or formatting during substitution and the elements themselves are further controlled via actions, e.g. through button presses.
+  The values of these elements can be modified by computation and/or formatting during substitution and the elements themselves are further controlled via actions, triggered, e.g., by a button press.
   These concepts are the core of all Flottplot functionality.
+</p>
+<p>
+  The <a href="elements.html">elements</a> reference lists all attributes and behaviour of the available Flottplot elements.
+  It also contains short examples showing how to use these elements.
 </p>
 </article>
 
