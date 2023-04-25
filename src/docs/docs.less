@@ -131,8 +131,9 @@ main pre {
   background-color: #EEE;
 }
 main code {
-  font-size: 1.2em;
+  display: inline-block;
   background-color: #EEE;
+  font-size: 1.2em;
   padding: 1px 4px;
   border-radius: 3px;
 }
@@ -204,4 +205,14 @@ em { color: darken(@val-dark, 10%); }
 input[type=range] { vertical-align: middle; }
 .fp-range-counter input[type=text] { text-align: center; }
 .fp-radio label:not(:first-child) { margin-left: 10px; }
+
+div.filelist a {
+  display: inline-block;
+  text-decoration: none;
+  img {
+    margin-left: 2px;
+    height: 1.2em;
+    vertical-align: middle;
+  }
+}
 
