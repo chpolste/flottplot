@@ -22,11 +22,8 @@
 </p>
 
 
-
 <article>
-
-<h1 id="textvalue">Text</h1>
-
+<h1 id="text">Text</h1>
 <p>
   Strings of text.
 </p>
@@ -40,6 +37,7 @@
 </ul>
 </div>
 
+<h2 id="text-operators">Operators</h2>
 <div class="val">
 <h3>Binary Operators</h3>
 <ul>
@@ -55,12 +53,14 @@
 </ul>
 </div>
 
+<h2 id="text-formatting">Formatting</h2>
 <p>
   A subset of Python's <a href="https://docs.python.org/3/library/string.html#formatspec">format specification mini-language</a> is implemented for Text values: <code>[[fill]align][sign][0][width]</code>.
 </p>
+</article>
 
-
-<h1 id="numbervalue">Number</h1>
+<article>
+<h1 id="number">Number</h1>
 
 <p>
   Only integer numbers are currently supported.
@@ -76,6 +76,7 @@
 </ul>
 </div>
 
+<h2 id="number-operators">Operators</h2>
 <div class="val">
 <h3>Unary Operators</h3>
 <ul>
@@ -105,12 +106,15 @@
 </ul>
 </div>
 
+<h2 id="number-formatting">Formatting</h2>
 <p>
   A subset of Python's <a href="https://docs.python.org/3/library/string.html#formatspec">format specification mini-language</a> is implemented for Number values: <code>[[fill]align][0][width]</code>.
 </p>
+</article>
 
 
-<h1 id="datevalue">Date</h1>
+<article>
+<h1 id="date">Date</h1>
 
 <p>
   UTC dates.
@@ -131,6 +135,7 @@
 </ul>
 </div>
 
+<h2 id="date-operators">Operators</h2>
 <div class="val">
 <h3>Binary Operators</h3>
 <ul>
@@ -140,10 +145,10 @@
 </ul>
 </div>
 
+<h2 id="date-formatting">Formatting</h2>
 <p>
   Date values support a subset of the <a href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">strftime</a> format codes used by Python's datetime module:
 </p>
-
 <ul>
   <li><code>%d</code>: Day of the month (zero-padded).</li>
   <li><code>%m</code>: Month (zero-padded).</li>
@@ -154,13 +159,13 @@
   <li><code>%S</code>: Second (zero-padded)</li>
   <li><code>%%</code>: A literal percent character.</li>
 </ul>
-
 <p>
   If no specification is given, Date values default to <code>%Y-%m-%d %H:%M:%S</code>.
 </p>
+</article>
 
-
-<h1 id="datedeltavalue">DateDelta</h1>
+<article>
+<h1 id="datedelta">DateDelta</h1>
 
 <p>
   Time intervals or the difference between two Dates.
@@ -194,6 +199,7 @@
 </ul>
 </div>
 
+<h2 id="datedelta-operators">Operators</h2>
 <div class="val">
 <h3>Unary Operators</h3>
 <ul>
@@ -213,11 +219,11 @@
 </ul>
 </div>
 
+<h2 id="datedelta-formatting">Formatting</h2>
 <p>
   DateDelta does not provide formatting options at the moment.
   By default values are formatted as <code>+Dd HH:MM:SS</code>.
   Use attributes to assemble a custom format.
 </p>
-
 </article>
 
