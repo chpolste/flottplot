@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Index | Flottplot 2.2.0 Documentation</title>
+  <script type="text/javascript" src="dist/flottplot-scan-min.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Find demo code to convert
+    const nodes = document.querySelectorAll(".demo > pre.convert");
+    for (const node of nodes) {
+      // Create paragraph to put demo elements in and insert after code block
+      const demo = document.createElement("p");
+      demo.innerHTML = node.textContent;
+      node.after(demo);
+      // Convert elements in a new Flottplot instance (isolate demos from each
+      // other, so identifiers can be reused)
+      const fp = new flottplot.Flottplot();
+      fp.convert(demo);
+      fp.initialize();
+    }
+  });
+  </script>
+  <link rel="stylesheet" href="dist/flottplot.css">
+  <link rel="stylesheet" href="docs.css">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+</head>
+<body>
+
+<div class="row">
+  <div class="sidebar">
+    <div class="header">
+      <img src="logo.svg" id="logo" alt="Flottplot">
+    </div>
+<ul><li><a href="#overview">Overview</a></li><li><a href="#download">Downloads</a><ul><li><a href="#scripts">Script Files</a></li><li><a href="#styles">Style Files</a></li><li><a href="#python">Python Package</a></li></ul></li><li><a href="#license">License</a></li></ul>
+  </div>
+  <div class="content">
+    <div class="header" id="navbar">
+      <a href="index.html">Start</a>
+      <a href="tutorial.html">Tutorial</a>
+      <a href="elements.html">Elements</a>
+      <a href="values.html">Values</a>
+      <a href="python.html">Python</a>
+    </div>
+    <main>
+<p>
+  <b>Flottplot</b>: Quickly arrange and navigate collections of images in the browser.
+</p>
+
+<article>
+<h1 id="overview">Overview</h1>
+<p>
+  Flottplot helps you to quickly build a user interface to navigate a collection of images named with a common pattern.
+  It defines custom HTML tags and converts them into control and other elements that interact with each other.
+  Flottplot does not create new images, it just arranges images already plotted elsewhere.
+</p>
+<p>
+  The project was conceived as tool to view plots of meteorological and climate data with the ability to put multiple images containing different variables next to each other and click through them synchronously.
+</p>
+
+<div class="demo">
+<pre>
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;A Page With Flottplot Elements&lt;/title&gt;
+  <b>&lt;script type="text/javascript" src="flottplot-scan-min.js"&gt;&lt;/script&gt;</b>
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;p&gt;
+    Function:
+    <b>&lt;fp-select id="func"&gt;
+      &lt;fp-option name="sin"&gt;sine&lt;/fp-option&gt;
+      &lt;fp-option name="cos"&gt;cosine&lt;/fp-option&gt;
+    &lt;/fp-select&gt;</b>
+    with wavenumber
+    <b>&lt;fp-range id="waven" type="slider" min="1" max="3" step="1" init="2" wrap="both"&gt;&lt;/fp-range&gt;</b>
+    <b>&lt;fp-animation target="waven"&gt;&lt;/fp-animation&gt;</b>
+  &lt;/p&gt;
+  &lt;p&gt;
+    <b>&lt;fp-plot src="plot/{func.name}-{waven}x.png">&lt;/fp-plot&gt;</b>
+  &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>
+  Function:
+  <fp-select id="func">
+    <fp-option name="sin">sine</fp-option>
+    <fp-option name="cos">cosine</fp-option>
+  </fp-select>
+  with wavenumber
+  <fp-range id="waven" type="slider" min="1" max="3" step="1" init="2" wrap="both"></fp-range>
+  <fp-animation target="waven"></fp-animation>
+</p>
+<p>
+  <fp-plot src="plot/{func.name}-{waven}x.png"></fp-plot>
+</p>
+</div>
+<p>
+  Flottplot is in a usable state, but also under active development.
+  Some features (e.g. error reporting) are still a little rough around the edges.
+  If you run into a problem, please open an issue on <a href="https://github.com/chpolste/flottplot/issues">GitHub</a>.
+</p>
+</article>
+
+
+<article>
+<h1 id="download">Downloads</h1>
+
+<p>Choose the files that are right for you:</p>
+
+<h2 id="scripts">Script Files</h2>
+<ul class="downloads">
+  <li>
+    <a href="dist/flottplot-scan-min.js" download>flottplot-scan-min.js</a> (recommended)<br>
+    Flottplot module with automatic page scan on load.
+  </li>
+  <li>
+    <a href="dist/flottplot-min.js" download>flottplot-min.js</a><br>
+    The Flottplot module only, in case you want more control over the initialization of Flottplot.
+  </li>
+</ul>
+<p>Include JavaScript (.js) files with</p>
+<pre>&lt;script type="text/javascript" src="<b>path/to/file.js</b>"&gt;&lt;/script&gt;</pre>
+<p>in the <code>&lt;head&gt;</code> or <code>&lt;body&gt;</code> of your page.</p>
+
+<h2 id="styles">Style Files</h2>
+<ul class="downloads">
+  <li>
+    <a href="dist/flottplot.css" download>flottplot.css</a><br>
+    If you use elements that require additional styling (e.g. <code class="cdef">fp-cursors</code>), include this CSS file.
+  </li>
+</ul>
+<p>Include CSS (.css) files with</p>
+<pre>&lt;link rel="stylesheet" type="text/css" href="<b>path/to/file.css</b>"&gt;</pre>
+<p>in the <code>&lt;head&gt;</code> of your page.</p>
+
+<h2 id="python">Python Package</h2>
+<p>The Flottplot Python package can be installed from PyPI:</p>
+<pre>pip3 install flottplot</pre>
+<p>Refer to the <a href="python.html">Python package documentation</a> for more information.</p>
+</article>
+
+
+<article>
+<h1 id="license">License</h1>
+<p>Flottplot is in the public domain.</p>
+</article>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>
+

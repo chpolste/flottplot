@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Python | Flottplot 2.2.0 Documentation</title>
+  <script type="text/javascript" src="dist/flottplot-scan-min.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Find demo code to convert
+    const nodes = document.querySelectorAll(".demo > pre.convert");
+    for (const node of nodes) {
+      // Create paragraph to put demo elements in and insert after code block
+      const demo = document.createElement("p");
+      demo.innerHTML = node.textContent;
+      node.after(demo);
+      // Convert elements in a new Flottplot instance (isolate demos from each
+      // other, so identifiers can be reused)
+      const fp = new flottplot.Flottplot();
+      fp.convert(demo);
+      fp.initialize();
+    }
+  });
+  </script>
+  <link rel="stylesheet" href="dist/flottplot.css">
+  <link rel="stylesheet" href="docs.css">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+</head>
+<body>
+
+<div class="row">
+  <div class="sidebar">
+    <div class="header">
+      <img src="logo.svg" id="logo" alt="Flottplot">
+    </div>
+<ul><li><a href="#ipynb">Jupyter Integration</a></li><li><a href="#cli">Command Line Interface</a><ul><li><a href="#cli-init">init</a></li><li><a href="#cli-replace">replace</a></li></ul></li><li><a href="#server">Access via SSH</a></li></ul>
+  </div>
+  <div class="content">
+    <div class="header" id="navbar">
+      <a href="index.html">Start</a>
+      <a href="tutorial.html">Tutorial</a>
+      <a href="elements.html">Elements</a>
+      <a href="values.html">Values</a>
+      <a href="python.html">Python</a>
+    </div>
+    <main>
+<p>
+  Install the Flottplot Python package from <a href="https://pypi.org/project/flottplot">PyPI</a>
+</p><pre>
+pip3 install flottplot
+</pre><p>
+  or download a current version from <a href="https://github.com/chpolste/flottplot/tree/main/python">GitHub</a>.
+</p>
+
+
+<article>
+<h1 id="ipynb">Jupyter Integration</h1>
+<p>
+  After loading the notebook extension with
+</p><pre>
+%load_ext flottplot
+</pre><p>
+  Flottplot cells can be created with a <code>%%flottplot</code> magic command.
+  Flottplot elements added to the cell body will be converted when executing the cell.
+  Each Flottplot cell is independent and elements cannot interact between them.
+</p><p>
+  Note that all images must be reachable from the root directory of the notebook server.
+  Because JupyterLab does not serve images directly via URL, the extension does not work properly with the lab interface at the moment.
+</p>
+</article>
+
+
+<article>
+<h1 id="cli">Command Line Interface</h1>
+<p>
+  Convenient Flottplot management from the command line:
+</p><pre>
+python3 -m flottplot SUBCOMMAND ARGS...
+</pre>
+
+<h2 id="cli-init">init</h2>
+<pre>
+usage: flottplot init [-h] [-e EXT] [-a DIR] [-o] [--no-style] [--no-scan]
+                      FILE
+
+Create a new Flottplot page.
+
+positional arguments:
+  FILE                  File name for the new Flottplot page. The file
+                        extension &quot;.html&quot; is added automatically unless
+                        otherwise specfied with -e.
+
+options:
+  -h, --help            show this help message and exit
+  -e EXT, --extension EXT
+                        File extension added to the output page name if not
+                        specified by the user already. Set to &quot;.html&quot; by
+                        default. If you do not want the file name of the new
+                        page to be modified, set this argument to an empty
+                        string.
+  -a DIR, --asset-dir DIR
+                        Output directory for JavaScript and CSS assets,
+                        relative to the current directory. The directory will
+                        be created if it does not exist. By default, all
+                        assets are put into the same directory as the created
+                        Flottplot page file.
+  -o, --overwrite       Allow overwriting of existing files.
+  --no-style            Do not include the Flottplot styling (CSS file) in the
+                        output page.
+  --no-scan             Do not include the automatic element scan in the
+                        output page.
+</pre>
+
+<h2 id="cli-replace">replace</h2>
+<pre>
+usage: flottplot replace [-h]
+
+Replace Flottplot files (JavaScript, CSS) in the current directory, e.g. to
+upgrade to a new version or repair corrupted files.
+
+options:
+  -h, --help  show this help message and exit
+</pre>
+</article>
+
+
+<article>
+<h1 id="server">Access via SSH</h1>
+
+<p>
+  Your plots might be saved on a remote machine that you only have SSH access to.
+  In this case instead of transferring all plots to your local machine, you can start a simple web server on the remote machine and use port forwarding to access your flottplot page in your local browser.
+  Many machines have Python 3 installed nowadays, so we can e.g. use the <code>http.simple</code> server.
+  By default, <code>http.simple</code> serves content on port 8000.
+  When connecting with SSH, specify that port 8000 on the local machine should be forwarded to port 8000 on the remote machine:
+</p>
+<pre>
+ssh -L localhost:8000:localhost:8000 user@remote
+</pre>
+<p>
+    If you are using a config file for your SSH connections, you can permanently specify the -L option with
+</p>
+<pre>
+LocalForward localhost:8000 localhost:8000
+</pre>
+<p>
+  there. When the connection is established, start the webserver with
+</p>
+<pre>
+python3 -m http.server
+</pre>
+<p>
+  on the remote machine.
+  It will tell you which port it is serving on.
+  This port must match the one just specified in the SSH command.
+  As long as the SSH connection is open, you can type
+</p>
+<pre>
+http://localhost:8000
+</pre>
+<p>
+  into your (local) browser's address bar to access the webserver started on the remote machine.
+  The server will show you the content of the directory that it was started in and if there is a file named <code>index.html</code> it will serve this file immediately (you can also access other files by navigating with the URL in the browser).
+  The server only has access to files inside that directory and its subdirectories, so if you want to access something that is saved in directory <code>~/aaa</code>, you should start the server in either <code>~</code> or <code>~/aaa</code>, but not <code>~/bbb</code>.
+  This not just applies to your flottplot page but also all the plots that you include in your flottplot.
+  Make sure you are using relative paths to reference files and employ softlinks to access remote locations you don't have a relative path to.
+</p>
+<p>
+  The server can be stopped with Ctrl-C when you are done.
+</p>
+</article>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>
+

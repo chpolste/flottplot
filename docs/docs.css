@@ -1,0 +1,240 @@
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  color: #000;
+  font-family: sans-serif;
+}
+div.row {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1300px;
+}
+a {
+  color: hsl(200, 50%, 30%);
+  text-decoration: underline;
+}
+a:hover {
+  color: hsl(200, 50%, 50%);
+  text-decoration: none;
+}
+div.sidebar {
+  flex-grow: 1;
+  width: 200px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  background-color: #EEE;
+  padding: 0 10px;
+}
+div.sidebar > ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+div.sidebar > ul > li {
+  padding: 3px 0;
+  margin-bottom: 5px;
+}
+div.sidebar > ul > li > a {
+  font-weight: bold;
+}
+div.sidebar > ul > li > ul {
+  list-style: none;
+  padding-left: 15px;
+}
+div.sidebar a {
+  color: #000;
+  display: block;
+  text-decoration: none;
+}
+div.sidebar a:hover {
+  color: hsl(200, 50%, 50%);
+}
+div.content {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: 600px;
+  padding: 10px;
+  background-color: #FFF;
+  z-index: 10;
+}
+div.header {
+  display: block;
+  margin: 10px -10px 10px 0;
+  padding: 0 10px 10px 0;
+  border-bottom: 2px solid #999;
+  color: #999;
+  height: 30px;
+}
+#logo {
+  height: 30px;
+  max-width: 100%;
+}
+#navbar {
+  font-size: 130%;
+  margin: 0 0 10px -10px;
+  padding: 0px 0 10px 10px;
+  border-color: #CCC;
+  text-align: right;
+}
+#navbar a {
+  display: inline-block;
+  padding: 0 7px;
+  color: black;
+  text-decoration: none;
+}
+#navbar a:hover {
+  color: hsl(200, 50%, 50%);
+}
+main {
+  padding: 0 0 0 10px;
+  margin: 0;
+}
+main h1 {
+  font-size: 200%;
+  margin: 30px 0 10px 0;
+  font-weight: normal;
+}
+main h2 {
+  font-size: 140%;
+  margin: 30px 0 10px 0;
+  border-bottom: 2px solid #CCC;
+  padding-bottom: 5px;
+  font-weight: normal;
+}
+main h3 {
+  font-size: 100%;
+  margin: 20px 0 10px 0;
+}
+main ul {
+  margin: 10px 0;
+  padding-left: 30px;
+  list-style: none;
+}
+main p {
+  margin: 10px 0;
+}
+main p:first-child {
+  margin-top: revert;
+}
+main ul > li::before {
+  content: "●";
+  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  display: inline-block;
+  /* Needed to add space between the bullet and the text */
+  width: 20px;
+  /* Also needed for space (tweak if needed) */
+  margin-left: -20px;
+  /* Also needed for space (tweak if needed) */
+  color: #999;
+}
+main ul li ul {
+  margin: 0 0 10px 0;
+}
+main pre {
+  margin: 10px 0;
+  font-size: 1.1em;
+  overflow: scroll;
+  padding: 8px 10px;
+  border-radius: 3px;
+  background-color: #EEE;
+}
+main code {
+  display: inline-block;
+  background-color: #EEE;
+  font-size: 1.2em;
+  padding: 0 4px;
+  border-radius: 3px;
+}
+.downloads a {
+  font-weight: bold;
+}
+.def {
+  border-color: hsl(200, 50%, 90%);
+}
+.def h3 {
+  color: hsl(200, 50%, 50%);
+}
+.def > ul > li::before {
+  color: hsl(200, 50%, 50%);
+}
+.def pre,
+.def > ul > li > code:first-child {
+  background-color: hsl(200, 50%, 90%);
+}
+.val {
+  border-color: hsl(260, 80%, 92%);
+}
+.val h3 {
+  color: hsl(260, 30%, 55%);
+}
+.val > ul > li::before {
+  color: hsl(260, 30%, 55%);
+}
+.val pre,
+.val > ul > li > code:first-child {
+  background-color: hsl(260, 80%, 92%);
+}
+.act {
+  border-color: hsl(30, 100%, 90%);
+}
+.act h3 {
+  color: hsl(30, 70%, 50%);
+}
+.act > ul > li::before {
+  color: hsl(30, 70%, 50%);
+}
+.act pre,
+.act > ul > li > code:first-child {
+  background-color: hsl(30, 100%, 90%);
+}
+.demo {
+  border-color: hsl(90, 50%, 90%);
+}
+.demo h3 {
+  color: hsl(90, 50%, 35%);
+}
+.demo > ul > li::before {
+  color: hsl(90, 50%, 35%);
+}
+.demo pre,
+.demo > ul > li > code:first-child {
+  background-color: hsl(90, 50%, 90%);
+}
+code.cdef {
+  background-color: hsl(200, 50%, 90%);
+}
+code.cval {
+  background-color: hsl(260, 80%, 92%);
+}
+code.cact {
+  background-color: hsl(30, 100%, 90%);
+}
+span.vadd {
+  color: #999;
+  font-size: 75%;
+  margin-left: 5px;
+  font-weight: bold;
+}
+em {
+  color: hsl(260, 30%, 45%);
+}
+input[type=range] {
+  vertical-align: middle;
+}
+.fp-range-counter input[type=text] {
+  text-align: center;
+}
+.fp-radio label:not(:first-child) {
+  margin-left: 10px;
+}
+div.filelist a {
+  display: inline-block;
+  text-decoration: none;
+}
+div.filelist a img {
+  margin-left: 2px;
+  height: 1.4em;
+  vertical-align: middle;
+}

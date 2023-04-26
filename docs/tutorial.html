@@ -1,0 +1,385 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Tutorial | Flottplot 2.2.0 Documentation</title>
+  <script type="text/javascript" src="dist/flottplot-scan-min.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Find demo code to convert
+    const nodes = document.querySelectorAll(".demo > pre.convert");
+    for (const node of nodes) {
+      // Create paragraph to put demo elements in and insert after code block
+      const demo = document.createElement("p");
+      demo.innerHTML = node.textContent;
+      node.after(demo);
+      // Convert elements in a new Flottplot instance (isolate demos from each
+      // other, so identifiers can be reused)
+      const fp = new flottplot.Flottplot();
+      fp.convert(demo);
+      fp.initialize();
+    }
+  });
+  </script>
+  <link rel="stylesheet" href="dist/flottplot.css">
+  <link rel="stylesheet" href="docs.css">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+</head>
+<body>
+
+<div class="row">
+  <div class="sidebar">
+    <div class="header">
+      <img src="logo.svg" id="logo" alt="Flottplot">
+    </div>
+<ul><li><a href="#files">Preliminaries</a><ul><li><a href="#prelim-files">Files and Folders</a></li><li><a href="#prelim-errors">Working with HTML</a></li></ul></li><li><a href="#basic">A Basic Page</a><ul><li><a href="#basic-init">Initializing</a></li><li><a href="#basic-elements">Adding Elements</a></li><li><a href="#basic-plot">Controlling a Plot</a></li></ul></li><li><a href="#advanced">An Advanced Page</a><ul><li><a href="#advanced-labels">Using Labels</a></li><li><a href="#advanced-sync">Synchronized Control</a></li><li><a href="#advanced-convenience">Adding Convenience</a></li></ul></li><li><a href="#Conclusions">Conclusions</a></li></ul>
+  </div>
+  <div class="content">
+    <div class="header" id="navbar">
+      <a href="index.html">Start</a>
+      <a href="tutorial.html">Tutorial</a>
+      <a href="elements.html">Elements</a>
+      <a href="values.html">Values</a>
+      <a href="python.html">Python</a>
+    </div>
+    <main>
+<p>A step-by-step guide to creating a Flottplot page, introducing the core concepts by example.</p>
+
+<article>
+<h1 id="files">Preliminaries</h1>
+
+<h2 id="prelim-files">Files and Folders</h2>
+<p>
+  The goal of this tutorial is make the following collection of plots accessible with Flottplot:
+</p>
+<div class="filelist">
+  <a href="plot/adv_bwd_000.png"><code>plot/adv_bwd_000.png</code><img src="plot/adv_bwd_000.png"></a>,
+  <a href="plot/adv_bwd_012.png"><code>plot/adv_bwd_012.png</code><img src="plot/adv_bwd_012.png"></a>,
+  ...,
+  <a href="plot/adv_bwd_120.png"><code>plot/adv_bwd_120.png</code><img src="plot/adv_bwd_120.png"></a>,
+  <br>
+  <a href="plot/adv_fwd_000.png"><code>plot/adv_fwd_000.png</code><img src="plot/adv_fwd_000.png"></a>,
+  <a href="plot/adv_fwd_012.png"><code>plot/adv_fwd_012.png</code><img src="plot/adv_fwd_012.png"></a>,
+  ...,
+  <a href="plot/adv_fwd_120.png"><code>plot/adv_fwd_120.png</code><img src="plot/adv_fwd_120.png"></a>,
+  <br>
+  <a href="plot/adv_lag_000.png"><code>plot/adv_lag_000.png</code><img src="plot/adv_lag_000.png"></a>,
+  <a href="plot/adv_lag_012.png"><code>plot/adv_lag_012.png</code><img src="plot/adv_lag_012.png"></a>,
+  ...,
+  <a href="plot/adv_lag_120.png"><code>plot/adv_lag_120.png</code><img src="plot/adv_lag_120.png"></a>.
+</div>
+<p>
+  These image files show the results of integrating a one-dimensional advection equation in three different ways: using explicit Euler time-stepping (<code>fwd</code>), using implicit Euler time-stepping (<code>bwd</code>) and using a semi-Lagrangian (<code>lag</code>) scheme.
+  Plots were produced for every 12 time units out to time 120 and the respective time of each plot can be determined from a three-digit zero-padded number in each file name.
+</p>
+<p>
+  It is not necessary to understand the contents of these plots.
+  However, it is important that information about the plots is contained in the file names.
+  Flottplot cannot extract information from file contents, therefore all relevant information must be be exposed via the file names.
+</p>
+
+<h2 id="prelim-errors">Working with HTML</h2>
+<p>
+  Flottplot pages are written in HTML, the markup language of the web.
+  Flottplot defines custom HTML elements (so-called "tags") and infuses them with additional functionality in a JavaScript-enabled web browser.
+  The custom elements can be integrated with any other (standard) HTML elements.
+  No prior HTML knowledge is required for Flottplot, but some basic knowlegde might lead to nicer pages.
+</p>
+<p>
+  Web browsers are built to be error tolerant and will try to display HTML as best as they can, even if it contains errors.
+  If you find that an element is missing in a page or encounter other issues, first make sure that your HTML tags are well-formed.
+  A common mistake is to leave HTML tags unfinished, usually because the closing tag (the one with a <code>/</code> before the name) is missing.
+</p>
+<p>
+  Flottplot usually reports errors directly in the page with red boxes around the elements on which they occur.
+  However, some errors are not caught by Flottplot (yet).
+  These errors can be diagnosed with the developer tools integrated into the browser.
+  When encountering a problem, additional information might be found in the JavaScript console.
+  Flottplot bugs can be reported via the <a href="https://github.com/chpolste/flottplot/issues">GitHub issue tracker</a>.
+</p>
+</article>
+
+<article>
+<h1 id="basic">A Basic Page</h1>
+<p>
+  The goal of this first part of the tutorial is to create a basic page with controls for the content of a single plot panel from scratch.
+</p>
+
+<h2 id="basic-init">Initializing</h2>
+<p>
+  Download the Flottplot JavaScript library with automatic element scan (<a href="dist/flottplot-scan-min.js" download>flottplot-scan-min.js</a>).
+  Create a new text file, e.g. <code>page.html</code>, in the same folder.
+  Open the file with a text editor and insert the following HTML code:
+</p>
+<div class="demo">
+<pre>
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;A Flottplot Page&lt;/title&gt;
+  &lt;script type="text/javascript" src="flottplot-scan-min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+<p>
+  This code contains the basic structure of an HTML page.
+  The title text between <code>&lt;title&gt;</code> and <code>&lt;/title&gt;</code> can be freely chosen.
+  All page content is placed between <code>&lt;body&gt;</code> and <code>&lt;/body&gt;</code>.
+  Open the HTML file with a browser and you should see an empty page.
+</p>
+
+<p>With the <a href="python.html">Flottplot Python package</a>, such a page can be initialized more easily by running</p>
+<pre>python3 -m flottplot init test.html</pre>
+<p>on the command line.</p>
+
+<h2 id="basic-elements">Adding Elements</h2>
+<p>
+  The names of the <a href="#prelim-files">files</a> in the collection contain two variable parts: the scheme (<code>fwd</code>, <code>bwd</code> or <code>lag</code>) and the time step (<code>000</code>, <code>012</code>, ..., <code>120</code>).
+</p>
+<p>
+  First, we add a slider element for the time step into the <code>&lt;body&gt;</code> of the page.
+  Because the time step is numeric and regularly spaced, we can recreate a matching sequence of <a href="values.html#number">numbers</a> with an <a href="elements.html#range"><code class="cdef">&lt;fp-range&gt;</code> element</a>:
+</p>
+<div class="demo">
+<pre class="convert">
+&lt;fp-range id="step" type="slider" min="0" max="120" step="12"&gt;&lt;/fp-range&gt;
+</pre>
+</div>
+<p>
+  The leftmost position of the slider corresponds to its minimum value (<code class="cval">0</code>), with values increasing by <code class="cval">12</code> for each step the slider takes to right.
+  Because we need to refer to the value of the slider later, the identifier <code>step</code> is given to the element.
+  Note that it is not necessary to account for the zero-padded formatting of the number in the file names already here.
+  Formatting of values is carried out later during pattern substitution.
+</p>
+<p>
+  Next, we add a dropdown menu with three options for the scheme-part of the file names.
+  We can specify the three values with an <a href="elements.html#select"><code class="cdef">&lt;fp-select&gt;</code> element</a>:
+</p>
+<div class="demo">
+<pre class="convert">
+&lt;fp-range id="step" type="slider" min="0" max="120" step="12"&gt;&lt;/fp-range&gt;
+<strong>&lt;fp-select id="scheme" type="dropdown"&gt;
+  &lt;fp-option&gt;fwd&lt;/fp-option&gt;
+  &lt;fp-option&gt;bwd&lt;/fp-option&gt;
+  &lt;fp-option&gt;lag&lt;/fp-option&gt;
+&lt;/fp-select&gt;</strong>
+</pre>
+</div>
+<p>
+  Again, because we need to reference the selected value later, the element is named <code>scheme</code>.
+</p>
+
+<h2 id="basic-plot">Controlling a Plot</h2>
+<p>
+  Finally we add a plot panel to the page and connect it to both value-providing elements via a substitution pattern:
+</p>
+<div class="demo">
+<pre class="convert">
+&lt;fp-range id="step" type="slider" min="0" max="120" step="12"&gt;&lt;/fp-range&gt;
+&lt;fp-select id="scheme" type="dropdown"&gt;
+  &lt;fp-option&gt;fwd&lt;/fp-option&gt;
+  &lt;fp-option&gt;bwd&lt;/fp-option&gt;
+  &lt;fp-option&gt;lag&lt;/fp-option&gt;
+&lt;/fp-select&gt;
+<strong>&lt;br&gt;</strong>
+<strong>&lt;fp-plot src="plot/adv_{scheme}_{step:03}.png"&gt;&lt;/fp-plot&gt;</strong>
+</pre>
+</div>
+<p>
+  The <code class="cdef">src</code> (source) of the <a href="elements.html#plot"><code class="cdef">&lt;fp-plot&gt;</code> element</a> accepts a pattern for <a href="values.html">value substitution</a>.
+  Instead of just using the path as given, Flottplot will substitute the current values of elements referenced in a substitution pattern and keep them updated when the state of these elements changes.
+</p>
+<p>
+  Here, <code>{scheme}</code> is replaced with either <code class="cval">fwd</code>, <code class="cval">bwd</code> or <code class="cval">lag</code>, depending on the state of the element named <code>scheme</code> (i.e. the dropdown menu introduced earlier).
+  Multiple substitutions are allowed, so we also substitute the value of our range <code>step</code>, with additional formatting to match the format of the number in the file names.
+</p>
+<p>
+  Formatting options in Flottplot work just as they do in <a href="https://docs.python.org/3/library/string.html#formatspec">Python's <code>format</code> method</a> and are separated from the value with a colon inside the substitution which is enclosed by the curly braces.
+  The format <code>03</code> for numeric values used here means: enable zero-padding and fill up to a three-digit output.
+</p>
+<p>
+  <code>&lt;br&gt;</code> is part of standard HTML and introduces a line break.
+  It does not need to be closed.
+</p>
+</article>
+
+
+<article>
+<h1 id="advanced">An Advanced Page</h1>
+<p>
+  Starting from the basic page created above, we add further plot panels and improve usability.
+</p>
+
+<h2 id="advanced-labels">Using Labels</h2>
+<p>
+  The abbreviations for the different integration schemes in the file names are not well understandable in the dropdown menu.
+  To provide a better description of the selection, we can change the labels of the options and introduce a custom attribute so that the abbreviated values are still available for substitution in the file name pattern:
+</p>
+<div class="demo">
+<pre class="convert">
+&lt;fp-range id="step" type="slider" min="0" max="120" step="12"&gt;&lt;/fp-range&gt;
+&lt;fp-select id="scheme" type="dropdown"&gt;
+  &lt;fp-option <strong>abbrev="fwd"</strong>&gt;<strong>Explicit Euler</strong>&lt;/fp-option&gt;
+  &lt;fp-option <strong>abbrev="bwd"</strong>&gt;<strong>Implicit Euler</strong>&lt;/fp-option&gt;
+  &lt;fp-option <strong>abbrev="lag"</strong>&gt;<strong>Semi-Lagrangian</strong>&lt;/fp-option&gt;
+&lt;/fp-select&gt;
+&lt;br&gt;
+&lt;fp-plot src="plot/adv_{<strong>scheme.abbrev</strong>}_{step:03}.png"&gt;&lt;/fp-plot&gt;
+</pre>
+</div>
+<p>
+  Note that the choice of the attribute name is free and multiple attributes can be added in general.
+  Attributes are available on the value of the <code class="cdef">&lt;fp-select&gt;</code>element during substitution.
+  In the example, <code>{scheme}</code> still refers to the label of the option, e.g. <code class="cval">Explicit Euler</code>, while <code>{scheme.abbrev}</code> accesses the associated value stored in the attribute <code class="cdef">abbrev</code> (which was the label previously), e.g. <code class="cval">fwd</code>.
+</p>
+
+<h2 id="advanced-sync">Synchronized Control</h2>
+<p>
+  We now add a second plot panel to the page that shows an additional time step.
+  This time step is supposed to always be 12 time units later than the one already shown, so we need to perform an addition before substitution in the new plot:
+</p>
+<div class="demo">
+<pre class="convert">
+&lt;fp-range id="step" type="slider" min="0" <strong>max="108"</strong> step="12"&gt;&lt;/fp-range&gt;
+&lt;fp-select id="scheme" type="dropdown"&gt;
+  &lt;fp-option abbrev="fwd"&gt;Explicit Euler&lt;/fp-option&gt;
+  &lt;fp-option abbrev="bwd"&gt;Implicit Euler&lt;/fp-option&gt;
+  &lt;fp-option abbrev="lag"&gt;Semi-Lagrangian&lt;/fp-option&gt;
+&lt;/fp-select&gt;
+&lt;br&gt;
+&lt;fp-plot src="plot/adv_{scheme.abbrev}_{step:03}.png"&gt;&lt;/fp-plot&gt;
+<strong>&lt;fp-plot src="plot/adv_{scheme.abbrev}_{step+12:03}.png"&gt;&lt;/fp-plot&gt;</strong>
+</pre>
+</div>
+<p>
+  The value obtained from element <code>step</code> is increased by 12 before the substitution and also kept synchronized with the slider by Flottplot.
+  Common mathematical operations are available for <a href="values.html#number">numeric values</a>.
+</p>
+<p>
+  Note that the maximum value of the slider was reduced by 12 to avoid showing a missing image in the time-shifted plot.
+  The page would not break when accessing a missing image, but for a better user experience the adjustment is done here.
+</p>
+<p>
+  To allow for a direct comparison between two integration schemes, a second dropdown menu and two more plots are added:
+</p>
+<div class="demo">
+<pre class="convert">
+&lt;fp-range id="step" type="slider" min="0" max="108" step="12"&gt;&lt;/fp-range&gt;
+&lt;fp-select <strong>id="scheme_a"</strong> type="dropdown"&gt;
+  &lt;fp-option abbrev="fwd"&gt;Explicit Euler&lt;/fp-option&gt;
+  &lt;fp-option abbrev="bwd"&gt;Implicit Euler&lt;/fp-option&gt;
+  &lt;fp-option abbrev="lag"&gt;Semi-Lagrangian&lt;/fp-option&gt;
+&lt;/fp-select&gt;
+<strong>&lt;fp-select id="scheme_b" type="dropdown" init="Implicit Euler"&gt;
+  &lt;fp-option abbrev="fwd"&gt;Explicit Euler&lt;/fp-option&gt;
+  &lt;fp-option abbrev="bwd"&gt;Implicit Euler&lt;/fp-option&gt;
+  &lt;fp-option abbrev="lag"&gt;Semi-Lagrangian&lt;/fp-option&gt;
+&lt;/fp-select&gt;</strong>
+&lt;br&gt;
+&lt;fp-plot src="plot/adv_{<strong>scheme_a</strong>.abbrev}_{step:03}.png"&gt;&lt;/fp-plot&gt;
+&lt;fp-plot src="plot/adv_{<strong>scheme_a</strong>.abbrev}_{step+12:03}.png"&gt;&lt;/fp-plot&gt;
+<strong>&lt;br&gt;
+&lt;fp-plot src="plot/adv_{scheme_b.abbrev}_{step:03}.png"&gt;&lt;/fp-plot&gt;
+&lt;fp-plot src="plot/adv_{scheme_b.abbrev}_{step+12:03}.png"&gt;&lt;/fp-plot&gt;</strong>
+</pre>
+</div>
+<p>
+  The second dropdown menu is just a copy of the already existing one and both get new identifiers so they can be individually addressed (Flottplot enforces unique identifiers).
+  The new menu has its second option, <code class="cval">Implicit Euler</code>, selected by default.
+  The two rows of plots are connected to one of the dropdown menus each.
+  All plots are synchronized with the slider providing a value for <code>step</code>.
+</p>
+
+<h2 id="advanced-convenience">Adding Convenience</h2>
+<p>
+  The final Flottplot elements added to the page add some convenience:
+</p>
+<div class="demo">
+<pre class="convert">
+<strong>&lt;fp-button action="step.prev"&gt;-12&lt;/fp-button&gt;</strong>
+&lt;fp-range id="step" type="slider" min="0" max="108" step="12" <strong>wrap="both"</strong>&gt;&lt;/fp-range&gt;
+<strong>&lt;fp-button action="step.next"&gt;+12&lt;/fp-button&gt;</strong>
+<strong>&lt;fp-animation target="step"&gt;&lt;/fp-animation&gt;</strong>
+&lt;fp-select id="scheme_a" type="dropdown"&gt;
+  &lt;fp-option abbrev="fwd"&gt;Explicit Euler&lt;/fp-option&gt;
+  &lt;fp-option abbrev="bwd"&gt;Implicit Euler&lt;/fp-option&gt;
+  &lt;fp-option abbrev="lag"&gt;Semi-Lagrangian&lt;/fp-option&gt;
+&lt;/fp-select&gt;
+&lt;fp-select id="scheme_b" type="dropdown" init="Implicit Euler"&gt;
+  &lt;fp-option abbrev="fwd"&gt;Explicit Euler&lt;/fp-option&gt;
+  &lt;fp-option abbrev="bwd"&gt;Implicit Euler&lt;/fp-option&gt;
+  &lt;fp-option abbrev="lag"&gt;Semi-Lagrangian&lt;/fp-option&gt;
+&lt;/fp-select&gt;
+&lt;br&gt;
+&lt;fp-plot <strong>id="plot_a"</strong> src="plot/adv_{scheme_a.abbrev}_{step:03}.png"&gt;&lt;/fp-plot&gt;
+&lt;fp-plot src="plot/adv_{scheme_a.abbrev}_{step+12:03}.png"&gt;&lt;/fp-plot&gt;
+&lt;br&gt;
+&lt;fp-plot <strong>id="plot_b"</strong> src="plot/adv_{scheme_b.abbrev}_{step:03}.png"&gt;&lt;/fp-plot&gt;
+&lt;fp-plot src="plot/adv_{scheme_b.abbrev}_{step+12:03}.png"&gt;&lt;/fp-plot&gt;
+<strong>&lt;fp-cursors&gt;
+  &lt;fp-cursor target="plot_a"&gt;&lt;/fp-cursor&gt;
+  &lt;fp-cursor target="plot_b"&gt;&lt;/fp-cursor&gt;
+&lt;/fp-cursors&gt;</strong>
+</pre>
+</div>
+<p>
+  The <code class="cact">prev</code> and <code class="cact">next</code> actions of the slider are assigned to two <a href="elements.html#button"><code class="cdef">&lt;fp-button&gt;</code> elements</a> such that they can be used as an alternative way to change the time step (other than dragging the slider).
+  An <a href="elements.html#animation"><code class="cdef">&lt;fp-animation&gt;</code> element</a> for the slider additionally provides the option to let Flottplot advance the time step automatically.
+  Wrapping is enabled on the slider with <code class="cdef">wrap="both"</code> to allow the animation (and buttons) to loop indefinitely.
+</p>
+<p>
+  Cursor mirroring between the left plots in each row is enabled with an <a href="elements.html#cursors"><code class="cdef">&lt;fp-cursors&gt;</code> element</a>.
+  Moving the cursor into one of these plots will now show a second cursor at the same location in the other plot for easy comparison of values.
+</p>
+</article>
+
+<article>
+<h1 id="Conclusions">Conclusions</h1>
+<p>
+  We have build a page with 4 synchronized plots, controlled by multiple value-providing elements through substitution patterns that are automatically kept up to date by Flottplot.
+  The values of these elements can be modified by computation and/or formatting during substitution and the elements themselves are further controlled via actions, triggered, e.g., by a button press.
+  These concepts are the core of all Flottplot functionality.
+</p>
+<p>
+  The <a href="elements.html">elements</a> reference lists all attributes and behaviour of the available Flottplot elements.
+  It also contains short examples showing how to use these elements.
+</p>
+</article>
+
+<!--
+<article>
+<h1 idTODO="styling">Styling</h1>
+<p>
+  HTML has built-in elements recognized by web browsers to give a page structure.
+  Cascading Style Sheets (CSS) can further be used to style these elements, modifying e.g the color of elements or the distance between them.
+</p>
+<p>
+  Here, we add some HTML and CSS to the page constructed above to make the page prettier.
+  This is not a tutorial for HTML or CSS and not everything shown here is necessarily considered best-practice among web designers.
+  However, the tools shown provide quick and reliable results.
+</p>
+
+<h2 idTODO="styling-html">Structure (HTML)</h2>
+<p>
+  TODO: Use tables to structure the content.
+</p>
+
+<h2 idTODO="styling-css">Looks (CSS)</h2>
+<p>
+  TODO: Use CSS to make it pretty.
+</p>
+</article>
+-->
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>
+

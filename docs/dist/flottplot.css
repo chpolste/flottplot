@@ -1,0 +1,43 @@
+.fp-cursor {
+  display: none;
+}
+.fp-cursor.fp-hline {
+  border-top: 2px solid black;
+}
+.fp-cursor.fp-vline {
+  border-left: 2px solid black;
+}
+.fp-cursor.fp-pointer {
+  border-top: 2px solid black;
+  border-left: 2px solid black;
+  width: 5px;
+  height: 5px;
+}
+.fp-stack {
+  display: inline-grid;
+}
+.fp-stack > * {
+  grid-area: 1 / 1 / 2 / 2;
+}
+.fp-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #FFF;
+}
+.fp-overlay-inner {
+  max-width: 98%;
+  max-height: 98%;
+  margin: auto;
+  overflow: hidden;
+}
+.fp-overlay-inner img {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  width: auto;
+}
