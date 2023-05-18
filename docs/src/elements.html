@@ -50,27 +50,16 @@
 
 <div class="demo">
 <h3>Demo</h3>
-<pre>
-&lt;fp-plot id="cursortarget_sin" src="plot/sin-2x.png"&gt;&lt;/fp-plot&gt;
-&lt;fp-plot id="cursortarget_cos" src="plot/cos-2x.png"&gt;&lt;/fp-plot&gt;
+<pre class="convert">
+&lt;fp-plot id="cursortarget_sin" src="plot/sin-2x.png" width="40%"&gt;&lt;/fp-plot&gt;
+&lt;fp-plot id="cursortarget_cos" src="plot/cos-2x.png" width="40%"&gt;&lt;/fp-plot&gt;
 &lt;fp-cursors&gt;
   &lt;fp-cursor target="cursortarget_sin" cursor="pointer"&gt;&lt;/fp-cursor&gt;
   &lt;fp-cursor target="cursortarget_cos" cursor="vline"&gt;&lt;/fp-cursor&gt;
   &lt;fp-cursor target="cursortarget_cos" cursor="hline"&gt;&lt;/fp-cursor&gt;
 &lt;/fp-cursors&gt;
 </pre>
-<p>
-  <fp-plot id="cursortarget_sin" src="plot/sin-2x.png" style="width:300px;"></fp-plot>
-  <fp-plot id="cursortarget_cos" src="plot/cos-2x.png" style="width:300px;"></fp-plot>
-</p>
 </div>
-<fp-cursors>
-  <fp-cursor target="cursortarget_sin" cursor="pointer"></fp-cursor>
-  <fp-cursor target="cursortarget_cos" cursor="vline"></fp-cursor>
-  <fp-cursor target="cursortarget_cos" cursor="hline"></fp-cursor>
-</fp-cursors>
-
-
 <p>
   <code class="cdef">&lt;fp-cursors&gt;</code> elements should be placed directly into the body of the document as they use absolute positioning to place the additional cursors.
 </p>
@@ -144,14 +133,10 @@
 
 <div class="demo">
 <h3>Demo</h3>
-<pre>
+<pre class="convert">
 Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"&gt;&lt;/fp-range&gt;&lt;br&gt;
-&lt;fp-plot src="plot/sin-{plotparam}x.png"&gt;&lt;/fp-plot&gt;
+&lt;fp-plot src="plot/sin-{plotparam}x.png" width="50%"&gt;&lt;/fp-plot&gt;
 </pre>
-<p>
-  Wavenumber: <fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"></fp-range><br>
-  <fp-plot src="plot/sin-{plotparam}x.png" style="width:450px;"></fp-plot>
-</p>
 </div>
 
 
@@ -284,15 +269,11 @@ Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"
 
 <div class="demo">
 <h3>Demo</h3>
-<pre>
+<pre class="convert">
 &lt;fp-button action="cal.prevYear"&gt;-Y&lt;/fp-button&gt;
 &lt;fp-calendar id="cal"&gt;&lt;/fp-calendar&gt;
 &lt;fp-button action="cal.nextYear"&gt;+Y&lt;/fp-button&gt;
-</pre><p>
-  <fp-button action="cal.prevYear">-Y</fp-button>
-  <fp-calendar id="cal"></fp-calendar>
-  <fp-button action="cal.nextYear">+Y</fp-button>
-</p>
+</pre>
 </div>
 
 
@@ -374,51 +355,39 @@ Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"
 
 <div class="demo">
 <h3>Demo: Numeric Counter</h3>
-<pre>
+<pre class="convert">
 &lt;fp-range id="wrapped_range" type="counter" min="-5" max="5" step="2" init="0" wrap="max"&gt;&lt;/fp-range&gt;
-</pre><p>
-  <fp-range id="wrapped_range" type="counter" min="-5" max="5" step="2" init="0" wrap="max"></fp-range>
-</p>
+</pre>
 </div>
 
 <div class="demo">
 <h3>Demo: Linked Ranges</h3>
-<pre>
+<pre class="convert">
 &lt;fp-range id="link_range" type="counter" min="0" max="2" step="1" wrap="both"
           min-wrap-action="link_target.prev" max-wrap-action="link_target.next"&gt;&lt;/fp-range&gt;
 &lt;fp-range id="link_target" type="counter" init="0" step="1"&gt;&lt;/fp-range&gt;
-</pre><p>
-  <fp-range id="link_range" type="counter" min="0" max="2" step="1" wrap="both"
-            min-wrap-action="link_target.prev" max-wrap-action="link_target.next"></fp-range>
-  <fp-range id="link_target" type="counter" init="0" step="1"></fp-range>
-</p>
+</pre>
 </div>
 
 <div class="demo">
 <h3>Demo: Date Counter</h3>
-<pre>
+<pre class="convert">
 &lt;fp-range id="date_range" type="counter" min="2020-01-01" step="3h" format="%Y-%m-%d %H UTC"&gt;&lt;/fp-range&gt;
-</pre><p>
-  <fp-range id="date_range" type="counter" min="2020-01-01" step="3h" format="%Y-%m-%d %H UTC"></fp-range>
-</p>
+</pre>
 </div>
 
 <div class="demo">
 <h3>Demo: Slider</h3>
-<pre>
+<pre class="convert">
 &lt;fp-range id="slider_range" type="slider" min="-5" max="5" step="1" init="-2"&gt;&lt;/fp-range&gt;
-</pre><p>
-  <fp-range id="slider_range" type="slider" min="-5" max="5" step="1" init="-2"></fp-range>
-</p>
+</pre>
 </div>
 
 <div class="demo">
 <h3>Demo: Dropdown</h3>
-<pre>
+<pre class="convert">
 &lt;fp-range id="select_range" type="dropdown" min="-30" max="30" step="6" format="+04"&gt;&lt;/fp-range&gt;
-</pre><p>
-  <fp-range id="select_range" type="dropdown" min="-30" max="30" step="6" format="+04"></fp-range>
-</p>
+</pre>
 </div>
 
 
@@ -490,7 +459,7 @@ Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"
 
 <div class="demo">
 <h3>Demo: Dropdown With Custom Attribute</h3>
-<pre>
+<pre class="convert">
 &lt;fp-select id="select_demo"&gt;
   &lt;fp-option letter="C"&gt;Entry No. 1&lt;/fp-option&gt;
   &lt;fp-option letter="D"&gt;Entry No. 2&lt;/fp-option&gt;
@@ -498,32 +467,17 @@ Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"
 &lt;/fp-select&gt;
 &lt;fp-text&gt;{select_demo} with letter {select_demo.letter}&lt;/fp-text&gt;
 </pre>
-<p>
-  <fp-select id="select_demo">
-    <fp-option letter="C">Entry No. 1</fp-option>
-    <fp-option letter="D">Entry No. 2</fp-option>
-    <fp-option letter="E">Entry No. 3</fp-option>
-  </fp-select>
-  <fp-text>{select_demo} with letter {select_demo.letter}</fp-text>
-</p>
 </div>
 
 <div class="demo">
 <h3>Demo: Radio Options</h3>
-<pre>
+<pre class="convert">
 &lt;fp-select id="select_demo_radio" type="radio"&gt;
   &lt;fp-option&gt;Option 1&lt;/fp-option&gt;
   &lt;fp-option&gt;Another Option&lt;/fp-option&gt;
   &lt;fp-option&gt;Choose me!&lt;/fp-option&gt;
 &lt;/fp-select&gt;
 </pre>
-<p>
-  <fp-select id="select_demo_radio" type="radio">
-    <fp-option letter="C">Option 1</fp-option>
-    <fp-option letter="D">Another Option</fp-option>
-    <fp-option letter="E">Choose me!</fp-option>
-  </fp-select>
-</p>
 </div>
 
 </article>
@@ -586,14 +540,10 @@ Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"
 
 <div class="demo">
 <h3>Demo</h3>
-<pre>
+<pre class="convert">
 &lt;fp-animation target="anim_target"&gt;&lt;/fp-animation&gt;
 &lt;fp-range type="slider" id="anim_target" min="0" max="10" step="1" wrap="both"&gt;&lt;/fp-range&gt;
 </pre>
-<p>
-  <fp-animation target="anim_target"></fp-animation>
-  <fp-range type="slider" id="anim_target" min="0" max="10" step="1" wrap="both"></fp-range>
-</p>
 </div>
 
 
@@ -631,14 +581,10 @@ Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"
 
 <div class="demo">
 <h3>Demo</h3>
-<pre>
+<pre class="convert">
 &lt;fp-button action="button_target.next"&gt;go to the next&lt;/fp-button&gt;
 &lt;fp-range type="dropdown" id="button_target" min="0" max="10" step="1" wrap="both"&gt;&lt;/fp-range&gt;
 </pre>
-<p>
-  <fp-button action="button_target.next">go to the next</fp-button>
-  <fp-range type="dropdown" id="button_target" min="0" max="10" step="1" wrap="both"></fp-range>
-</p>
 </div>
 
 
@@ -668,14 +614,10 @@ Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"
 
 <div class="demo">
 <h3>Demo</h3>
-<pre>
+<pre class="convert">
 &lt;fp-range id="controlled" type="slider" min="0" max="9" step="1" wrap="both"&gt;&lt;/fp-range&gt;
 &lt;fp-controls target="controlled"&gt;&lt;/fp-controls&gt;
 </pre>
-<p>
-  <fp-range id="controlled" type="slider" min="0" max="9" step="1" wrap="both"></fp-range>
-  <fp-controls target="controlled"></fp-controls>
-</p>
 </div>
 
 
@@ -740,6 +682,5 @@ Wavenumber: &lt;fp-range type="dropdown" id="plotparam" min="1" max="3" step="1"
   </li>
 </ul>
 </div>
-
 </article>
 

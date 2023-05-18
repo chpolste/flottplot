@@ -1,4 +1,9 @@
+*todo
 dist/*
 tests/*
-docs/*
+docs/*.html
+docs/*.css
+docs/dist
+docs/plot
+node_modules
 

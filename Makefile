@@ -1,4 +1,5 @@
-.PHONY: all test documentation clean
+.PHONY: all test docs clean
+.SECONDARY:
 
 MODULE := src/module.js src/dom.js src/core.js src/elements.js
 
@@ -13,34 +14,20 @@ all: \
 	python/flottplot/assets/flottplot-scan-min.js \
 	python/flottplot/assets/flottplot.css
 
-documentation: \
-	docs/.nojekyll \
-	docs/logo.svg \
-	docs/favicon.png \
-	docs/index.html \
-	docs/tutorial.html \
-	docs/elements.html \
-	docs/values.html \
-	docs/python.html \
-	docs/docs.css \
-	docs/dist/flottplot-min.js \
-	docs/dist/flottplot.css \
-	docs/dist/flottplot-scan-min.js \
-	docs/plot/cos-1x.png \
-	docs/plot/cos-2x.png \
-	docs/plot/cos-3x.png \
-	docs/plot/sin-1x.png \
-	docs/plot/sin-2x.png \
-	docs/plot/sin-3x.png
-
 test: tests/tests.js
 	mocha $^
 
 clean:
-	rm -rf docs
 	rm -rf dist
 	rm -rf tests
+	rm -rf docs/*.html
+	rm -rf docs/*.css
+	rm -rf docs/dist
+	rm -rf docs/plot
 	rm -rf python/flottplot/assets
+
+%/:
+	mkdir -p $@
 
 
 # Distribution files
@@ -76,37 +63,48 @@ python/flottplot/assets:
 	mkdir -p $@
 
 
-# Documentation files
+# Documentation
 
-docs/%: src/docs/%
+DOCS := \
+	docs/ \
+	docs/index.html \
+	docs/tutorial.html \
+	docs/elements.html \
+	docs/values.html \
+	docs/python.html \
+	docs/docs.css \
+	docs/dist/flottplot-min.js \
+	docs/dist/flottplot.css \
+	docs/dist/flottplot-scan-min.js \
+	docs/plot/sin-1x.png \
+	docs/plot/sin-2x.png \
+	docs/plot/sin-3x.png \
+	docs/plot/cos-3x.png \
+	docs/plot/cos-2x.png \
+	docs/plot/cos-3x.png \
+	docs/plot/adv_fwd_000.png \
+	docs/plot/adv_bwd_000.png \
+	docs/plot/adv_lag_000.png
+
+docs: $(DOCS)
+
+docs/%.css: docs/src/%.less
+	npx lessc $< $@
+
+docs/%.html: docs/util/build.py docs/src/template.html docs/src/%.html
+	python3 $+ > $@
+
+docs/dist/%: dist/% | docs/dist/
 	cp $^ $@
 
-docs/%.css: src/docs/%.less | docs
-	lessc $< $@
-
-docs/%.html: src/docs/%.html src/docs/template.html tools/docbuilder.py | docs
-	python3 tools/docbuilder.py src/docs/template.html $< > $@
-
-docs/dist/%: dist/% | docs/dist
-	cp $^ $@
-
-docs/.nojekyll: | docs
-	touch $@
-
-docs/plot/sin-%x.png: tools/plot-trigonometric.py | docs/plot
+docs/plot/sin-%x.png: docs/util/plot-trigonometric.py | docs/plot/
 	python3 $< "sin" $* $@
 
-docs/plot/cos-%x.png: tools/plot-trigonometric.py | docs/plot
+docs/plot/cos-%x.png: docs/util/plot-trigonometric.py | docs/plot/
 	python3 $< "cos" $* $@
 
-docs:
-	mkdir -p docs
-
-docs/dist:
-	mkdir -p docs/dist
-
-docs/plot:
-	mkdir -p docs/plot
+docs/plot/adv_%_000.png: docs/util/plot-advection.py | docs/plot/
+	python3 $< $* $(dir $@)
 
 
 # Unit tests
