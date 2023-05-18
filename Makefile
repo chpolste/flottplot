@@ -1,66 +1,51 @@
-.PHONY: all test docs clean
+WEBPACK_MODE := "production"
+
+.PHONY: dist clean test docs
 .SECONDARY:
 
-MODULE := src/module.js src/dom.js src/core.js src/elements.js
 
-
-all: \
-	dist/flottplot.js \
-	dist/flottplot.css \
-	dist/flottplot-scan.js \
+dist: \
 	dist/flottplot-min.js \
 	dist/flottplot-scan-min.js \
-	python/flottplot/assets/flottplot-min.js \
-	python/flottplot/assets/flottplot-scan-min.js \
-	python/flottplot/assets/flottplot.css
-
-test: tests/tests.js
-	mocha $^
+	dist/flottplot.css
 
 clean:
 	rm -rf dist
-	rm -rf tests
 	rm -rf docs/*.html
 	rm -rf docs/*.css
 	rm -rf docs/dist
 	rm -rf docs/plot
-	rm -rf python/flottplot/assets
 
 %/:
 	mkdir -p $@
 
 
-# Distribution files
+# Flottplot modules
 
-dist/%-min.js: dist/%.js
-	uglifyjs $^ > $@
+dist/%.css: src/%.less | dist/
+	npx lessc $< > $@
 
-dist/flottplot.css: src/style.less | dist
-	lessc $< > $@
+dist/%-min.js: src/bundles/%.ts | dist/
+	npx webpack build --entry-reset --entry "./$<" --mode "$(WEBPACK_MODE)" --output-filename "$(notdir $@)"
 
-dist/flottplot.js: $(MODULE) | dist
-	python3 tools/preprocessor.py src/module.js > $@
-
-dist/flottplot-scan.js: $(MODULE) src/scan.js | dist
-	python3 tools/preprocessor.py src/scan.js > $@
-
-dist/flottplot-%.js: src/%/module.js src/%/elements.js | dist
-	python3 tools/preprocessor.py $< > $@
-
-dist/flottplot-%.css: src/%/style.less | dist
-	lessc $< > $@
-
-dist:
-	mkdir -p dist
+# TODO: ts file dependencies
 
 
-# Python package files
-
-python/flottplot/assets/%: dist/% | python/flottplot/assets
-	cp $< $@
-
-python/flottplot/assets:
-	mkdir -p $@
+# TODO: Unit tests
+#
+#TESTS := $(wildcard test/test_*.js)
+#
+#test: $(TESTS) test/flottplot.js test/format_cases.json
+#	mocha test/*.js
+#
+#test/flottplot.ts: dist/flottplot.ts test/exports.ts | test/
+#	cat $^ > $@
+#
+#test/flottplot.js: test/flottplot.ts | test/
+#	tsc $(TS_CONFIG) --module "commonjs" $<
+#
+#test/format_cases.json: util/generate_format_cases.py | test/
+#	python3 $< > $@
 
 
 # Documentation
@@ -105,16 +90,4 @@ docs/plot/cos-%x.png: docs/util/plot-trigonometric.py | docs/plot/
 
 docs/plot/adv_%_000.png: docs/util/plot-advection.py | docs/plot/
 	python3 $< $* $(dir $@)
-
-
-# Unit tests
-
-tests/tests.js: src/tests.js src/core.js tests/value-testcases.json
-	python3 tools/preprocessor.py $< > $@
-
-tests/value-testcases.json: tools/format-testcase-generator.py | tests
-	python3 tools/format-testcase-generator.py > $@
-
-tests:
-	mkdir -p tests
 
