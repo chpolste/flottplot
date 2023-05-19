@@ -28,7 +28,7 @@ dist/%.css: src/%.less | dist/
 dist/%-min.js: src/bundles/%.ts | dist/
 	npx webpack build \
 		--entry-reset \
-	    --entry "./$<" \
+		--entry "./$<" \
 		--output-filename "$(notdir $@)"
 
 # TODO: ts file dependencies

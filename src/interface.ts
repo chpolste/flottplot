@@ -64,14 +64,15 @@ export interface Manager {
 
 export interface FPElement {
     // Must be available during registration
-    id: Identifier;
+    readonly id: Identifier;
     node: HTMLElement | null;
     actions: Set<Action>;
     patterns: Map<Pattern, [Expression, FormatSpec]>;
     dependencies: Set<Identifier>;
     // Set by the manager during registration
-    flottplot: Manager | null;
+    readonly flottplot: Manager | null;
     // How the manager interacts with the element
+    assignTo(manager: Manager): void;
     value: Value | undefined;
     state: ElementState | undefined;
     initialize(substitution?: Substitution): void;

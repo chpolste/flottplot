@@ -5,21 +5,31 @@ import { Value } from "./values";
 import { newNode } from "./dom";
 
 
+function generateID(): string {
+    const pool = "qwertzuiopasdfghjklyxcvbnmQWERTZUIOPASDFGHJKLYXCVBNM";
+    const chars: Array<string> = [];
+    for (let i = 0; i < 30; ++i) {
+        chars.push(pool.charAt(Math.floor(Math.random() * pool.length)));
+    }
+    return "_" + chars.join("");
+}
+
+
 export class ElementMixin {
 
-    id: Identifier;
+    readonly id: Identifier;
     node: HTMLElement | null;
-    _flottplot: Manager | null;
     patterns: Map<string, [Expression, string]>;
     dependencies: Set<string>;
     actions: Set<Action>;
+    private _manager: Manager | null;
 
     _errorBox: null | HTMLElement; // TODO
 
     constructor(id?: Identifier) {
         // Generate an ID if none was given
         if (id == null || id == "") {
-            this.id = this._generateID();
+            this.id = generateID();
         // Validate a given ID
         } else if (/^[A-Za-z][A-Za-z0-9_]*$/.test(id)) {
             this.id = id;
@@ -31,7 +41,7 @@ export class ElementMixin {
         // Element is initially not connected to a flottplot supervisor. This
         // attribute is set by the supervising flottplot instance when the
         // element is added to it.
-        this._flottplot = null;
+        this._manager = null;
         // Pattern lookup and dependencies required for value updates. These
         // should be set once before the element is connected to its supervisor
         // (best during initialization) with the setDependenciesFrom method.
@@ -44,19 +54,14 @@ export class ElementMixin {
     }
 
     get flottplot(): Manager {
-        if (this._flottplot != null) {
-            return this._flottplot;
+        if (this._manager != null) {
+            return this._manager;
         }
         throw new ElementError("cannot access flotplott manager, element has not been initialized");
     }
 
-    _generateID() {
-        const pool = "qwertzuiopasdfghjklyxcvbnmQWERTZUIOPASDFGHJKLYXCVBNM";
-        const chars: Array<string> = [];
-        for (let i = 0; i < 30; ++i) {
-            chars.push(pool.charAt(Math.floor(Math.random() * pool.length)));
-        }
-        return "_" + chars.join("");
+    assignTo(manager: Manager): void {
+        this._manager = manager;
     }
 
     // Throw an error, provides additional context generated for this element

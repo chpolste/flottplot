@@ -60,7 +60,7 @@ export class Flottplot implements Manager {
             this._graph.addEdge(element.id, dep);
         }
         // Give the element a supervisor
-        element.flottplot = this;
+        element.assignTo(this);
     }
 
     convert(node: HTMLElement): void {

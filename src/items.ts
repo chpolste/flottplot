@@ -178,7 +178,7 @@ export class RangeItems extends Items implements Collection {
                                     : Math.ceil((min as any)._sub(this._offset)._div(step)._value); // TODO any
         this.indexMax = max == null ? Number.POSITIVE_INFINITY
                                     : Math.floor((max as any)._sub(this._offset)._div(step)._value); // TODO any
-        if (this.wrap && !this.isFinite) throw new ItemsError(
+        if (this.wrap !== "none" && !this.isFinite) throw new ItemsError(
             "open-ended range cannot wrap"
         );
         // TODO make sure min < max
