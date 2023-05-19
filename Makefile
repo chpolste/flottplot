@@ -1,5 +1,3 @@
-WEBPACK_MODE := "production"
-
 .PHONY: dist clean test docs
 .SECONDARY:
 
@@ -15,6 +13,8 @@ clean:
 	rm -rf docs/*.css
 	rm -rf docs/dist
 	rm -rf docs/plot
+	rm -rf test/flottplot.js
+	rm -rf test/format_cases.json
 
 %/:
 	mkdir -p $@
@@ -26,26 +26,31 @@ dist/%.css: src/%.less | dist/
 	npx lessc $< > $@
 
 dist/%-min.js: src/bundles/%.ts | dist/
-	npx webpack build --entry-reset --entry "./$<" --mode "$(WEBPACK_MODE)" --output-filename "$(notdir $@)"
+	npx webpack build \
+		--entry-reset \
+	    --entry "./$<" \
+		--output-filename "$(notdir $@)"
 
 # TODO: ts file dependencies
 
 
-# TODO: Unit tests
-#
-#TESTS := $(wildcard test/test_*.js)
-#
-#test: $(TESTS) test/flottplot.js test/format_cases.json
-#	mocha test/*.js
-#
-#test/flottplot.ts: dist/flottplot.ts test/exports.ts | test/
-#	cat $^ > $@
-#
-#test/flottplot.js: test/flottplot.ts | test/
-#	tsc $(TS_CONFIG) --module "commonjs" $<
-#
-#test/format_cases.json: util/generate_format_cases.py | test/
-#	python3 $< > $@
+# Unit tests
+
+TESTS := $(wildcard test/test_*.js)
+
+test: test/flottplot.js test/format_cases.json $(TESTS)
+	npx mocha $(TESTS)
+
+test/format_cases.json: util/generate_format_cases.py | test/
+	python3 $< > $@
+
+test/flottplot.js: src/bundles/flottplot-test.ts
+	npx webpack build \
+		--entry-reset \
+		--entry "./$<" \
+		--output-library-type "commonjs2" \
+		--output-path "test" \
+		--output-filename "flottplot.js"
 
 
 # Documentation

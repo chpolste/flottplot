@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  mode: "production",
   entry: {
     "flottplot": "./src/bundles/flottplot.ts",
     "flottplot-scan": "./src/bundles/flottplot-scan.ts",
@@ -8,7 +9,10 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: "dist/[name].js",
-    library: "flottplot",
+    library: {
+        name: "flottplot",
+        type: "var",
+    },
   },
   module: {
     rules: [
