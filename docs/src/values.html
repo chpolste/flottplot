@@ -53,10 +53,27 @@
 </ul>
 </div>
 
+<div class="demo">
+<h3>Examples</h3>
+<ul class="convert">
+  <li><code>{t § 3}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
+  <li><code>{3 § t}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
+  <li><code>{(2 § t) § 3}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
+  <li><code>{2 § (t § 3)}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
+</ul>
+</div>
+
 <h2 id="text-formatting">Formatting</h2>
 <p>
   A subset of Python's <a href="https://docs.python.org/3/library/string.html#formatspec">format specification mini-language</a> is implemented for Text values: <code>[[fill]align][sign][0][width]</code>.
 </p>
+
+<div class="demo">
+<h3>Examples</h3>
+<ul class="convert">
+  <li><code>{t:.&lt;12}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
+</ul>
+</div>
 </article>
 
 <article>
@@ -106,10 +123,27 @@
 </ul>
 </div>
 
+<div class="demo">
+<h3>Examples</h3>
+<ul class="convert">
+  <li><code>{24/8 + 3}</code></li>
+  <li><code>{n+4}</code> (<code>n = </code><code class="cval">3</code>)</li>
+</ul>
+</div>
+
 <h2 id="number-formatting">Formatting</h2>
 <p>
   A subset of Python's <a href="https://docs.python.org/3/library/string.html#formatspec">format specification mini-language</a> is implemented for Number values: <code>[[fill]align][0][width]</code>.
 </p>
+
+<div class="demo">
+<h3>Examples</h3>
+<ul class="convert">
+  <li><code>{25:04}</code></li>
+  <li><code>{25:_=8}</code></li>
+  <li><code>{n:+04}</code> (<code>n = </code><code class="cval">-3</code>)</li>
+</ul>
+</div>
 </article>
 
 
@@ -145,6 +179,14 @@
 </ul>
 </div>
 
+<div class="demo">
+<h3>Examples</h3>
+<ul class="convert">
+  <li><code>{d + 4h}</code> (<code>d = </code><code class="cval">2023-05-27 22:00</code>)</li>
+  <li><code>{d1 - d2}</code> (<code>d1 = </code><code class="cval">2023-05-27 22:00</code>, <code>d2 = </code><code class="cval">2023-05-20 14:00</code>)</li>
+</ul>
+</div>
+
 <h2 id="date-formatting">Formatting</h2>
 <p>
   Date values support a subset of the <a href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">strftime</a> format codes used by Python's datetime module:
@@ -162,6 +204,13 @@
 <p>
   If no specification is given, Date values default to <code>%Y-%m-%d %H:%M:%S</code>.
 </p>
+
+<div class="demo">
+<h3>Examples</h3>
+<ul class="convert">
+  <li><code>{d:%d.%m.%Y}</code> (<code>d = </code><code class="cval">2023-05-27 18:00</code>)</li>
+</ul>
+</div>
 </article>
 
 <article>
@@ -199,6 +248,17 @@
 </ul>
 </div>
 
+<div class="demo">
+<h3>Examples</h3>
+<ul class="convert">
+  <li><code>{(5m).DAYS}</code></li>
+  <li><code>{(5m).MINUTES}</code></li>
+  <li><code>{(5m).SECONDS}</code></li>
+  <li><code>{(5m).TOTAL_SECONDS}</code></li>
+</ul>
+</div>
+
+
 <h2 id="datedelta-operators">Operators</h2>
 <div class="val">
 <h3>Unary Operators</h3>
@@ -216,6 +276,14 @@
   <li><code>/</code> (<em>DateDelta</em>, <em>DateDelta</em>) → <em>Number</em></li>
   <li><code>+</code> (<em>DateDelta</em>, <em>DateDelta</em>) → <em>DateDelta</em> (commutative)</li>
   <li><code>-</code> (<em>DateDelta</em>, <em>DateDelta</em>) → <em>DateDelta</em></li>
+</ul>
+</div>
+
+<div class="demo">
+<h3>Examples</h3>
+<ul class="convert">
+  <li><code>{(40m + 3s) * 4}</code></li>
+  <li><code>{-2d / 6h}</code></li>
 </ul>
 </div>
 

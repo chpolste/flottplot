@@ -63,6 +63,7 @@ DOCS := \
 	docs/values.html \
 	docs/python.html \
 	docs/docs.css \
+	docs/convert.js \
 	docs/dist/flottplot-min.js \
 	docs/dist/flottplot.css \
 	docs/dist/flottplot-scan-min.js \

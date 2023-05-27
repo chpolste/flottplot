@@ -4,23 +4,7 @@
   <meta charset="utf-8">
   <title><!-- title --> | Flottplot <!-- version --> Documentation</title>
   <script type="text/javascript" src="dist/flottplot-scan-min.js"></script>
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // Find demo code to convert
-    const nodes = document.querySelectorAll(".demo > pre.convert");
-    for (const node of nodes) {
-      // Create paragraph to put demo elements in and insert after code block
-      const demo = document.createElement("p");
-      demo.innerHTML = node.textContent;
-      node.after(demo);
-      // Convert elements in a new Flottplot instance (isolate demos from each
-      // other, so identifiers can be reused)
-      const fp = new flottplot.Flottplot();
-      fp.convert(demo);
-      fp.initialize();
-    }
-  });
-  </script>
+  <script type="text/javascript" src="convert.js"></script>
   <link rel="stylesheet" href="dist/flottplot.css">
   <link rel="stylesheet" href="docs.css">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
