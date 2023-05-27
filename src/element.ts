@@ -65,13 +65,13 @@ export class ElementMixin {
     }
 
     // Throw an error, provides additional context generated for this element
-    fail(message: string): void {
+    fail(message: string): never {
         this.failWith(new ElementError(
             "in " + this.constructor.name + " '" + this.id + "': " + message
         ));
     }
 
-    failWith(error: Error) {
+    failWith(error: Error): never {
         if (this.node != null) {
             if (this._errorBox == null) {
                 this._errorBox = newNode("div", {
@@ -95,9 +95,8 @@ export class ElementMixin {
                 // Condition ensures there is at least one child, skip null check
                 this._errorBox.firstChild!.remove();
             }
-        } else {
-            throw error;
         }
+        throw error;
     }
 
     // Invoke an action of the element, update the element and notify all

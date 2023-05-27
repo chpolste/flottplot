@@ -58,7 +58,7 @@ export abstract class Value {
 
 export class TextValue extends Value implements Expression {
 
-    _value: string;
+    readonly _value: string;
 
     constructor(value: unknown) {
         super();
@@ -113,7 +113,7 @@ export class TextValue extends Value implements Expression {
 
 export class NumberValue extends Value implements Expression {
 
-    _value: number;
+    readonly _value: number;
 
     constructor(value: unknown) {
         super();
@@ -256,7 +256,7 @@ function asDate(value: string): Date {
 
 export class DateValue extends Value implements Expression {
 
-    _value: Date;
+    readonly _value: Date;
 
     YEAR: NumberValue;
     MONTH: NumberValue;
@@ -326,7 +326,7 @@ export class DateValue extends Value implements Expression {
 
 export class DateDeltaValue extends Value implements Expression {
 
-    _value: number;
+    readonly _value: number;
 
     SIGN: NumberValue;
     DAYS: NumberValue;
@@ -444,7 +444,7 @@ export class DateDeltaValue extends Value implements Expression {
 // Attribute names are special objects
 export class AttributeValue extends Value implements Expression {
 
-    _name: string;
+    readonly _name: string;
 
     constructor(name: string) {
         super();

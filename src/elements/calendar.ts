@@ -1,9 +1,11 @@
-import { Identifier, FPElement } from "../interface";
+import { Identifier, FPElement, ElementState } from "../interface";
 import { ElementMixin } from "../element";
-import { ValueError, ParseError } from "../errors";
+import { ValueError } from "../errors";
 import { newNode, Attributes } from "../dom";
 import { Value, DateValue } from "../values";
  
+
+type FPCalendarState = string;
 
 export class FPCalendar extends ElementMixin implements FPElement {
 
@@ -49,16 +51,25 @@ export class FPCalendar extends ElementMixin implements FPElement {
         );
     }
 
-    get value(): Value {
+    get value(): DateValue {
         const value = Value.from(this.node.value);
-        if (value == null) throw new ParseError(
-            `unexpected issue parsing ${this.node.value} as value`
-        );
-        return value;
+        if (value instanceof DateValue) {
+            return value;
+        } else {
+            this.fail(`unexpected issue parsing ${this.node.value} as a DateValue`); // TODO ParseError?
+        }
     }
 
-    get state(): undefined {
-        return undefined; // TODO
+    get state(): FPCalendarState {
+        return this.node.value;
+    }
+
+    set state(state: ElementState) {
+        if (typeof state === "string") {
+            this.node.value = state;
+        } else {
+            this.fail(`cannot recover from state ${state}`); // TODO StateError
+        }
     }
 
     private get date() {
