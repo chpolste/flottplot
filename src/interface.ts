@@ -42,8 +42,8 @@ export enum CollectionEvent {
 }
 
 // ...
-export type ElementState = any; // TODO
-export type ManagerState = any; // TODO
+export type ElementState = unknown;
+export type ManagerState = Record<Identifier, ElementState>;
 
 export interface Manager {
     // ...
@@ -60,6 +60,7 @@ export interface Manager {
     state: ManagerState;
     overlay: any; // TODO
     fullscreen: Fullscreen; // TODO
+    urlstate: boolean;
 }
 
 export interface FPElement {

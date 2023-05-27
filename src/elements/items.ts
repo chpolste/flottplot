@@ -1,4 +1,4 @@
-import { Identifier, Calls, FormatSpec, FPElement, Collection, CollectionEvent } from "../interface";
+import { Identifier, Calls, FormatSpec, FPElement, ElementState, Collection, CollectionEvent } from "../interface";
 import { ElementError } from "../errors";
 import { ElementMixin } from "../element";
 import { newNode, newButton, Attributes } from "../dom";
@@ -57,6 +57,7 @@ export function selectFrom(node: HTMLElement): FPItems {
 
 
 
+type FPItemsState = number;
 
 class FPItems extends ElementMixin implements FPElement {
     // Base class for control elements wrapping a Items instance. Most
@@ -109,12 +110,16 @@ class FPItems extends ElementMixin implements FPElement {
 
     // (De-)Serialization
 
-    get state(): number {
+    get state(): FPItemsState {
         return this.items.index;
     }
 
-    set state(state: number) {
-        this.items.index = state;
+    set state(state: ElementState) {
+        if (typeof state === "number") {
+            this.items.index = state;
+        } else {
+            this.fail(`cannot recover from state ${state}`); // TODO StateError
+        };
     }
 
     // Actions

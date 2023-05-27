@@ -2,6 +2,7 @@ export class FlottplotError extends Error {}
 
 export class ParseError extends FlottplotError {}
 export class FormatError extends FlottplotError {}
+export class StateError extends FlottplotError {}
 
 export class ValueError extends FlottplotError {}
 export class ItemsError extends FlottplotError {}
