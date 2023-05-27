@@ -16,7 +16,7 @@ export type Substitution = Map<Pattern, string>;
 
 
 // Formatting specification for values
-export type FormatSpec = string;
+export type FormatSpec = string | undefined;
 
 export interface Expression {
     toString(): string;

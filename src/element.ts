@@ -1,4 +1,4 @@
-import { Identifier, Action, Expression, Manager, Pattern, Substitution } from "./interface";
+import { Identifier, Action, Expression, Manager, Pattern, FormatSpec, Substitution } from "./interface";
 import { ElementError } from "./errors";
 import { Expr } from "./expression";
 import { Value } from "./values";
@@ -19,7 +19,7 @@ export class ElementMixin {
 
     readonly id: Identifier;
     node: HTMLElement | null;
-    patterns: Map<string, [Expression, string]>;
+    patterns: Map<Pattern, [Expression, FormatSpec]>;
     dependencies: Set<string>;
     actions: Set<Action>;
     private _manager: Manager | null;
@@ -141,7 +141,7 @@ export class ElementMixin {
     // them into the patterns and dependencies attributes of this element so
     // the supervisor can provide appropriate substitutions in updates
     setDependenciesFrom(...templates: Array<Pattern>): void {
-        this.patterns  = new Map();
+        this.patterns = new Map();
         this.dependencies = new Set();
         for (const template of templates) {
             const reg = /{.+?}/g;
@@ -151,7 +151,8 @@ export class ElementMixin {
                     break
                 }
                 const pattern = match[0];
-                const [patExpr, format] = pattern.slice(1, -1).split(":");
+                const [patExpr, ...formatParts] = pattern.slice(1, -1).split(":");
+                const format = (formatParts.length > 0) ? formatParts.join(":") : undefined;
                 const expression = Expr.parse(patExpr);
                 // format will have undefined assigned if not given
                 this.patterns.set(pattern, [expression, format]);

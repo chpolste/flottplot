@@ -68,7 +68,7 @@ export class TextValue extends Value implements Expression {
         this._value = value.toString();
     }
 
-    toString(spec?: string): string {
+    toString(spec?: FormatSpec): string {
         // No format specification given, return text as-is
         if (spec == null) {
             return this._value;
@@ -131,7 +131,7 @@ export class NumberValue extends Value implements Expression {
         }
     }
 
-    toString(spec?: string): string {
+    toString(spec?: FormatSpec): string {
         if (spec == null) {
             return this._value.toString();
         }
@@ -284,7 +284,7 @@ export class DateValue extends Value implements Expression {
         this.SECOND = new NumberValue(this._value.getUTCSeconds());
     }
 
-    toString(spec?: string): string {
+    toString(spec?: FormatSpec): string {
         const aspy = pystrftime(this._value, (spec != null) ? spec : "%Y-%m-%d %H:%M:%S");
         if (aspy != null)  {
             return aspy;
@@ -377,7 +377,7 @@ export class DateDeltaValue extends Value implements Expression {
         this.TOTAL_SECONDS = new NumberValue(this._value);
     }
 
-    toString(spec?: string): string {
+    toString(spec?: FormatSpec): string {
         // User should use number formatting options of attributes instead
         if (spec != null) throw new FormatError(
             "invalid specification '" + spec + "' for date delta value '" + this.toString() + "'"
