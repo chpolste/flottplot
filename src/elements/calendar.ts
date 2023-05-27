@@ -68,7 +68,7 @@ export class FPCalendar extends ElementMixin implements FPElement {
         if (typeof state === "string") {
             this.node.value = state;
         } else {
-            this.fail(`cannot recover from state ${state}`); // TODO StateError
+            this.warn(`cannot recover from state ${state}`); // TODO StateError
         }
     }
 

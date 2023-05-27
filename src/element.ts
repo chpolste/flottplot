@@ -64,14 +64,11 @@ export class ElementMixin {
         this._manager = manager;
     }
 
-    // Throw an error, provides additional context generated for this element
-    fail(message: string): never {
-        this.failWith(new ElementError(
-            "in " + this.constructor.name + " '" + this.id + "': " + message
-        ));
-    }
-
-    failWith(error: Error): never {
+    warn(message: string | Error): ElementError {
+        if (message instanceof Error) {
+            message = `${message.constructor.name}: ${message.message}`;
+        }
+        const error = new ElementError(`in ${this.constructor.name} '${this.id}': ${message}`);
         if (this.node != null) {
             if (this._errorBox == null) {
                 this._errorBox = newNode("div", {
@@ -96,7 +93,11 @@ export class ElementMixin {
                 this._errorBox.firstChild!.remove();
             }
         }
-        throw error;
+        return error;
+    }
+
+    fail(message: string | Error): never {
+        throw this.warn(message);
     }
 
     // Invoke an action of the element, update the element and notify all

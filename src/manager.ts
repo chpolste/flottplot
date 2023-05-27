@@ -55,8 +55,8 @@ export class Flottplot implements Manager {
         const duplicate = this._elements.get(element.id);
         // Make sure id doesn't already exist in the collection
         if (duplicate != null) {
-            element.fail("duplicate id");
-            duplicate.fail("duplicate id");
+            element.warn("duplicate id");
+            duplicate.warn("duplicate id");
         }
         // Add element to collection
         this._elements.set(element.id, element);
@@ -135,7 +135,7 @@ export class Flottplot implements Manager {
             try {
                 element.initialize(this._substitutionFor(element));
             } catch (error) {
-                element.failWith(error);
+                element.warn(error);
                 console.error(error);
             }
         }

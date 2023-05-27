@@ -104,7 +104,6 @@ class FPItems extends ElementMixin implements FPElement {
     assertFinite(): void {
         if (!this.items.isFinite) {
             this.fail("list of items is not finite");
-            return;
         }
     }
 
@@ -118,7 +117,7 @@ class FPItems extends ElementMixin implements FPElement {
         if (typeof state === "number") {
             this.items.index = state;
         } else {
-            this.fail(`cannot recover from state ${state}`); // TODO StateError
+            this.warn(`cannot recover from state ${state}`); // TODO StateError
         };
     }
 

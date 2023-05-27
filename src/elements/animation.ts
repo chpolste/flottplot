@@ -72,7 +72,7 @@ export class FPAnimation extends ElementMixin implements FPElement {
                 this.stop();
             }
         } else {
-            this.fail(`cannot recover from state ${state}`); // TODO StateError
+            this.warn(`cannot recover from state ${state}`); // TODO StateError
         }
     }
 

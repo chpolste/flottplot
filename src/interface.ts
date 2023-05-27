@@ -1,5 +1,6 @@
 import { Value } from "./values";
 import { Fullscreen } from "./dom";
+import { FlottplotError } from "./errors";
 
 // Identifiers must be usable as Map keys
 export type Identifier = string;
@@ -80,7 +81,7 @@ export interface FPElement {
     update(substitution?: Substitution): void;
     invoke(action: Action): void; // TODO: args
     notify(): void;
-    fail(message: string): void;
-    failWith(error: Error): void;
+    warn(message: string | Error): FlottplotError;
+    fail(message: string | Error): never;
 }
 
