@@ -1,11 +1,12 @@
 *todo*
-dist/*
-tests/*
+
+deps
+dist
 docs/*.html
 docs/*.css
 docs/dist
 docs/plot
+node_modules
 test/flottplot.js
 test/*.json
-node_modules
 
