@@ -133,7 +133,7 @@ export class NumberValue extends Value implements Expression {
 
     toString(spec?: FormatSpec): string {
         if (spec == null) {
-            return this._value.toString();
+            return this.TEXT.toString();
         }
         const aspy = pyformat(this._value, spec);
         if (aspy != null) {
