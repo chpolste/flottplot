@@ -34,8 +34,7 @@ export class ElementMixin {
         } else if (/^[A-Za-z][A-Za-z0-9_]*$/.test(id)) {
             this.id = id;
         } else throw new ElementError(
-            "invalid id '" + id + "' for " + this.constructor.name
-            + " (names must begin with A-z and only contain A-z, 0-9 and _)"
+            `invalid element id '${id}' (names must begin with A-z and only contain A-z, 0-9 and _)`
         );
         this.node = null;
         // Element is initially not connected to a flottplot supervisor. This
@@ -66,9 +65,9 @@ export class ElementMixin {
 
     warn(message: string | Error): ElementError {
         if (message instanceof Error) {
-            message = `${message.constructor.name}: ${message.message}`;
+            message = message.message;
         }
-        const error = new ElementError(`in ${this.constructor.name} '${this.id}': ${message}`);
+        const error = new ElementError(`in element '${this.id}': ${message}`);
         if (this.node != null) {
             if (this._errorBox == null) {
                 this._errorBox = newNode("div", {

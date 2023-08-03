@@ -102,7 +102,6 @@ export class Flottplot implements Manager {
             node.replaceWith(dom.newNode("div", {
                 "style": "border:3px solid #F00;background-color:#FCC;padding:3px;",
             }, [
-                dom.newNode("b", {}, [error.constructor.name, ": "]),
                 error.message
             ]));
             // Additionally log the error on the console

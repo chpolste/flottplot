@@ -21,7 +21,7 @@ export class FPCalendar extends ElementMixin implements FPElement {
         } else if (init instanceof DateValue) {
             this.resetValue = init.toString("%Y-%m-%d");
         } else throw new ValueError(
-            "cannot initialize calendar with " + init.constructor.name
+            "cannot initialize calendar with " + init._typeName
         );
         // HTML offers an input type with a nice date selector
         if (attrs == null) {

@@ -1,4 +1,10 @@
-export class FlottplotError extends Error {}
+export class FlottplotError extends Error {
+
+    constructor(message?: string) {
+        super(`Flottplot Error: ${message}`);
+    }
+
+}
 
 export class ParseError extends FlottplotError {}
 export class FormatError extends FlottplotError {}
