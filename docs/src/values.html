@@ -202,7 +202,7 @@
   <li><code>%%</code>: A literal percent character.</li>
 </ul>
 <p>
-  If no specification is given, Date values default to <code>%Y-%m-%d %H:%M:%S</code>.
+  If no specification is given, Date values default to the original input text or <code>%Y-%m-%d %H:%M:%S</code> if none exists.
 </p>
 
 <div class="demo">
@@ -291,7 +291,7 @@
 <h2 id="datedelta-formatting">Formatting</h2>
 <p>
   DateDelta does not provide formatting options at the moment.
-  By default values are formatted as <code>+Dd HH:MM:SS</code>.
+  By default values are returned as they were input or are formatted as <code>+Dd HH:MM:SS</code> if no original input exists.
   Use attributes to assemble a custom format.
 </p>
 </article>
