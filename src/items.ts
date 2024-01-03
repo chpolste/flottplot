@@ -133,6 +133,9 @@ export class RangeItems extends Items implements Collection {
     _factor: Value;
     _selected: number;
 
+    readonly valueType: any;
+    readonly valueTypeName: string;
+
     indexMin: number;
     indexMax: number;
 
@@ -156,16 +159,19 @@ export class RangeItems extends Items implements Collection {
             "range requires specification of at least one of init, min or max"
         );
         // The type of this._offset determines the type of all values this
-        // range produces. This type is accessible via the valueType property
-        // for instanceof comparisons. First, verify that min and max have the
-        // appropriate type. init does not need to be checked (if it is not
-        // null, it is this._offset). step is allowed to have a different type
-        // (e.g., the step between dates is a datedelta).
+        // range produces. Make this type accessible via the valueType property
+        // for instanceof comparisons.
+        this.valueType = this._offset.constructor;
+        this.valueTypeName = this._offset._typeName;
+        // Verify that min and max have the appropriate type. init does not
+        // need to be checked (if it is not null, it is this._offset). step is
+        // allowed to have a different type (e.g., the step between dates is
+        // a datedelta).
         if (!(min == null || min instanceof this.valueType)) throw new ItemsError(
-            "min is a " + min.constructor.name + " but range expects " + this.valueType.name
+            "min is a " + min._typeName + " value but range expects " + this.valueTypeName
         );
         if (!(max == null || max instanceof this.valueType)) throw new ItemsError(
-            "max is a " + max.constructor.name + " but range expects " + this.valueType.name
+            "max is a " + max._typeName + " value but range expects " + this.valueTypeName
         );
         // TODO
         if (step == null) throw new ItemsError(
@@ -188,10 +194,6 @@ export class RangeItems extends Items implements Collection {
         this.value = this._offset;
     }
 
-    get valueType() {
-        return this._offset.constructor;
-    }
-
     _genValue(index: number): Value {
         // TODO: attach index?
         // Because this is not going through proper Expression evaluation, the
@@ -202,12 +204,12 @@ export class RangeItems extends Items implements Collection {
     }
 
     _genIndex(value: unknown): number {
-        value = Value.from(value);
-        if (value instanceof this.valueType) {
+        const v = Value.from(value);
+        if (v instanceof this.valueType) {
             // Clip value into range
-            return Math.round((value as any)._sub(this._offset)._div(this._factor)._value); // TODO any
+            return Math.round((v as any)._sub(this._offset)._div(this._factor)._value); // TODO any
          } else throw new ItemsError(
-            `range expects ${this.valueType.name} but received ${value!.constructor.name}`
+            `range expects ${this.valueTypeName} value but received ${v!._typeName}`
          );
     }
 

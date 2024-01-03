@@ -1,5 +1,6 @@
 import { Value } from "./values";
 import { Fullscreen } from "./dom";
+import { FlottplotError } from "./errors";
 
 // Identifiers must be usable as Map keys
 export type Identifier = string;
@@ -15,7 +16,7 @@ export type Substitution = Map<Pattern, string>;
 
 
 // Formatting specification for values
-export type FormatSpec = string;
+export type FormatSpec = string | undefined;
 
 export interface Expression {
     toString(): string;
@@ -42,8 +43,8 @@ export enum CollectionEvent {
 }
 
 // ...
-export type ElementState = any; // TODO
-export type ManagerState = any; // TODO
+export type ElementState = unknown;
+export type ManagerState = Record<Identifier, ElementState>;
 
 export interface Manager {
     // ...
@@ -60,6 +61,7 @@ export interface Manager {
     state: ManagerState;
     overlay: any; // TODO
     fullscreen: Fullscreen; // TODO
+    urlstate: boolean;
 }
 
 export interface FPElement {
@@ -79,7 +81,7 @@ export interface FPElement {
     update(substitution?: Substitution): void;
     invoke(action: Action): void; // TODO: args
     notify(): void;
-    fail(message: string): void;
-    failWith(error: Error): void;
+    warn(message: string | Error): FlottplotError;
+    fail(message: string | Error): never;
 }
 

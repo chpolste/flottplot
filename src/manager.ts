@@ -1,4 +1,4 @@
-import { Identifier, Action, Calls, Substitution, Pattern, FPElement, Manager, ManagerState } from "./interface";
+import { Identifier, Action, Calls, Substitution, FPElement, Manager, ManagerState } from "./interface";
 import { ElementError, FlottplotError } from "./errors";
 import { UpdateGraph } from "./graph";
 import * as dom from "./dom";
@@ -13,6 +13,12 @@ type TagRegistration = {
     converter: FPElementConverter;
     isRecursive: boolean;
 };
+
+
+function containsState(obj: unknown): obj is ManagerState {
+    return (typeof obj === "object" && !Array.isArray(obj) && obj !== null);
+}
+
 
 export class Flottplot implements Manager {
 
@@ -49,8 +55,8 @@ export class Flottplot implements Manager {
         const duplicate = this._elements.get(element.id);
         // Make sure id doesn't already exist in the collection
         if (duplicate != null) {
-            element.fail("duplicate id");
-            duplicate.fail("duplicate id");
+            element.warn("duplicate id");
+            duplicate.warn("duplicate id");
         }
         // Add element to collection
         this._elements.set(element.id, element);
@@ -96,7 +102,6 @@ export class Flottplot implements Manager {
             node.replaceWith(dom.newNode("div", {
                 "style": "border:3px solid #F00;background-color:#FCC;padding:3px;",
             }, [
-                dom.newNode("b", {}, [error.constructor.name, ": "]),
                 error.message
             ]));
             // Additionally log the error on the console
@@ -129,7 +134,7 @@ export class Flottplot implements Manager {
             try {
                 element.initialize(this._substitutionFor(element));
             } catch (error) {
-                element.failWith(error);
+                element.warn(error);
                 console.error(error);
             }
         }
@@ -170,7 +175,7 @@ export class Flottplot implements Manager {
             values.set(dep, dep_element.value);
         }
         // Evaluate expressions in all patterns with values and format
-        const out: Map<Pattern, string> = new Map();
+        const out: Substitution = new Map();
         for (const [pattern, [expression, format]] of element.patterns) {
             out.set(pattern, expression._eval(values).toString(format));
         }
@@ -225,17 +230,18 @@ export class Flottplot implements Manager {
         return out;
     }
 
-    set state(state: ManagerState) {
-        for (const id of this._graph.orderedNodes) {
-            if (!state.hasOwnProperty(id)) {
-                continue;
+    set state(state: unknown) {
+        if (!containsState(state)) throw new FlottplotError(
+            "TODO 2389" // TODO
+        );
+        for (const id in state) {
+            const element = this._elements.get(id);
+            if (element != null) {
+                element.state = state[id];
+                element.update(this._substitutionFor(element));
+                element.notify();
+                // TODO pause changing of hash during update and notify?
             }
-            // Skip null check since id comes from graph
-            const element: FPElement = this._elements.get(id)!;
-            element.state = state[id];
-            element.update(this._substitutionFor(element));
-            element.notify();
-            // TODO pause changing of hash during update and notify?
         }
     }
 

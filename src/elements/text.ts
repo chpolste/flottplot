@@ -1,24 +1,35 @@
-import { Identifier, FPElement } from "../interface";
+import { Identifier, Substitution, FPElement } from "../interface";
 import { ElementMixin } from "../element";
-import { Attributes } from "../dom";
+import { newNode } from "../dom";
 
  
-class FPText extends FPElement {
+export class FPText extends ElementMixin implements FPElement {
 
-    constructor(id, text) {
+    override node: HTMLSpanElement;
+    private readonly text: string;
+
+    constructor(id: Identifier | undefined, text: string) {
         super(id);
-        this.node = dom.newNode("span", { "id": id });
+        this.node = newNode("span", { "id": id });
         this.text = text;
         this.setDependenciesFrom(text);
     }
 
-    update(subst) {
-        let text = this.substitute(this.text, subst);
-        this.node.textContent = text;
+    override update(subst: Substitution): void {
+        this.node.textContent = this.substitute(this.text, subst);
     }
 
-    static from(node) {
-        return new FPText(node.id, node.textContent);
+    get value(): undefined {
+        return undefined;
+    }
+
+    get state(): undefined {
+        return undefined;
+    }
+
+    static from(node: HTMLElement): FPText {
+        const text = node.textContent;
+        return new FPText(node.id, (text == null) ? "" : text);
     }
 
 }

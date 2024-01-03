@@ -1,8 +1,10 @@
-import { Identifier, Action, FPElement } from "../interface";
+import { Identifier, Action, FPElement, ElementState } from "../interface";
 import { ElementMixin } from "../element";
 import { newNode, newButton, Attributes } from "../dom";
 
- 
+
+type FPAnimationState = [boolean, number]; // playing, speed
+
 export class FPAnimation extends ElementMixin implements FPElement {
 
     readonly targets: Array<Identifier>;
@@ -43,23 +45,34 @@ export class FPAnimation extends ElementMixin implements FPElement {
         );
     }
 
+    get isPlaying(): boolean {
+        return (this.timeout != null);
+    }
+
     get value(): undefined {
         return undefined;
     }
 
-    get state(): any { // TODO
-        return {
-            playing: (this.timeout != null),
-            speed: this.speed
-        };
+    get state(): FPAnimationState {
+        return [this.isPlaying, this.speed];
     }
 
-    set state(state: any) { // TODO
-        this.speed = state.speed;
-        if (state.playing) {
-            this.start();
+    set state(state: ElementState) { // TODO
+        const ok = (
+            Array.isArray(state)
+            && state.length === 2
+            && typeof state[0] === "boolean"
+            && typeof state[1] === "number"
+        );
+        if (ok) {
+            this.speed = state[1];
+            if (state[0]) {
+                this.start();
+            } else {
+                this.stop();
+            }
         } else {
-            this.stop();
+            this.warn(`cannot recover from state ${state}`); // TODO StateError
         }
     }
 

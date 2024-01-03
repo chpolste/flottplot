@@ -1,4 +1,4 @@
-import { Identifier, Action, Expression, Manager, Pattern, Substitution } from "./interface";
+import { Identifier, Action, Expression, Manager, Pattern, FormatSpec, Substitution } from "./interface";
 import { ElementError } from "./errors";
 import { Expr } from "./expression";
 import { Value } from "./values";
@@ -19,7 +19,7 @@ export class ElementMixin {
 
     readonly id: Identifier;
     node: HTMLElement | null;
-    patterns: Map<string, [Expression, string]>;
+    patterns: Map<Pattern, [Expression, FormatSpec]>;
     dependencies: Set<string>;
     actions: Set<Action>;
     private _manager: Manager | null;
@@ -34,8 +34,7 @@ export class ElementMixin {
         } else if (/^[A-Za-z][A-Za-z0-9_]*$/.test(id)) {
             this.id = id;
         } else throw new ElementError(
-            "invalid id '" + id + "' for " + this.constructor.name
-            + " (names must begin with A-z and only contain A-z, 0-9 and _)"
+            `invalid element id '${id}' (names must begin with A-z and only contain A-z, 0-9 and _)`
         );
         this.node = null;
         // Element is initially not connected to a flottplot supervisor. This
@@ -64,14 +63,11 @@ export class ElementMixin {
         this._manager = manager;
     }
 
-    // Throw an error, provides additional context generated for this element
-    fail(message: string): void {
-        this.failWith(new ElementError(
-            "in " + this.constructor.name + " '" + this.id + "': " + message
-        ));
-    }
-
-    failWith(error: Error) {
+    warn(message: string | Error): ElementError {
+        if (message instanceof Error) {
+            message = message.message;
+        }
+        const error = new ElementError(`in element '${this.id}': ${message}`);
         if (this.node != null) {
             if (this._errorBox == null) {
                 this._errorBox = newNode("div", {
@@ -95,9 +91,12 @@ export class ElementMixin {
                 // Condition ensures there is at least one child, skip null check
                 this._errorBox.firstChild!.remove();
             }
-        } else {
-            throw error;
         }
+        return error;
+    }
+
+    fail(message: string | Error): never {
+        throw this.warn(message);
     }
 
     // Invoke an action of the element, update the element and notify all
@@ -141,7 +140,7 @@ export class ElementMixin {
     // them into the patterns and dependencies attributes of this element so
     // the supervisor can provide appropriate substitutions in updates
     setDependenciesFrom(...templates: Array<Pattern>): void {
-        this.patterns  = new Map();
+        this.patterns = new Map();
         this.dependencies = new Set();
         for (const template of templates) {
             const reg = /{.+?}/g;
@@ -151,7 +150,8 @@ export class ElementMixin {
                     break
                 }
                 const pattern = match[0];
-                const [patExpr, format] = pattern.slice(1, -1).split(":");
+                const [patExpr, ...formatParts] = pattern.slice(1, -1).split(":");
+                const format = (formatParts.length > 0) ? formatParts.join(":") : undefined;
                 const expression = Expr.parse(patExpr);
                 // format will have undefined assigned if not given
                 this.patterns.set(pattern, [expression, format]);

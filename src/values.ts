@@ -8,6 +8,7 @@ export abstract class Value {
     _TEXT?: string;
 
     abstract toString(spec?: FormatSpec): string;
+    abstract readonly _typeName: string;
 
     // Every value gets a user-accessible TEXT attribute, which should be set
     // to the raw text input used to generate the value. If the value wasn't
@@ -58,7 +59,7 @@ export abstract class Value {
 
 export class TextValue extends Value implements Expression {
 
-    _value: string;
+    readonly _value: string;
 
     constructor(value: unknown) {
         super();
@@ -68,7 +69,11 @@ export class TextValue extends Value implements Expression {
         this._value = value.toString();
     }
 
-    toString(spec?: string): string {
+    get _typeName(): string {
+        return "Text";
+    }
+
+    toString(spec?: FormatSpec): string {
         // No format specification given, return text as-is
         if (spec == null) {
             return this._value;
@@ -113,7 +118,7 @@ export class TextValue extends Value implements Expression {
 
 export class NumberValue extends Value implements Expression {
 
-    _value: number;
+    readonly _value: number;
 
     constructor(value: unknown) {
         super();
@@ -131,10 +136,17 @@ export class NumberValue extends Value implements Expression {
         }
     }
 
-    toString(spec?: string): string {
+    get _typeName(): string {
+        return "Number";
+    }
+
+    toString(spec?: FormatSpec): string {
+        // No format specification given: return value as it was entered by the
+        // user or fall back to default representation
         if (spec == null) {
-            return this._value.toString();
+            return (this._TEXT != null) ? this._TEXT : this._value.toString();
         }
+        // Try to apply format specification
         const aspy = pyformat(this._value, spec);
         if (aspy != null) {
             return aspy;
@@ -256,7 +268,7 @@ function asDate(value: string): Date {
 
 export class DateValue extends Value implements Expression {
 
-    _value: Date;
+    readonly _value: Date;
 
     YEAR: NumberValue;
     MONTH: NumberValue;
@@ -284,8 +296,21 @@ export class DateValue extends Value implements Expression {
         this.SECOND = new NumberValue(this._value.getUTCSeconds());
     }
 
-    toString(spec?: string): string {
-        const aspy = pystrftime(this._value, (spec != null) ? spec : "%Y-%m-%d %H:%M:%S");
+    get _typeName(): string {
+        return "Date";
+    }
+
+    toString(spec?: FormatSpec): string {
+        // If no format specification is given try to return original user
+        // input or supply the default specification: YYYY-mm-dd HH:MM:SS
+        if (spec == null)  {
+            if (this._TEXT != null) {
+                return this._TEXT;
+            } else {
+                spec = "%Y-%m-%d %H:%M:%S";
+            }
+        }
+        const aspy = pystrftime(this._value, spec);
         if (aspy != null)  {
             return aspy;
         }
@@ -326,7 +351,7 @@ export class DateValue extends Value implements Expression {
 
 export class DateDeltaValue extends Value implements Expression {
 
-    _value: number;
+    readonly _value: number;
 
     SIGN: NumberValue;
     DAYS: NumberValue;
@@ -377,18 +402,29 @@ export class DateDeltaValue extends Value implements Expression {
         this.TOTAL_SECONDS = new NumberValue(this._value);
     }
 
-    toString(spec?: string): string {
-        // User should use number formatting options of attributes instead
-        if (spec != null) throw new FormatError(
+    get _typeName(): string {
+        return "DateDelta";
+    }
+
+    toString(spec?: FormatSpec): string {
+        // If no format specification is given try to return original user
+        // input or fall back to a default format: ±DDd HH:MM:SS
+        if (spec == null) {
+            if (this._TEXT != null) {
+                return this._TEXT;
+            } else {
+                return (
+                    (this.SIGN._value < 0 ? "-" : "+")
+                    + this.DAYS.toString() + "d "
+                    + this.HOURS.toString("0>2") + ":"
+                    + this.MINUTES.toString("0>2") + ":"
+                    + this.SECONDS.toString("0>2")
+                );
+            }
+        }
+        // For now, users should use attributes and number formatting
+        throw new FormatError(
             "invalid specification '" + spec + "' for date delta value '" + this.toString() + "'"
-        );
-        // Return in format '±DDd HH:MM:SS'
-        return (
-            (this.SIGN._value < 0 ? "-" : "+")
-            + this.DAYS.toString() + "d "
-            + this.HOURS.toString("0>2") + ":"
-            + this.MINUTES.toString("0>2") + ":"
-            + this.SECONDS.toString("0>2")
         );
     }
 
@@ -444,7 +480,7 @@ export class DateDeltaValue extends Value implements Expression {
 // Attribute names are special objects
 export class AttributeValue extends Value implements Expression {
 
-    _name: string;
+    readonly _name: string;
 
     constructor(name: string) {
         super();
@@ -452,6 +488,10 @@ export class AttributeValue extends Value implements Expression {
         if (this._name.startsWith("_")) throw new ValueError(
             "access to underscore-attribute '" + this._name + "' denied"
         );
+    }
+
+    get _typeName(): string {
+        return "Attribute";
     }
 
     toString(spec?: string): string {

@@ -8,6 +8,7 @@ dist: \
 	dist/flottplot.css
 
 clean:
+	rm -rf deps
 	rm -rf dist
 	rm -rf docs/*.html
 	rm -rf docs/*.css
@@ -25,13 +26,22 @@ clean:
 dist/%.css: src/%.less | dist/
 	npx lessc $< > $@
 
-dist/%-min.js: src/bundles/%.ts | dist/
+# Building a bundle with webpack:
+# - bundle js file depends on its corresponding ts file only
+# - ts file dependencies are auto-generated
+# - webpack won't overwrite the js file if it's content hasn't changed,
+#   touching it anyway after successful compilation ensures that make
+#   recognizes the update
+dist/%-min.js: src/bundles/%.ts | dist/ deps/
+	python3 util/generate_dependencies.py $< > deps/$*.mk
 	npx webpack build \
 		--entry-reset \
 		--entry "./$<" \
-		--output-filename "$(notdir $@)"
+		--output-filename "$(notdir $@)" \
+		&& touch $@
 
-# TODO: ts file dependencies
+# Auto-generated dependencies for bundle files
+-include deps/*.mk
 
 
 # Unit tests
@@ -44,13 +54,15 @@ test: test/flottplot.js test/format_cases.json $(TESTS)
 test/format_cases.json: util/generate_format_cases.py | test/
 	python3 $< > $@
 
-test/flottplot.js: src/bundles/flottplot-test.ts
+test/flottplot.js: src/bundles/flottplot-test.ts | deps/
+	python3 util/generate_dependencies.py $< > deps/flottplot-test.mk
 	npx webpack build \
 		--entry-reset \
 		--entry "./$<" \
 		--output-library-type "commonjs2" \
 		--output-path "test" \
-		--output-filename "flottplot.js"
+		--output-filename "flottplot.js" \
+		&& touch $@
 
 
 # Documentation
