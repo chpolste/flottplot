@@ -20,6 +20,10 @@ clean:
 %/:
 	mkdir -p $@
 
+init:
+	npm install --include dev
+	pip install -r docs/requirements.txt
+
 
 # Flottplot modules
 
