@@ -120,11 +120,17 @@ describe("Value formatting", function () {
     });
 
     it("DateDeltaValue default format", function() {
-        let pos  = new DateDeltaValue("+5m");
+        const pos  = new DateDeltaValue("+5m");
+        assert.strictEqual(pos.toString(), "+5m");
+        pos._TEXT = null; // TODO create a proper mechanism to obtain default formatting
         assert.strictEqual(pos.toString(), "+0d 00:05:00");
-        let neg  = new DateDeltaValue("-251h");
+        const neg  = new DateDeltaValue("-251h");
+        assert.strictEqual(neg.toString(), "-251h");
+        neg._TEXT = null; // TODO create a proper mechanism to obtain default formatting
         assert.strictEqual(neg.toString(), "-10d 11:00:00");
-        let zero = new DateDeltaValue("0d");
+        const zero = new DateDeltaValue("0d");
+        assert.strictEqual(zero.toString(), "0d");
+        zero._TEXT = null; // TODO create a proper mechanism to obtain default formatting
         assert.strictEqual(zero.toString(), "+0d 00:00:00");
     });
 
@@ -161,6 +167,11 @@ describe("Value operators", function () {
         ["-3 § foo     ", "ijk"],
         ["     foo §  3", "abc"],
         ["     foo § -3", "abcdefgh"],
+        [" 3 § foo §  3", "def"],
+        ["-3 § foo §  1", "i"],
+        [" 3 § foo § -2", "defghi"],
+        ["-3 § foo § -2", "i"],
+        ["-3 § foo § -4", ""]
     ], [
         ["foo", new TextValue("abcdefghijk")]
     ]));

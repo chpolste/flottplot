@@ -14,12 +14,6 @@ body {
   color: #000;
   font-family: sans-serif;
 }
-div.row {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 1300px;
-}
-
 a {
   color: darken(@def-dark, 20%);
   text-decoration: underline;
@@ -29,114 +23,148 @@ a:hover {
   text-decoration: none;
 }
 
-div.sidebar {
-  flex-grow: 1;
-  width: 200px;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  background-color: #EEE;
-  padding: 0 10px;
-}
-div.sidebar > ul { list-style: none; padding-left: 0; margin: 0; }
-div.sidebar > ul > li { padding: 3px 0; margin-bottom: 5px; }
-div.sidebar > ul > li > a { font-weight: bold; }
-div.sidebar > ul > li > ul { list-style: none; padding-left: 15px; }
-div.sidebar > ul > li > ul > li {  }
-div.sidebar a { color: #000; display: block; text-decoration: none; }
-div.sidebar a:hover { color: @def-dark; }
+div.row {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1300px;
 
-div.content {
-  flex-basis: 0;
-  flex-grow: 999;
-  min-inline-size: 600px;
-  padding: 10px;
-  background-color: #FFF;
-  z-index: 10;
+  .sidebar {
+    flex-grow: 1;
+    width: 200px;
+    background-color: #EEE;
+    padding: 10px;
+  }
+
+  .content {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-width: 600px;
+    padding: 10px 10px 10px 20px;
+    background-color: #FFF;
+    z-index: 10;
+  }
 }
 
-div.header {
-  display: block;
-  margin: 10px -10px 10px 0;
-  padding: 0 10px 10px 0;
+.ui-logo {
   border-bottom: 2px solid #999;
-  color: #999;
-  height: 30px;
+
+  img {
+    display: block;
+    height: 30px;
+    max-width: 100%;
+  }
 }
-#logo {
-  height: 30px;
-  max-width: 100%;
-}
-#navbar {
+
+.ui-nav {
   font-size: 130%;
-  margin: 0 0 10px -10px;
-  padding: 0px 0 10px 10px;
   border-color: #CCC;
   text-align: right;
-}
-#navbar a {
-  display: inline-block;
-  padding: 0 7px;
-  color: black;
-  text-decoration: none;
-}
-#navbar a:hover {
-  color: @def-dark;
-}
-
-main { padding: 0 0 0 10px; margin: 0; }
-
-main h1 {
-  font-size: 200%;
-  margin: 30px 0 10px 0;
-  font-weight: normal;
-}
-main h2 {
-  font-size: 140%;
-  margin: 30px 0 10px 0;
   border-bottom: 2px solid #CCC;
-  padding-bottom: 5px;
-  font-weight: normal;
+
+  a {
+    display: inline-block;
+    padding: 0 7px;
+    color: black;
+    text-decoration: none;
+  }
+  a:hover {
+    color: @def-dark;
+  }
+
 }
-main h3 {
-  font-size: 100%;
-  margin: 20px 0 10px 0;
+
+.ui-toc {
+  /* wrap happens at 200px (sidebar) + 600px (content) + 50px (padding) */
+  @media only screen and (min-width: 850px) {
+    height: calc(100vh - 20px);
+    position: sticky;
+    top: 0;
+    overflow-y: scroll;
+  }
+
+  > ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    > li {
+      padding: 3px 0;
+      margin-bottom: 5px;
+      > a {
+        font-weight: bold;
+      }
+      > ul {
+        list-style: none;
+        padding-left: 15px;
+      }
+    }
+  }
+
+  a {
+    color: #000;
+    display: block;
+    text-decoration: none;
+  }
+  a:hover {
+    color: @def-dark;
+  }
 }
-main ul {
-  margin: 10px 0;
-  padding-left: 30px;
-  list-style: none;
-}
-main p {
-  margin: 10px 0;
-}
-main p:first-child {
-  margin-top: revert;
-}
-main ul>li::before {
-  content: "●";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
-  display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 20px; /* Also needed for space (tweak if needed) */
-  margin-left: -20px; /* Also needed for space (tweak if needed) */
-  color: #999;
-}
-main ul li ul {
-  margin: 0 0 10px 0;
-}
-main pre {
-  margin: 10px 0;
-  font-size: 1.1em;
-  overflow: scroll;
-  padding: 8px 10px;
-  border-radius: 3px;
-  background-color: #EEE;
-}
-main code {
-  display: inline-block;
-  background-color: #EEE;
-  font-size: 1.2em;
-  padding: 0 4px;
-  border-radius: 3px;
+
+.ui-main {
+  h1 {
+    font-size: 200%;
+    margin: 30px 0 10px 0;
+    font-weight: normal;
+  }
+  h2 {
+    font-size: 140%;
+    margin: 30px 0 10px 0;
+    border-bottom: 2px solid #CCC;
+    padding-bottom: 5px;
+    font-weight: normal;
+  }
+  h3 {
+    font-size: 100%;
+    margin: 20px 0 10px 0;
+  }
+
+  ul {
+    margin: 10px 0;
+    padding-left: 30px;
+    list-style: none;
+    > li::before {
+      content: "●";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+      display: inline-block; /* Needed to add space between the bullet and the text */
+      width: 20px; /* Also needed for space (tweak if needed) */
+      margin-left: -20px; /* Also needed for space (tweak if needed) */
+      color: #999;
+    }
+    > li ul {
+      margin: 0 0 10px 0;
+    }
+  }
+
+  p {
+    margin: 10px 0;
+  }
+  p:first-child {
+    margin-top: revert;
+  }
+
+  pre {
+    margin: 10px 0;
+    font-size: 1.1em;
+    overflow-x: scroll;
+    padding: 8px 10px;
+    border-radius: 3px;
+    background-color: #EEE;
+  }
+  code {
+    display: inline-block;
+    background-color: #EEE;
+    font-size: 1.2em;
+    padding: 0 4px;
+    border-radius: 3px;
+  }
 }
 
 .downloads a {
@@ -148,46 +176,49 @@ main code {
   h3 {
     color: @def-dark;
   }
-  >ul>li::before {
+  > ul > li::before {
     color: @def-dark;
   }
-  pre, >ul>li>code:first-child {
+  pre, > ul > li > code:first-child {
     background-color: @def-light;
   }
 }
+
 .val {
   border-color: @val-light;
   h3 {
     color: @val-dark;
   }
-  >ul>li::before {
+  > ul > li::before {
     color: @val-dark;
   }
-  pre, >ul>li>code:first-child {
+  pre, > ul > li > code:first-child {
     background-color: @val-light;
   }
 }
+
 .act {
   border-color: @act-light;
   h3 {
     color: @act-dark;
   }
-  >ul>li::before {
+  > ul > li::before {
     color: @act-dark;
   }
-  pre, >ul>li>code:first-child {
+  pre, > ul > li > code:first-child {
     background-color: @act-light;
   }
 }
+
 .demo {
   border-color: @demo-light;
   h3 {
     color: @demo-dark;
   }
-  >ul>li::before {
+  > ul > li::before {
     color: @demo-dark;
   }
-  pre, >ul>li>code:first-child {
+  pre, > ul > li > code:first-child {
     background-color: @demo-light;
   }
 }

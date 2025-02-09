@@ -1,11 +1,14 @@
-import { Identifier, FPElement } from "../interface";
+import { Identifier, FPElement, ManagerState } from "../interface";
 import { ElementMixin } from "../element";
 import { Attributes } from "../dom";
 
  
-class FPState extends FPElement {
+export class FPState extends ElementMixin implements FPElement {
 
-    constructor(id, useURL) {
+    private readonly useURL: boolean;
+    private savedState: null | ManagerState;
+
+    constructor(id: Identifier | undefined, useURL: boolean) {
         super(id);
         this.useURL = useURL;
         this.savedState = null;
@@ -13,27 +16,35 @@ class FPState extends FPElement {
         this.actions.add("restore");
     }
 
-    initialize() {
+    override initialize() {
         if (this.useURL === true) {
             this.flottplot.urlstate = true;
         }
     }
 
-    save() {
+    get value(): undefined {
+        return undefined;
+    }
+
+    get state(): undefined {
+        return undefined;
+    }
+
+    save(): void {
         this.savedState = this.flottplot.state;
     }
 
-    restore() {
+    restore(): void {
         if (this.savedState != null) {
             this.flottplot.state = this.savedState;
         }
     }
 
-    static from(node) {
-        const attrs = dom.Attributes.from(node);
+    static from(node: HTMLElement): FPState {
+        const attrs = Attributes.from(node);
         return new FPState(
             attrs.id,
-            attrs.pop("url", false, "BOOL")
+            attrs.getAsBool("url", "false", true)
         );
     }
 

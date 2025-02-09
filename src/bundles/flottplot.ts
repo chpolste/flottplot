@@ -14,6 +14,8 @@ import { FPCursors } from "../elements/cursors";
 import { FPOverlay } from "../elements/overlay";
 import { FPPlot } from "../elements/plot";
 import { FPStack } from "../elements/stack";
+import { FPState } from "../elements/state";
+import { FPText } from "../elements/text";
 import { FPVideo } from "../elements/video";
 import { rangeFrom, selectFrom } from "../elements/items"
 
@@ -28,26 +30,15 @@ Flottplot.registerTag("fp-plot", FPPlot.from, false);
 Flottplot.registerTag("fp-range", rangeFrom, false);
 Flottplot.registerTag("fp-select", selectFrom, false);
 Flottplot.registerTag("fp-stack", FPStack.from, true);
+Flottplot.registerTag("fp-state", FPState.from, false);
+Flottplot.registerTag("fp-text", FPText.from, true);
 Flottplot.registerTag("fp-video", FPVideo.from, false);
 
 // ...
 export { VERSION, Flottplot, ElementMixin, Value, FlottplotError, dom };
 
 // TODO return {
-// TODO     VERSION = "2.2.0",
-// TODO     Flottplot: Flottplot,
-// TODO     FPElement: FPElement,
-// TODO     Value: Value,
 // TODO     OptionsItems: OptionsItems,
 // TODO     RangeItems: RangeItems,
-// TODO     FlottplotError: FlottplotError,
-// TODO     ElementError: ElementError,
-// TODO     dom: dom,
 // TODO };
-
-
-// Create element registry and initialize with core elements
-
-// TODO Flottplot.registerTag("fp-state", FPState.from, false);
-// TODO Flottplot.registerTag("fp-text", FPText.from, true);
 

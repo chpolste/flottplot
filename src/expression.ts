@@ -272,7 +272,7 @@ export class Expr implements Expression {
         // Both forward and backward operators either don't exist or return
         // undefined. The operation is not possible.
         throw new ValueError(
-            "operator '" + this.op.method + "' not defined for " + args.map(_ => _.constructor.name).join(" and ")
+            "operator '" + this.op.method + "' not defined for " + args.map(_ => _._typeName).join(" and ")
         );
     }
 

@@ -45,10 +45,10 @@
     Concatenation.
   </li>
   <li><code>§</code> (<em>Number</em>, <em>Text</em>) → <em>Text</em><br>
-    Left slice.
+    Left slice: only retain characters after the position specified by the left argument (positive: count from left; negative: count from right).
   </li>
   <li><code>§</code> (<em>Text</em>, <em>Number</em>) → <em>Text</em><br>
-    Right slice.
+    Right slice: only retain characters before the position specified by the right argument (positive: count from left; negative: count from right).
   </li>
 </ul>
 </div>
@@ -56,8 +56,10 @@
 <div class="demo">
 <h3>Examples</h3>
 <ul class="convert">
-  <li><code>{t § 3}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
   <li><code>{3 § t}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
+  <li><code>{-2 § t}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
+  <li><code>{t § 3}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
+  <li><code>{t § -2}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
   <li><code>{(2 § t) § 3}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
   <li><code>{2 § (t § 3)}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
 </ul>
@@ -202,13 +204,14 @@
   <li><code>%%</code>: A literal percent character.</li>
 </ul>
 <p>
-  If no specification is given, Date values default to <code>%Y-%m-%d %H:%M:%S</code>.
+  If no specification is given, Date values default to the original input text or <code>%Y-%m-%d %H:%M:%S</code> if none exists.
 </p>
 
 <div class="demo">
 <h3>Examples</h3>
 <ul class="convert">
-  <li><code>{d:%d.%m.%Y}</code> (<code>d = </code><code class="cval">2023-05-27 18:00</code>)</li>
+  <li><code>{d:%d.%m.%Y}</code> (<code>d = </code><code class="cval">2023-05-27T14:02:05</code>)</li>
+  <li><code>{d:%d.%m.%Y %H:%M}</code> (<code>d = </code><code class="cval">2023-05-27T14:02:05</code>)</li>
 </ul>
 </div>
 </article>
@@ -290,7 +293,7 @@
 <h2 id="datedelta-formatting">Formatting</h2>
 <p>
   DateDelta does not provide formatting options at the moment.
-  By default values are formatted as <code>+Dd HH:MM:SS</code>.
+  By default values are returned as they were input or are formatted as <code>+Dd HH:MM:SS</code> if no original input exists.
   Use attributes to assemble a custom format.
 </p>
 </article>
