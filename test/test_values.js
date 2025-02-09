@@ -167,6 +167,11 @@ describe("Value operators", function () {
         ["-3 § foo     ", "ijk"],
         ["     foo §  3", "abc"],
         ["     foo § -3", "abcdefgh"],
+        [" 3 § foo §  3", "def"],
+        ["-3 § foo §  1", "i"],
+        [" 3 § foo § -2", "defghi"],
+        ["-3 § foo § -2", "i"],
+        ["-3 § foo § -4", ""]
     ], [
         ["foo", new TextValue("abcdefghijk")]
     ]));

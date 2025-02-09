@@ -45,10 +45,10 @@
     Concatenation.
   </li>
   <li><code>§</code> (<em>Number</em>, <em>Text</em>) → <em>Text</em><br>
-    Left slice.
+    Left slice: only retain characters after the position specified by the left argument (positive: count from left; negative: count from right).
   </li>
   <li><code>§</code> (<em>Text</em>, <em>Number</em>) → <em>Text</em><br>
-    Right slice.
+    Right slice: only retain characters before the position specified by the right argument (positive: count from left; negative: count from right).
   </li>
 </ul>
 </div>
@@ -56,8 +56,10 @@
 <div class="demo">
 <h3>Examples</h3>
 <ul class="convert">
-  <li><code>{t § 3}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
   <li><code>{3 § t}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
+  <li><code>{-2 § t}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
+  <li><code>{t § 3}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
+  <li><code>{t § -2}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
   <li><code>{(2 § t) § 3}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
   <li><code>{2 § (t § 3)}</code> (<code>t = </code><code class="cval">foobar</code>)</li>
 </ul>
