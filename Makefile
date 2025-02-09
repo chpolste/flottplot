@@ -71,45 +71,45 @@ test/flottplot.js: src/bundles/flottplot-test.ts | deps/
 
 # Documentation
 
-DOCS := \
-	docs/ \
-	docs/index.html \
-	docs/tutorial.html \
-	docs/elements.html \
-	docs/values.html \
-	docs/python.html \
-	docs/docs.css \
-	docs/convert.js \
-	docs/dist/flottplot-min.js \
-	docs/dist/flottplot.css \
-	docs/dist/flottplot-scan-min.js \
-	docs/plot/sin-1x.png \
-	docs/plot/sin-2x.png \
-	docs/plot/sin-3x.png \
-	docs/plot/cos-3x.png \
-	docs/plot/cos-2x.png \
-	docs/plot/cos-3x.png \
-	docs/plot/adv_fwd_000.png \
-	docs/plot/adv_bwd_000.png \
-	docs/plot/adv_lag_000.png
+DOCS_HTML := \
+	docs/html/ \
+	docs/html/index.html \
+	docs/html/tutorial.html \
+	docs/html/elements.html \
+	docs/html/values.html \
+	docs/html/python.html \
+	docs/html/docs.css \
+	docs/html/convert.js \
+	docs/html/dist/flottplot-min.js \
+	docs/html/dist/flottplot.css \
+	docs/html/dist/flottplot-scan-min.js \
+	docs/html/plot/sin-1x.png \
+	docs/html/plot/sin-2x.png \
+	docs/html/plot/sin-3x.png \
+	docs/html/plot/cos-3x.png \
+	docs/html/plot/cos-2x.png \
+	docs/html/plot/cos-3x.png \
+	docs/html/plot/adv_fwd_000.png \
+	docs/html/plot/adv_bwd_000.png \
+	docs/html/plot/adv_lag_000.png
 
-docs: $(DOCS)
+docs: $(DOCS_HTML)
 
-docs/%.css: docs/src/%.less
+docs/html/%.css: docs/src/%.less
 	npx lessc $< $@
 
-docs/%.html: docs/util/build.py docs/src/template.html docs/src/%.html
+docs/html/%.html: docs/util/build.py docs/src/template.html docs/src/%.html
 	python3 $+ > $@
 
-docs/dist/%: dist/% | docs/dist/
+docs/html/dist/%: dist/% | docs/html/dist/
 	cp $^ $@
 
-docs/plot/sin-%x.png: docs/util/plot-trigonometric.py | docs/plot/
+docs/html/plot/sin-%x.png: docs/util/plot-trigonometric.py | docs/html/plot/
 	python3 $< "sin" $* $@
 
-docs/plot/cos-%x.png: docs/util/plot-trigonometric.py | docs/plot/
+docs/html/plot/cos-%x.png: docs/util/plot-trigonometric.py | docs/html/plot/
 	python3 $< "cos" $* $@
 
-docs/plot/adv_%_000.png: docs/util/plot-advection.py | docs/plot/
+docs/html/plot/adv_%_000.png: docs/util/plot-advection.py | docs/html/plot/
 	python3 $< $* $(dir $@)
 

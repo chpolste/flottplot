@@ -2,10 +2,7 @@
 
 deps
 dist
-docs/*.html
-docs/*.css
-docs/dist
-docs/plot
+docs/html
 node_modules
 test/flottplot.js
 test/*.json
